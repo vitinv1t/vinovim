@@ -1,7 +1,8 @@
 {
-  "version": "1.7.4",
+  "version": "1.7.5",
   "date": "2026-11-08",
   "notes": [
+    "Discord com textos ao estilo da Netflix: “A navegar”, “T1:E3 “Nome do episódio”” e “Em pausa”",
     "O PIN é pedido sempre que entras num perfil com PIN, mesmo que seja o teu",
     "A abertura já não deixa ver nada por trás antes da logo",
     "Avatar do perfil: só foto ou inicial",
