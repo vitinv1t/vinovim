@@ -5,7 +5,7 @@
 <br>
 
 [![Compilação](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml/badge.svg)](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml)
-![Versão](https://img.shields.io/badge/versão-1.7.7-e0315b?style=flat-square)
+![Versão](https://img.shields.io/badge/versão-1.7.8-e0315b?style=flat-square)
 ![Plataformas](https://img.shields.io/badge/plataformas-Windows%20·%20Android%20·%20TV%20·%20Web-7c5cff?style=flat-square)
 ![Addons](https://img.shields.io/badge/addons-protocolo%20Stremio-f5c26b?style=flat-square)
 ![Idiomas](https://img.shields.io/badge/idiomas-PT%20·%20EN%20·%20ES-2ea043?style=flat-square)
@@ -106,7 +106,7 @@
 | 🌐 **Browser** | Abre **[vinovim.vercel.app/?web](https://vinovim.vercel.app/?web)**. Também dá para instalar como app (PWA). |
 
 > [!TIP]
-> Só precisas de instalar uma vez. As novidades chegam sozinhas: a app avisa-te quando há uma versão nova.
+> Só precisas de instalar uma vez. As novidades chegam sozinhas, e quando a própria app muda basta carregar em **Atualizar agora**: o Vinovim descarrega e instala a versão nova sem ires ao site.
 
 ---
 

@@ -4,7 +4,11 @@ Todas as mudanças importantes do vinovim, da mais recente para a mais antiga.
 
 ---
 
-## 🎉 1.7.7 — 8 de novembro de 2026
+## 🎉 1.7.8 — 8 de novembro de 2026
+- 🔄 A app atualiza-se sozinha: no Windows descarrega e instala o novo instalador; no Android descarrega o .apk e abre o instalador.
+- 🔏 O .apk passa a ser sempre assinado com a mesma chave, para o Android aceitar as atualizações por cima.
+
+## 🎉 1.7.7
 - 🔐 Ecrã de entrada depois da abertura: entra com Google ou com email, ou continua sem conta.
 - 🗒️ Janela de novidades mais compacta, no PC e no telemóvel.
 
