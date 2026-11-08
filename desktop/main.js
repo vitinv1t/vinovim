@@ -66,7 +66,7 @@ ipcMain.on('vinovim:jumplist', (e, items) => {
   try {
     const exe = process.execPath;
     const cont = (items || []).slice(0, 6).filter(it => it && it.id && /^(movie|series)$/.test(it.type)).map(it => ({
-      type: 'task', title: clean(it.title, 60) || 'vinovim', description: clean(it.sub, 120) || 'Continuar a ver',
+      type: 'task', title: clean(it.title, 60) || 'Vinovim', description: clean(it.sub, 120) || 'Continuar a ver',
       program: exe, args: '--vv-open=' + it.type + ':' + clean(it.id, 60).replace(/\s/g, ''), iconPath: exe, iconIndex: 0
     }));
     const tasks = [
@@ -109,7 +109,7 @@ ipcMain.on('vinovim:playing', (e, s) => {
 function createWindow() {
   win = new BrowserWindow({
     width: 1400, height: 880, minWidth: 900, minHeight: 600,
-    backgroundColor: '#09080d', title: 'vinovim', autoHideMenuBar: true,
+    backgroundColor: '#09080d', title: 'Vinovim', autoHideMenuBar: true,
     icon: path.join(__dirname, '..', 'www', 'icons', 'icon-512.png'),
     webPreferences: { contextIsolation: true, nodeIntegration: false, preload: path.join(__dirname, 'preload.js') }
   });
