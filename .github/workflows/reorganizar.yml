@@ -1,0 +1,52 @@
+name: Reorganizar repositório (uma vez)
+
+on:
+  push:
+    branches: [main]
+    paths: ['_reorganizar.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reorganizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mover ficheiros para pastas e escrever a documentação
+        run: |
+          set -e
+          test -f _reorganizar.json
+          python3 - <<'EOF'
+          import json, os, subprocess
+          d = json.load(open('_reorganizar.json', encoding='utf-8'))
+          for src, dst in d['moves']:
+              if not os.path.exists(src):
+                  raise SystemExit('falta ' + src)
+              os.makedirs(os.path.dirname(dst), exist_ok=True)
+              subprocess.check_call(['git', 'mv', src, dst])
+          idx = 'app/index.html'
+          s = open(idx, encoding='utf-8').read()
+          for a, b in d['tags']:
+              if s.count(a) != 1:
+                  raise SystemExit('tag ' + a)
+              s = s.replace(a, b)
+          open(idx, 'w', encoding='utf-8').write(s)
+          pk = json.load(open('package.json', encoding='utf-8'))
+          pk['scripts']['web'] = 'npx serve app'
+          open('package.json', 'w', encoding='utf-8').write(json.dumps(pk, indent=2, ensure_ascii=False) + '\n')
+          for path, txt in d['files'].items():
+              if path.startswith('.github/workflows/'):
+                  continue
+              if os.path.dirname(path):
+                  os.makedirs(os.path.dirname(path), exist_ok=True)
+              open(path, 'w', encoding='utf-8').write(txt)
+          os.remove('_reorganizar.json')
+          EOF
+          git config user.name "vinovim-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status --short
+          git commit -q -m "Organiza o repositório: pastas, README, documentação e modelos de issues"
+          git push
