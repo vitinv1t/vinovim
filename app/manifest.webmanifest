@@ -1,6 +1,6 @@
 {
-  "name": "vinovim",
-  "short_name": "vinovim",
+  "name": "Vinovim",
+  "short_name": "Vinovim",
   "description": "O teu hub de filmes e séries, compatível com addons Stremio.",
   "start_url": "./index.html#home",
   "scope": "./",
