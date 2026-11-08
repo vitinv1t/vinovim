@@ -72,3 +72,39 @@ jobs:
         with:
           name: vinovim-android
           path: vinovim.apk
+
+  publish:
+    name: Publicar no site (vinovim.vercel.app)
+    needs: [windows, android]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Montar o site com os downloads
+        run: |
+          pip install pillow
+          python make_icons.py
+          mkdir -p site/public/downloads
+          cp index.html sw.js manifest.webmanifest icon.svg version.json download.html site/public/
+          cp -r www/icons site/public/icons
+          cp "$(ls artifacts/vinovim-windows/*.exe | head -n 1)" site/public/downloads/vinovim-setup.exe
+          cp artifacts/vinovim-android/vinovim.apk site/public/downloads/vinovim.apk
+          python -c "import json,os;d='site/public/downloads';json.dump({f:os.path.getsize(os.path.join(d,f)) for f in os.listdir(d)},open('site/public/downloads.json','w'))"
+          cp site-vercel.json site/vercel.json
+          ls -la site/public site/public/downloads
+      - name: Enviar para o ramo "site" (o Vercel publica a partir daqui)
+        run: |
+          cd site
+          git init -q -b site
+          git config user.name "vinovim-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Site e downloads $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" site
