@@ -1,6 +1,6 @@
 {
   "name": "vinovim",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "vinovim — hub de filmes e séries compatível com addons Stremio",
   "main": "electron/main.js",
   "author": "vinovim",
@@ -26,11 +26,33 @@
   "build": {
     "appId": "app.vinovim",
     "productName": "vinovim",
-    "files": ["electron/**", "www/**"],
-    "directories": { "output": "dist" },
-    "win": { "target": "nsis", "icon": "www/icons/icon-512.png" },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true },
-    "mac": { "target": "dmg", "icon": "www/icons/icon-512.png", "category": "public.app-category.entertainment" },
-    "linux": { "target": "AppImage", "icon": "www/icons/icon-512.png", "category": "Video" }
+    "files": [
+      "electron/**",
+      "www/**"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "www/icons/icon-512.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "www/icons/icon-512.png",
+      "category": "public.app-category.entertainment"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "www/icons/icon-512.png",
+      "category": "Video"
+    }
+  },
+  "dependencies": {
+    "discord-rpc": "^4.0.1"
   }
 }

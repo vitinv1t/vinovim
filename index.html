@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#09080d">
 <meta name="description" content="vinovim — o teu hub de filmes e séries">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192.png">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -297,6 +297,26 @@ html.amoled{--bg:#000;--bg2:#060509;--card:#0f0e14;--card2:#17151d;--line:#221f2
 .mbrand{display:none;align-items:center;gap:8px;font-family:var(--fd);font-weight:800;font-size:20px;letter-spacing:-.02em;text-decoration:none}
 .mbrand svg{width:28px;height:28px}
 
+#upd{position:fixed;inset:0;z-index:120;display:none;place-items:center;padding:20px;background:rgba(5,4,8,.72);backdrop-filter:blur(10px)}
+#upd.open{display:grid;animation:fade .25s}
+.ucard{position:relative;width:min(460px,100%);border-radius:28px;background:linear-gradient(180deg,#17141f,#0e0c13);border:1px solid rgba(255,255,255,.08);box-shadow:0 40px 120px rgba(0,0,0,.6);overflow:hidden;animation:pop .45s cubic-bezier(.2,.9,.25,1.2)}
+@keyframes pop{from{transform:translateY(24px) scale(.94);opacity:0}to{transform:none;opacity:1}}
+.uglow{position:absolute;left:-20%;right:-20%;top:-140px;height:280px;background:radial-gradient(closest-side,var(--ac),transparent);opacity:.45;filter:blur(30px);pointer-events:none}
+.uhead{position:relative;padding:34px 30px 8px;text-align:center}
+.uhead svg{width:72px;height:72px;filter:drop-shadow(0 12px 30px rgba(224,49,91,.45));animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
+.uhead h2{font-family:var(--fd);font-size:26px;font-weight:800;letter-spacing:-.02em;margin:16px 0 10px}
+.uver{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:13px;font-weight:700;color:var(--mu)}
+.uver b{color:var(--ac2)}
+.ulist{position:relative;list-style:none;padding:20px 30px 6px;display:grid;gap:11px}
+.ulist li{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.45;color:#ddd6e5}
+.ulist li i{flex:0 0 22px;height:22px;border-radius:50%;background:var(--acs);color:var(--ac);display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800}
+.ubtns{position:relative;display:flex;gap:10px;padding:22px 30px 28px}
+.ubtns .btn{flex:1;justify-content:center}
+.uprog{height:4px;margin:6px 30px 0;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;display:none}
+.uprog b{display:block;height:100%;width:30%;background:linear-gradient(90deg,var(--ac),var(--ac2));animation:load 1s ease-in-out infinite}
+@keyframes load{from{transform:translateX(-100%)}to{transform:translateX(330%)}}
+
 /* ---------- toast ---------- */
 #toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(30px);opacity:0;z-index:100;background:var(--tx);color:#0b0a10;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;transition:.3s;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.4)}
 #toast.show{opacity:1;transform:translateX(-50%)}
@@ -390,6 +410,7 @@ html.amoled{--bg:#000;--bg2:#060509;--card:#0f0e14;--card2:#17151d;--line:#221f2
 <input type="file" id="fileSub" accept=".srt,.vtt" hidden>
 <input type="file" id="fileImport" accept=".json" hidden>
 <div id="toast"></div>
+<div id="upd"></div>
 
 <script>
 /* =========================================================
@@ -404,6 +425,10 @@ const IMG = {
 const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Animação'],['Comedy','Comédia'],['Crime','Crime'],['Documentary','Documentário'],['Drama','Drama'],['Family','Família'],['Fantasy','Fantasia'],['History','História'],['Horror','Terror'],['Mystery','Mistério'],['Romance','Romance'],['Sci-Fi','Ficção científica'],['Thriller','Suspense'],['War','Guerra'],['Western','Western']];
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
+
+const APP_VERSION = '1.1.0';
+const NATIVE = window.vinovimNative || null;
+const CHANGELOG = ['Os trailers do YouTube já funcionam dentro da app', 'Discord Rich Presence: mostra no teu perfil o que estás a ver (app de PC)', 'Avisos de atualização bonitos dentro da própria app', 'A app passa a atualizar-se sozinha, sem reinstalar'];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -440,7 +465,7 @@ const S = (() => {
   let d = {};
   try { d = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
   const o = Object.assign({ addons: [], library: {}, progress: {}, watched: {}, accent: 0, volume: 1, cats: { order: [], on: {} } }, d);
-  o.prefs = Object.assign({ sortQ: true, autoplay: false, hideTorrent: true, subLang: 'pt', amoled: false }, d.prefs || {});
+  o.prefs = Object.assign({ sortQ: true, autoplay: false, hideTorrent: true, subLang: 'pt', amoled: false, rpc: true, rpcPrivate: false }, d.prefs || {});
   return o;
 })();
 const SUBLANGS = { off: ['Desligadas', []], pt: ['Português (PT)', ['por', 'pt', 'pt-pt', 'portuguese']], br: ['Português (BR)', ['pob', 'pt-br', 'ptbr', 'brazilian']], en: ['Inglês', ['eng', 'en', 'english']], es: ['Espanhol', ['spa', 'es', 'spanish']], fr: ['Francês', ['fre', 'fra', 'fr', 'french']] };
@@ -611,6 +636,10 @@ const VIEWS = {
         <div class="srow"><div class="tx"><b>Esconder torrents</b><small>Não podem ser reproduzidos nesta app</small></div><button class="tg ${S.prefs.hideTorrent ? 'on' : ''}" data-pref="hideTorrent"></button></div>
         <div class="srow"><div class="tx"><b>Idioma das legendas</b><small>Ativadas automaticamente quando um addon as fornece</small></div><select class="sel" id="subLang">${Object.entries(SUBLANGS).map(([k, [n]]) => `<option value="${k}" ${S.prefs.subLang === k ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
       <div class="panel"><h3>Catálogos do início</h3><p class="m">Escolhe que filas aparecem no início e em que ordem. Os catálogos dos addons que instalares também aparecem aqui.</p><div id="catl" style="max-height:420px;overflow:auto">${catListHTML()}</div></div>
+      ${NATIVE && NATIVE.rpc ? `<div class="panel"><h3>Discord</h3><p class="m">Mostra no teu perfil do Discord o que estás a ver no vinovim. O Discord tem de estar aberto neste PC.</p>
+        <div class="srow"><div class="tx"><b>Rich Presence</b><small>Mostrar a tua atividade no Discord</small></div><button class="tg ${S.prefs.rpc ? 'on' : ''}" data-pref="rpc"></button></div>
+        <div class="srow"><div class="tx"><b>Modo discreto</b><small>Mostra só “A ver um filme / uma série”, sem o título</small></div><button class="tg ${S.prefs.rpcPrivate ? 'on' : ''}" data-pref="rpcPrivate"></button></div></div>` : ''}
+      <div class="panel"><h3>Atualizações</h3><p class="m">Estás na versão <b style="color:var(--tx)">${APP_VERSION}</b>${NATIVE ? ` · app ${esc(NATIVE.platform)} ${esc(NATIVE.version)}` : ''}. O vinovim procura novidades sozinho e avisa-te aqui dentro.</p><div class="inrow"><button class="btn gho" id="chkUpd">Procurar atualizações</button><button class="btn gho" id="seeNews">Ver novidades</button></div></div>
       <div class="panel"><h3>Reproduzir diretamente</h3><p class="m">Abre um vídeo do teu computador ou um link direto (MP4, WebM, HLS .m3u8).</p>
         <div class="inrow" style="margin-bottom:10px"><input class="inp" id="dUrl" placeholder="https://…/video.mp4"><button class="btn gho" id="dGo">${I.link}Abrir link</button></div>
         <button class="btn gho" id="dFile">${I.folder}Escolher ficheiro local</button></div>
@@ -620,8 +649,10 @@ const VIEWS = {
       <p class="legal">vinovim · inspirado no Nuvio · metadados de Cinemeta (IMDb). Esta app não aloja nenhum conteúdo.</p>
     </div></div>`;
     app.querySelectorAll('[data-acc]').forEach(b => b.onclick = () => { S.accent = +b.dataset.acc; save(); applyAccent(); app.querySelectorAll('[data-acc]').forEach(x => x.classList.toggle('on', x === b)); });
-    app.querySelectorAll('[data-pref]').forEach(b => b.onclick = () => { const k = b.dataset.pref; S.prefs[k] = !S.prefs[k]; save(); b.classList.toggle('on', S.prefs[k]); applyAccent(); });
+    app.querySelectorAll('[data-pref]').forEach(b => b.onclick = () => { const k = b.dataset.pref; S.prefs[k] = !S.prefs[k]; save(); b.classList.toggle('on', S.prefs[k]); applyAccent(); refreshPresence(); });
     $('#subLang').onchange = e => { S.prefs.subLang = e.target.value; save(); };
+    $('#chkUpd').onclick = () => checkUpdates(true);
+    $('#seeNews').onclick = showNews;
     $('#catl').onclick = e => {
       const tg = e.target.closest('[data-cattg]'), mv = e.target.closest('[data-catmv]');
       if (tg) { const L = homeCats(), c = L.find(x => x.key === tg.dataset.cattg); S.cats.on[c.key] = !c.on; }
@@ -752,14 +783,14 @@ async function openDetail(type, id) {
   el.innerHTML = detailShell(pre, true);
   try {
     const m = await getMeta(type, id);
-    D.meta = m;
+    D.meta = m; presenceDetail(m);
     const prog = S.progress[m.id];
     const seasons = seasonList(m);
     D.season = prog && prog.season != null ? prog.season : (seasons.find(s => s > 0) ?? seasons[0]);
     if (el.classList.contains('open')) { el.innerHTML = detailShell(m, false); loadSimilar(m); }
   } catch (e) { el.innerHTML = `<div class="dwrap"><div class="dtop"><button class="btn gho ico" data-close-detail>${I.back}</button></div>${offlineHTML()}</div>`; }
 }
-function closeDetail() { $('#detail').classList.remove('open'); document.body.style.overflow = ''; D.meta = null; if (location.hash.slice(1) === 'home') VIEWS.home().catch(()=>{}); }
+function closeDetail() { $('#detail').classList.remove('open'); document.body.style.overflow = ''; D.meta = null; presenceView(CUR_VIEW); if (location.hash.slice(1) === 'home') VIEWS.home().catch(()=>{}); }
 async function loadSimilar(m) {
   const g = (m.genres || [])[0]; if (!g || !cinemeta()) return;
   try {
@@ -871,7 +902,9 @@ function play(stream, ctx) {
   teardown();
   if (stream.ytId) {
     V.style.display = 'none'; $('#pBot').style.visibility = 'hidden'; YT.style.display = 'block';
-    YT.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(stream.ytId)}?autoplay=1&rel=0&modestbranding=1" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>`;
+    if (location.protocol === 'file:' && !NATIVE) { window.open('https://www.youtube.com/watch?v=' + encodeURIComponent(stream.ytId), '_blank', 'noopener'); closePlayer(); return; }
+    const org = /^https?:$/.test(location.protocol) ? '&origin=' + encodeURIComponent(location.origin) : '';
+    YT.innerHTML = `<iframe src="https://www.youtube.com/embed/${encodeURIComponent(stream.ytId)}?autoplay=1&rel=0&playsinline=1${org}" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
     $('#pMid').innerHTML = `<a class="btn sm gho" style="pointer-events:auto;position:absolute;right:28px;top:26px" href="https://www.youtube.com/watch?v=${encodeURIComponent(stream.ytId)}" target="_blank" rel="noopener">Abrir no YouTube</a>`;
     return;
   }
@@ -901,7 +934,7 @@ function teardown() {
   V.pause(); V.removeAttribute('src'); [...V.querySelectorAll('track')].forEach(t => t.remove()); V.load();
   YT.innerHTML = ''; subs = [];
 }
-function closePlayer() { saveProgress(true); teardown(); P.classList.remove('open'); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); if (!$('#detail').classList.contains('open')) document.body.style.overflow = ''; PC = null; if ($('#detail').classList.contains('open') && D.meta) rerenderDetail(); else if (location.hash.slice(1) === 'home' || !location.hash) route(); }
+function closePlayer() { saveProgress(true); teardown(); P.classList.remove('open'); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); if (!$('#detail').classList.contains('open')) document.body.style.overflow = ''; PC = null; restorePresence(); if ($('#detail').classList.contains('open') && D.meta) rerenderDetail(); else if (location.hash.slice(1) === 'home' || !location.hash) route(); }
 function perr(msg) { $('#pMid').innerHTML = ''; $('#pErrMsg').textContent = msg; $('#pErr').classList.add('show'); }
 const loadScript = src => new Promise((ok, no) => { if ([...document.scripts].some(s => s.src === src)) return ok(); const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
 
@@ -912,8 +945,8 @@ V.addEventListener('error', () => {
   perr('O browser não conseguiu abrir esta fonte. Pode ser um formato não suportado (ex.: MKV com HEVC/AC3) ou um link expirado.');
 });
 V.addEventListener('waiting', () => $('#pMid').innerHTML = '<span class="spin"></span>');
-V.addEventListener('playing', () => { $('#pMid').innerHTML = ''; syncPlay(); });
-V.addEventListener('pause', () => { syncPlay(); poke(); saveProgress(true); });
+V.addEventListener('playing', () => { $('#pMid').innerHTML = ''; syncPlay(); presencePlay(); });
+V.addEventListener('pause', () => { syncPlay(); poke(); saveProgress(true); presencePlay(); });
 V.addEventListener('play', syncPlay);
 V.addEventListener('timeupdate', () => {
   const d = V.duration || 0, t = V.currentTime;
@@ -1093,6 +1126,80 @@ document.addEventListener('keydown', e => {
 });
 window.addEventListener('scroll', () => { const tb = document.querySelector('.home .topbar'); if (tb) tb.classList.toggle('solid', scrollY > 300); }, { passive: true });
 
+/* ---------- Discord Rich Presence (app de PC) ---------- */
+let CUR_VIEW = 'home', lastPres = '';
+const SESSION_START = Date.now();
+const VIEW_TXT = { home: 'No menu principal', movies: 'A explorar filmes', series: 'A explorar séries', search: 'A pesquisar', library: 'Na biblioteca', addons: 'A gerir addons', settings: 'Nas definições' };
+function presence(p) {
+  if (!NATIVE || !NATIVE.rpc) return;
+  if (!S.prefs.rpc) { if (lastPres !== 'off') { NATIVE.rpc(null); lastPres = 'off'; } return; }
+  const k = JSON.stringify(p); if (k === lastPres) return; lastPres = k; NATIVE.rpc(p);
+}
+const imdbBtn = m => m && /^tt\d+$/.test(m.id) && !S.prefs.rpcPrivate ? [{ label: 'Ver no IMDb', url: 'https://www.imdb.com/title/' + m.id + '/' }] : undefined;
+function presenceView(name) { presence({ details: 'A explorar o vinovim', state: VIEW_TXT[name] || VIEW_TXT.home, start: SESSION_START }); }
+function presenceDetail(m) {
+  if (S.prefs.rpcPrivate) return presence({ details: 'A escolher o que ver', state: 'vinovim', start: SESSION_START });
+  presence({ details: m.name, state: m.type === 'series' ? 'A ver os detalhes da série' : 'A ver os detalhes do filme', image: m.poster, imageText: m.name, start: SESSION_START, buttons: imdbBtn(m) });
+}
+function presencePlay() {
+  if (!PC || !PC.meta || PC.stream.ytId) return;
+  const m = PC.meta, v = PC.video, paused = V.paused, priv = S.prefs.rpcPrivate;
+  const ep = v ? `${epLabel(v)}${v.name || v.title ? ' · ' + (v.name || v.title) : ''}` : (m.releaseInfo ? 'Filme · ' + m.releaseInfo : 'Filme');
+  const dur = V.duration && isFinite(V.duration) ? V.duration : 0;
+  presence({
+    details: priv ? (m.type === 'series' ? 'A ver uma série' : 'A ver um filme') : m.name,
+    state: paused ? 'Em pausa' + (priv ? '' : ' · ' + ep) : (priv ? 'vinovim' : ep),
+    image: priv ? undefined : m.poster, imageText: priv ? undefined : m.name,
+    start: paused ? undefined : Date.now() - Math.floor(V.currentTime * 1000),
+    end: paused || !dur ? undefined : Date.now() + Math.floor((dur - V.currentTime) * 1000),
+    buttons: imdbBtn(m)
+  });
+}
+function restorePresence() { if (D.meta && $('#detail').classList.contains('open')) presenceDetail(D.meta); else presenceView(CUR_VIEW); }
+function refreshPresence() { lastPres = ''; if (PC) presencePlay(); else restorePresence(); }
+V.addEventListener('seeked', presencePlay);
+
+/* ---------- atualizações ---------- */
+const cmpVer = (a, b) => { const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0) ? 1 : -1; return 0; };
+const VERSION_URL = /^https?:$/.test(location.protocol) ? 'version.json' : (NATIVE && NATIVE.remote ? NATIVE.remote + '/version.json' : null);
+function showUpdate(o) {
+  const el = $('#upd');
+  el.innerHTML = `<div class="ucard"><div class="uglow"></div><div class="uhead">${LOGO}<h2>${esc(o.title)}</h2><span class="uver">${o.from ? esc(o.from) + ' → ' : ''}<b>v${esc(o.version)}</b></span></div>
+    <ul class="ulist">${(o.notes || []).map(n => `<li><i>✓</i><span>${esc(n)}</span></li>`).join('')}</ul>
+    <div class="uprog" id="uprog"><b></b></div>
+    <div class="ubtns">${o.later ? `<button class="btn gho" data-uclose>${esc(o.later)}</button>` : ''}<button class="btn acc" id="ugo">${esc(o.go)}</button></div></div>`;
+  el.classList.add('open');
+  el.onclick = e => { if (e.target === el && o.later) el.classList.remove('open'); };
+  el.querySelectorAll('[data-uclose]').forEach(b => b.onclick = () => el.classList.remove('open'));
+  $('#ugo').onclick = () => { if (o.action) o.action(); else el.classList.remove('open'); };
+}
+async function checkUpdates(manual) {
+  if (!VERSION_URL) { if (manual) toast('Sem servidor de atualizações nesta versão'); return; }
+  try {
+    const v = await fetch(VERSION_URL + '?t=' + Date.now(), { cache: 'no-store' }).then(r => r.json());
+    if (cmpVer(v.version, APP_VERSION) > 0) {
+      return showUpdate({ title: 'Nova atualização disponível', from: 'v' + APP_VERSION, version: v.version, notes: v.notes, later: 'Mais tarde', go: 'Atualizar agora', action: async () => {
+        $('#uprog').style.display = 'block'; $('#ugo').disabled = true; $('#ugo').textContent = 'A atualizar…';
+        try { const r = await navigator.serviceWorker?.getRegistration(); await r?.update(); } catch (e) {}
+        try { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } catch (e) {}
+        setTimeout(() => location.reload(), 700);
+      } });
+    }
+    if (NATIVE && v.native && v.native.min && cmpVer(v.native.min, NATIVE.version) > 0) {
+      const url = v.native.download;
+      return showUpdate({ title: 'Nova versão da app', from: 'v' + NATIVE.version, version: v.native.min, notes: v.native.notes || ['Esta atualização precisa de reinstalar a app.'], later: 'Mais tarde', go: url ? 'Descarregar' : 'Entendido', action: () => { if (url) window.open(url, '_blank', 'noopener'); $('#upd').classList.remove('open'); } });
+    }
+    if (manual) toast('Já tens a versão mais recente (' + APP_VERSION + ')');
+  } catch (e) { if (manual) toast('Não foi possível verificar atualizações'); }
+}
+function showNews() { showUpdate({ title: 'Novidades do vinovim', version: APP_VERSION, notes: CHANGELOG, go: 'Vamos lá!' }); }
+function afterBoot() {
+  if (S.seenVersion !== APP_VERSION) { setTimeout(showNews, 1200); S.seenVersion = APP_VERSION; save(); }
+  setTimeout(() => checkUpdates(false), 5000);
+  setInterval(() => checkUpdates(false), 30 * 60 * 1000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkUpdates(false); });
+}
+
 /* ---------- router ---------- */
 function route() {
   const v = location.hash.slice(1) || 'home';
@@ -1100,6 +1207,7 @@ function route() {
   document.querySelectorAll('.nv').forEach(a => a.classList.toggle('on', a.dataset.v === name));
   if ($('#detail').classList.contains('open')) { $('#detail').classList.remove('open'); document.body.style.overflow = ''; }
   closeDrawer(); clearInterval(heroTimer); scrollTo(0, 0);
+  CUR_VIEW = name; presenceView(name);
   const r = VIEWS[name]();
   if (name === 'movies' && VIEWS._pickG) { const g = VIEWS._pickG; VIEWS._pickG = null; setTimeout(() => document.querySelector(`[data-g="${g}"]`)?.click(), 0); }
   if (r && r.catch) r.catch(err => { console.error(err); app.innerHTML = `<div class="view">${topbar('')}<div class="pad">${offlineHTML()}</div></div>`; });
@@ -1109,7 +1217,7 @@ window.addEventListener('hashchange', route);
 async function boot() {
   applyAccent();
   app.innerHTML = `<div class="view" style="display:grid;place-items:center;min-height:100vh"><span class="spin" style="width:40px;height:40px;border-width:4px"></span></div>`;
-  try { await loadAddons(); route(); }
+  try { await loadAddons(); route(); afterBoot(); }
   catch (e) { app.innerHTML = `<div class="view">${topbar('')}<div class="pad">${offlineHTML()}</div></div>`; }
 }
 boot();

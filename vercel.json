@@ -1,0 +1,10 @@
+{
+  "installCommand": "echo sem-dependencias",
+  "buildCommand": "mkdir -p public && cp index.html sw.js manifest.webmanifest icon.svg version.json public/",
+  "outputDirectory": "public",
+  "headers": [
+    { "source": "/version.json", "headers": [{ "key": "Cache-Control", "value": "no-store" }] },
+    { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    { "source": "/index.html", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
+  ]
+}

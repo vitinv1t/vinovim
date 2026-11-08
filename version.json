@@ -1,0 +1,11 @@
+{
+  "version": "1.1.0",
+  "date": "2026-11-08",
+  "notes": [
+    "Os trailers do YouTube já funcionam dentro da app",
+    "Discord Rich Presence: mostra no teu perfil o que estás a ver (app de PC)",
+    "Avisos de atualização bonitos dentro da própria app",
+    "A app passa a atualizar-se sozinha, sem reinstalar"
+  ],
+  "native": { "min": "1.1.0", "notes": ["Esta atualização precisa de reinstalar a app."], "download": "" }
+}

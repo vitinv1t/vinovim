@@ -2,7 +2,15 @@
   "appId": "app.vinovim",
   "appName": "vinovim",
   "webDir": "www",
-  "server": { "androidScheme": "https" },
-  "android": { "allowMixedContent": true, "backgroundColor": "#09080d" },
-  "ios": { "backgroundColor": "#09080d", "contentInset": "never" }
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#09080d"
+  },
+  "ios": {
+    "backgroundColor": "#09080d",
+    "contentInset": "never"
+  }
 }
