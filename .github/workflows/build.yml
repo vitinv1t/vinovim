@@ -26,7 +26,7 @@ jobs:
         run: |
           pip install pillow
           mkdir -p www electron
-          cp index.html extra.js sw.js manifest.webmanifest icon.svg version.json www/
+          cp index.html extra.js extra2.js sw.js manifest.webmanifest icon.svg version.json www/
           cp main.js preload.js remote.json electron/
           python make_icons.py
       - run: npm install
@@ -55,17 +55,24 @@ jobs:
         run: |
           pip install pillow
           mkdir -p www electron
-          cp index.html extra.js sw.js manifest.webmanifest icon.svg version.json www/
+          cp index.html extra.js extra2.js sw.js manifest.webmanifest icon.svg version.json www/
           cp main.js preload.js remote.json electron/
           python make_icons.py
       - run: npm install
       - name: Ligar a app Android ao site (atualiza-se sozinha)
         run: node -e "const fs=require('fs');const c=require('./capacitor.config.json');const r=require('./remote.json');if(r.url){c.server=Object.assign({},c.server,{url:r.url,cleartext:false})}fs.writeFileSync('capacitor.config.json',JSON.stringify(c,null,2))"
+      - name: Plugins nativos (widget, abrir links)
+        run: npm install --no-save @capacitor/preferences@^6 @capacitor/app@^6
+      - name: Plugin de voz (opcional)
+        run: npm install --no-save @capacitor-community/speech-recognition@^6
+        continue-on-error: true
       - run: npx cap add android
       - name: Icone e ecra de arranque
         run: npx --yes @capacitor/assets generate --android --iconBackgroundColor '#09080d' --splashBackgroundColor '#09080d'
         continue-on-error: true
       - run: npx cap sync android
+      - name: Widget Continuar a ver e microfone
+        run: python android_widget.py
       - name: Suporte para Android TV (comando e launcher da TV)
         run: |
           M=android/app/src/main/AndroidManifest.xml
@@ -104,7 +111,7 @@ jobs:
           pip install pillow
           python make_icons.py
           mkdir -p site/public/downloads
-          cp index.html extra.js sw.js manifest.webmanifest icon.svg version.json download.html site/public/
+          cp index.html extra.js extra2.js sw.js manifest.webmanifest icon.svg version.json download.html site/public/
           mkdir -p site/api && cp api-account.js site/api/account.js && cp site-package.json site/package.json
           cp -r www/icons site/public/icons
           cp "$(ls artifacts/vinovim-windows/*.exe | head -n 1)" site/public/downloads/vinovim-setup.exe
