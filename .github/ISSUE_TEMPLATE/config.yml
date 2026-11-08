@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📥 Descarregar o vinovim
+    url: https://vinovim.vercel.app/download
+    about: Instalador para Windows e app para Android.

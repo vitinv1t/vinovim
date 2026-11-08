@@ -1,0 +1,24 @@
+# dependências
+node_modules/
+
+# pastas geradas na compilação
+www/
+electron/
+dist/
+android/
+ios/
+assets/
+site/
+artifacts/
+
+# sistema e editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+
+# segredos
+.env
+.env.*
+.vercel/

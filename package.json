@@ -6,7 +6,7 @@
   "author": "vinovim",
   "private": true,
   "scripts": {
-    "web": "npx serve www",
+    "web": "npx serve app",
     "start": "electron .",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac",
