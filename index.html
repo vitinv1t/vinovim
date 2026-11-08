@@ -455,6 +455,8 @@ html.tv .hitem:focus{background:var(--card)}
   .ptop,.pbot{padding-left:14px;padding-right:14px}
 }
 </style>
+<style id="vvgate">html.vvgate,html.vvgate body{background:#0a0a0f}html.vvgate body>*:not(#vvIntro):not(#profiles):not(.xmodal):not(#toast){visibility:hidden!important}</style>
+<script>(function(){try{var h=location.hash.slice(1);if(!/^(comando|colab|lista)=/.test(h)&&!sessionStorage.getItem('vv_prof'))document.documentElement.classList.add('vvgate')}catch(e){}})();</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--ac)"/><stop offset="1" stop-color="var(--ac2)"/></linearGradient></defs></svg>
@@ -529,9 +531,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.7.1';
+const APP_VERSION = '1.7.2';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ["“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)", "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores", "Abertura animada com o “ta-dum” do vinovim", "Trailer a tocar no destaque do início e pré-visualização ao passar o rato pelos cartões", "“% para ti”: quanto cada título combina contigo", "Filas “Porque viste…”, Top 10 de filmes e séries e filas para o teu momento do dia", "“Continuar a ver” com a imagem da cena onde paraste", "No fim de um filme, 3 sugestões parecidas com contagem", "Novo separador “Novidades” com as estreias e o botão “Avisa-me”"];
+const CHANGELOG = ["Ao abrir: primeiro a logo, depois “Quem está a ver?” com os teus perfis (sem nada a aparecer antes)", "“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)", "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores", "Abertura animada com o “ta-dum” do vinovim", "Trailer a tocar no destaque do início e pré-visualização ao passar o rato pelos cartões", "“% para ti”: quanto cada título combina contigo", "Filas “Porque viste…”, Top 10 de filmes e séries e filas para o teu momento do dia", "“Continuar a ver” com a imagem da cena onde paraste", "No fim de um filme, 3 sugestões parecidas com contagem", "Novo separador “Novidades” com as estreias e o botão “Avisa-me”"];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1333,7 +1335,7 @@ document.addEventListener('click', async e => {
   const pf = t.closest('[data-prof]'); if (pf) { if ($('#profiles').dataset.manage && $('#profiles').classList.contains('open')) editProfile(pf.dataset.prof); else switchProfile(pf.dataset.prof); return; }
   if (t.closest('[data-prof-add]')) return editProfile(null);
   if (t.closest('[data-prof-manage]')) return showProfiles(true);
-  if (t.closest('[data-prof-done]')) { $('#profiles').classList.remove('open'); route(); return; }
+  if (t.closest('[data-prof-done]')) { if (document.documentElement.classList.contains('vvgate')) return showProfiles(false); $('#profiles').classList.remove('open'); route(); return; }
   if (t.closest('#profBtn')) return showProfiles(false);
   const ps = t.closest('[data-person]'); if (ps) { VIEWS._pendingQ = ps.dataset.person; if (location.hash === '#search') route(); else location.hash = 'search'; return; }
   const hd = t.closest('[data-hdel]'); if (hd) { e.stopPropagation(); (S.searchHistory || []).splice(+hd.dataset.hdel, 1); save(); showSearchHints(); return; }
@@ -1395,7 +1397,7 @@ document.addEventListener('keydown', e => {
     else if (k === 'escape' && !document.fullscreenElement) uiBack();
     poke(); return;
   }
-  if (e.key === 'Escape' && $('#profiles').classList.contains('open')) { $('#profiles').classList.remove('open'); return; }
+  if (e.key === 'Escape' && $('#profiles').classList.contains('open')) { if (document.documentElement.classList.contains('vvgate')) { if ($('#profiles').dataset.manage) showProfiles(false); return; } $('#profiles').classList.remove('open'); return; }
   if (e.key === 'Escape' && $('#upd').classList.contains('open')) { $('#upd').classList.remove('open'); return; }
   const dirs = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' };
   if (dirs[e.key] && document.documentElement.classList.contains('tv') && e.target.tagName !== 'SELECT' && !(e.target.tagName === 'INPUT' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight'))) { e.preventDefault(); moveFocus(dirs[e.key]); return; }
@@ -1474,7 +1476,7 @@ async function checkUpdates(manual) {
 function showNews() { showUpdate({ title: 'Novidades do vinovim', version: APP_VERSION, notes: CHANGELOG, go: 'Vamos lá!' }); }
 function afterBoot() {
   updateProfBtn(); applySubStyle();
-  if (S.profiles.length > 1) showProfiles(false);
+  if (document.documentElement.classList.contains('vvgate') && !$('#profiles').classList.contains('open')) showProfiles(false);
   if (document.documentElement.classList.contains('tv')) setTimeout(() => { if (document.activeElement === document.body) moveFocus('down'); }, 900);
   if (S.seenVersion !== APP_VERSION) { setTimeout(showNews, 1200); S.seenVersion = APP_VERSION; save(); }
   setTimeout(() => checkUpdates(false), 5000);
@@ -1489,7 +1491,7 @@ function updateProfBtn() { const b = $('#profBtn'); if (b) b.innerHTML = avatar(
 function switchProfile(id) {
   if (!S.pdata[id]) return;
   S.activeProfile = id; save(); updateProfBtn(); $('#profiles').classList.remove('open');
-  toast('Olá, ' + curProfile().name + '!'); route();
+  toast('Olá, ' + curProfile().name + '!'); if (window.__vvReady !== false) route();
 }
 function showProfiles(manage) {
   const el = $('#profiles');
@@ -1578,10 +1580,25 @@ function route() {
 }
 window.addEventListener('hashchange', route);
 
+function gateProfiles() {
+  const root = document.documentElement, pr = $('#profiles');
+  const ungate = () => { root.classList.remove('vvgate'); try { sessionStorage.setItem('vv_prof', '1'); } catch (e) {} };
+  const sw = window.switchProfile;
+  window.switchProfile = function (id) {
+    if (!root.classList.contains('vvgate')) return sw.apply(this, arguments);
+    const p = S.profiles.find(x => x.id === id);
+    if (p && p.pin && id === S.activeProfile) { S.pdata.__g = S.pdata[id]; S.activeProfile = '__g'; try { return sw.apply(this, arguments); } finally { if (S.activeProfile === '__g') S.activeProfile = id; delete S.pdata.__g; } }
+    return sw.apply(this, arguments);
+  };
+  new MutationObserver(() => { if (root.classList.contains('vvgate') && !pr.classList.contains('open')) ungate(); }).observe(pr, { attributes: true, attributeFilter: ['class'] });
+  showProfiles(false);
+}
 async function boot() {
   applyAccent();
+  window.__vvReady = false;
+  if (document.documentElement.classList.contains('vvgate')) gateProfiles();
   app.innerHTML = `<div class="view" style="display:grid;place-items:center;min-height:100vh"><span class="spin" style="width:40px;height:40px;border-width:4px"></span></div>`;
-  try { await loadAddons(); route(); afterBoot(); }
+  try { await loadAddons(); window.__vvReady = true; route(); afterBoot(); }
   catch (e) { app.innerHTML = `<div class="view">${topbar('')}<div class="pad">${offlineHTML()}</div></div>`; }
 }
 document.addEventListener('DOMContentLoaded', boot);
