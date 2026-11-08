@@ -529,9 +529,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.0';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ['Perfis: cada pessoa com a sua lista, progresso e histórico', 'Elenco com fotos e avaliações na página de cada título', 'Filtros por ano, avaliação e ordenação nos Filmes e nas Séries', 'Legendas: tamanho, cor, fundo, sincronização e arrastar ficheiros', 'Modo TV com navegação pelo comando (Android TV)'];
+const CHANGELOG = ['Conta vinovim: a tua lista e o teu progresso iguais em todos os dispositivos', 'Calendário de estreias e aviso de novos episódios', 'Saltar a introdução e o resumo dos episódios', 'Estatísticas e o teu ano no vinovim', 'Ver em conjunto com amigos, sincronizado e com chat', 'Listas personalizadas que podes partilhar por link', 'Recomendações para ti, Chromecast no Chrome e mais idiomas'];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1562,8 +1562,9 @@ async function boot() {
   try { await loadAddons(); route(); afterBoot(); }
   catch (e) { app.innerHTML = `<div class="view">${topbar('')}<div class="pad">${offlineHTML()}</div></div>`; }
 }
-boot();
+document.addEventListener('DOMContentLoaded', boot);
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
+<script src="extra.js"></script>
 </body>
 </html>

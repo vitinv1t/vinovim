@@ -1,12 +1,14 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "date": "2026-11-08",
   "notes": [
-    "Perfis: cada pessoa com a sua lista, progresso e histórico",
-    "Elenco com fotos e avaliações na página de cada título",
-    "Filtros por ano, avaliação e ordenação nos Filmes e nas Séries",
-    "Legendas: tamanho, cor, fundo, sincronização e arrastar ficheiros",
-    "Modo TV com navegação pelo comando (Android TV)"
+    "Conta vinovim: lista e progresso iguais em todos os dispositivos",
+    "Calendário de estreias e aviso de novos episódios",
+    "Saltar a introdução e o resumo dos episódios",
+    "Estatísticas e o teu ano no vinovim",
+    "Ver em conjunto com amigos, com chat",
+    "Listas personalizadas partilháveis",
+    "Recomendações, Chromecast (Chrome) e novos idiomas"
   ],
   "native": {
     "min": "1.1.0",
