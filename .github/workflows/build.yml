@@ -26,7 +26,7 @@ jobs:
         run: |
           pip install pillow
           mkdir -p www electron
-          cp index.html extra.js extra2.js extra3.js extra4.js sw.js manifest.webmanifest icon.svg version.json www/
+          cp index.html extra.js extra2.js extra3.js extra4.js extra5.js extra6.js sw.js manifest.webmanifest icon.svg version.json www/
           cp main.js preload.js remote.json electron/
           python make_icons.py
       - run: npm install
@@ -55,7 +55,7 @@ jobs:
         run: |
           pip install pillow
           mkdir -p www electron
-          cp index.html extra.js extra2.js extra3.js extra4.js sw.js manifest.webmanifest icon.svg version.json www/
+          cp index.html extra.js extra2.js extra3.js extra4.js extra5.js extra6.js sw.js manifest.webmanifest icon.svg version.json www/
           cp main.js preload.js remote.json electron/
           python make_icons.py
       - run: npm install
@@ -111,7 +111,7 @@ jobs:
           pip install pillow
           python make_icons.py
           mkdir -p site/public/downloads
-          cp index.html extra.js extra2.js extra3.js extra4.js sw.js manifest.webmanifest icon.svg version.json download.html site/public/
+          cp index.html extra.js extra2.js extra3.js extra4.js extra5.js extra6.js sw.js manifest.webmanifest icon.svg version.json download.html site/public/
           mkdir -p site/api && cp api-account.js site/api/account.js && cp api-lists.js site/api/lists.js && cp site-package.json site/package.json
           cp -r www/icons site/public/icons
           cp "$(ls artifacts/vinovim-windows/*.exe | head -n 1)" site/public/downloads/vinovim-setup.exe
