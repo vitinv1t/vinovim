@@ -536,9 +536,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.7.7';
+const APP_VERSION = '1.7.8';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ["Ecrã de entrada depois da abertura: entra com Google ou com email, ou continua sem conta", "Janela de novidades mais compacta, no PC e no telemóvel"];
+const CHANGELOG = ["Atualizações da app dentro da própria app, no Windows e no Android"];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1474,7 +1474,28 @@ async function checkUpdates(manual) {
     }
     if (NATIVE && v.native && v.native.min && cmpVer(v.native.min, NATIVE.version) > 0) {
       const url = v.native.download;
+      if (NATIVE.update && NATIVE.platform === 'Windows') {
+        const exe = (NATIVE.remote || location.origin) + '/downloads/vinovim-setup.exe';
+        return showUpdate({ title: 'Nova versão da app', from: 'v' + NATIVE.version, version: v.native.min, notes: v.native.notes || [], later: 'Mais tarde', go: 'Atualizar agora', action: async () => {
+          const g = $('#ugo'), pr = $('#uprog'), bar = pr.querySelector('b');
+          g.disabled = true; g.textContent = 'A descarregar…'; pr.style.display = 'block'; bar.style.animation = 'none'; bar.style.width = '0%';
+          NATIVE.onUpdateProgress && NATIVE.onUpdateProgress(p => { bar.style.width = Math.round(p * 100) + '%'; g.textContent = p >= 1 ? 'A instalar… o Vinovim volta a abrir sozinho' : 'A descarregar… ' + Math.round(p * 100) + '%'; });
+          try { await NATIVE.update(exe); }
+          catch (e) { g.disabled = false; g.textContent = 'Descarregar no site'; pr.style.display = 'none'; toast('Não foi possível atualizar aqui. Abre o site para descarregar.'); g.onclick = () => { if (url) window.open(url, '_blank', 'noopener'); $('#upd').classList.remove('open'); }; }
+        } });
+      }
       return showUpdate({ title: 'Nova versão da app', from: 'v' + NATIVE.version, version: v.native.min, notes: v.native.notes || ['Esta atualização precisa de reinstalar a app.'], later: 'Mais tarde', go: url ? 'Descarregar' : 'Entendido', action: () => { if (url) window.open(url, '_blank', 'noopener'); $('#upd').classList.remove('open'); } });
+    }
+    const CAPP = !NATIVE && window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform() ? window.Capacitor.Plugins : null;
+    if (CAPP && CAPP.VinovimUpdate && CAPP.App && v.native && v.native.min) {
+      let av = '0'; try { av = (await CAPP.App.getInfo()).version; } catch (e) {}
+      if (cmpVer(v.native.min, av) > 0) {
+        return showUpdate({ title: 'Nova versão da app', from: 'v' + av, version: v.native.min, notes: v.native.notes || [], later: 'Mais tarde', go: 'Atualizar agora', action: async () => {
+          const g = $('#ugo'); g.disabled = true; g.textContent = 'A descarregar…'; $('#uprog').style.display = 'block';
+          try { await CAPP.VinovimUpdate.install({ url: location.origin + '/downloads/vinovim.apk' }); g.textContent = 'Quando acabar, carrega em Instalar'; toast('A descarregar a nova versão: vê a notificação'); }
+          catch (e) { g.disabled = false; $('#uprog').style.display = 'none'; if (String(e && e.message || e).includes('PERMISSAO')) { g.textContent = 'Tentar outra vez'; toast('Autoriza o Vinovim a instalar apps e carrega outra vez em Atualizar'); } else { g.textContent = 'Atualizar agora'; toast('Não foi possível descarregar a atualização'); } }
+        } });
+      }
     }
     if (manual) toast('Já tens a versão mais recente (' + APP_VERSION + ')');
   } catch (e) { if (manual) toast('Não foi possível verificar atualizações'); }
