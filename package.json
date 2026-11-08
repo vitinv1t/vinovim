@@ -1,0 +1,36 @@
+{
+  "name": "vinovim",
+  "version": "1.0.0",
+  "description": "vinovim — hub de filmes e séries compatível com addons Stremio",
+  "main": "electron/main.js",
+  "author": "vinovim",
+  "private": true,
+  "scripts": {
+    "web": "npx serve www",
+    "start": "electron .",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux",
+    "android": "npx cap add android && npx cap sync android && npx cap open android",
+    "android:sync": "npx cap sync android",
+    "ios": "npx cap add ios && npx cap sync ios && npx cap open ios"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/ios": "^6.1.2",
+    "@capacitor/cli": "^6.1.2",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "app.vinovim",
+    "productName": "vinovim",
+    "files": ["electron/**", "www/**"],
+    "directories": { "output": "dist" },
+    "win": { "target": "nsis", "icon": "www/icons/icon-512.png" },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true },
+    "mac": { "target": "dmg", "icon": "www/icons/icon-512.png", "category": "public.app-category.entertainment" },
+    "linux": { "target": "AppImage", "icon": "www/icons/icon-512.png", "category": "Video" }
+  }
+}

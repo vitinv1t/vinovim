@@ -1,0 +1,21 @@
+{
+  "name": "vinovim",
+  "short_name": "vinovim",
+  "description": "O teu hub de filmes e séries, compatível com addons Stremio.",
+  "start_url": "./index.html#home",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#09080d",
+  "theme_color": "#09080d",
+  "lang": "pt",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Pesquisar", "url": "./index.html#search" },
+    { "name": "Biblioteca", "url": "./index.html#library" }
+  ]
+}
