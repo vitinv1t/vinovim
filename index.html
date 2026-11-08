@@ -529,9 +529,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.4.0';
+const APP_VERSION = '1.5.0';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ["Capas corrigidas: os títulos sem imagem já aparecem com capa", "Perfil infantil e PIN nos perfis", "Transferir vídeos para ver offline", "Comando no telemóvel e pesquisa por voz", "Novos temas, cor à tua escolha e mini-player", "Conquistas, importar do Letterboxd/Trakt e gestor de addons", "Widget de “Continuar a ver” no Android"];
+const CHANGELOG = ["Barra lateral arrumada: cabe toda em janelas mais pequenas", "Avatares e fotos nos perfis", "Próximo episódio automático com contagem", "Listas partilhadas com amigos, ao vivo", "“Avisa-me” para estreias e notas privadas", "Início diferente para cada perfil e modo “Não sei o que ver”", "Atalhos configuráveis, comandos Xbox/PlayStation, página de ator e cópia de segurança automática"];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1567,5 +1567,6 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigat
 </script>
 <script src="extra.js"></script>
 <script src="extra2.js"></script>
+<script src="extra3.js"></script>
 </body>
 </html>

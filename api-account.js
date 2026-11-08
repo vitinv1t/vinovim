@@ -72,6 +72,20 @@ export default async function handler(req, res) {
       }
       return res.status(405).end();
     }
+    if (a === 'backup') {
+      const uid = await verify((req.headers.authorization || '').replace(/^Bearer\s+/i, ''));
+      if (!uid) return res.status(401).json({ error: 'A sessão expirou. Entra outra vez.' });
+      const path = 'backup/' + uid + '.json';
+      if (req.method === 'GET') return res.json((await readJSON(path)) || { backup: null, updatedAt: 0 });
+      if (req.method === 'PUT' || req.method === 'POST') {
+        const raw = JSON.stringify(body.backup || null);
+        if (raw.length > 2000000) return res.status(413).json({ error: 'Cópia demasiado grande' });
+        const updatedAt = Date.now();
+        await writeJSON(path, { backup: body.backup, updatedAt });
+        return res.json({ updatedAt });
+      }
+      return res.status(405).end();
+    }
     return res.status(404).json({ error: 'Pedido desconhecido' });
   } catch (e) {
     return res.status(500).json({ error: 'Erro no servidor' });
