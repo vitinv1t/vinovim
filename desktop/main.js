@@ -1,5 +1,8 @@
 // vinovim — app de computador (Windows, macOS, Linux)
-const { app, BrowserWindow, shell, Menu, session, ipcMain, nativeImage } = require('electron');
+const { app, BrowserWindow, shell, Menu, session, ipcMain, nativeImage, net } = require('electron');
+const os = require('os');
+const fs = require('fs');
+const { spawn } = require('child_process');
 const path = require('path');
 
 let REMOTE = '';
@@ -56,6 +59,44 @@ function rpcApply(p) {
 ipcMain.on('vinovim:rpc', (e, p) => rpcApply(p));
 ipcMain.on('vinovim:info', e => {
   e.returnValue = { version: app.getVersion(), remote: REMOTE, platform: IS_WIN ? 'Windows' : process.platform === 'darwin' ? 'macOS' : 'Linux' };
+});
+/* ---------- atualizar a app sem ir ao site: descarrega o instalador novo e instala-o sozinho ---------- */
+let updating = false;
+ipcMain.handle('vinovim:update', async (e, url) => {
+  if (!IS_WIN) throw new Error('Só no Windows');
+  if (updating) return false;
+  if (!/^https:\/\/[a-z0-9.-]+\.vercel\.app\/downloads\/[\w.-]+\.exe$/i.test(String(url || ''))) throw new Error('Endereço inválido');
+  updating = true;
+  const file = path.join(os.tmpdir(), 'Vinovim-Setup-' + Date.now() + '.exe');
+  try {
+    await new Promise((resolve, reject) => {
+      const req = net.request(url);
+      req.on('response', res => {
+        if (res.statusCode !== 200) return reject(new Error('Erro ' + res.statusCode));
+        const total = parseInt([].concat(res.headers['content-length'] || 0)[0], 10) || 0;
+        let got = 0, last = 0;
+        const out = fs.createWriteStream(file);
+        res.on('data', c => {
+          out.write(c); got += c.length;
+          const now = Date.now();
+          if (total && win && now - last > 150) { last = now; win.webContents.send('vinovim:update-progress', got / total); }
+        });
+        res.on('end', () => out.end(() => resolve()));
+        res.on('error', reject);
+      });
+      req.on('error', reject);
+      req.end();
+    });
+    if (win) win.webContents.send('vinovim:update-progress', 1);
+    // /S instala sem perguntas; --force-run volta a abrir o Vinovim no fim
+    spawn(file, ['/S', '--force-run'], { detached: true, stdio: 'ignore' }).unref();
+    setTimeout(() => app.quit(), 1200);
+    return true;
+  } catch (err) {
+    updating = false;
+    try { fs.unlinkSync(file); } catch (x) {}
+    throw err;
+  }
 });
 ipcMain.on('vinovim:ready', () => { pageReady = true; if (pendingOpen && win) { win.webContents.send('vinovim:open', pendingOpen); pendingOpen = null; } });
 
