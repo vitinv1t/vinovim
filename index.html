@@ -112,7 +112,7 @@ main{margin-left:var(--side);min-height:100vh;padding-bottom:60px}
 .arr{width:34px;height:34px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--mu);transition:.15s}
 .arr:hover{color:var(--tx);border-color:var(--mu2)}
 .arr svg{width:16px;height:16px}
-.track{display:flex;gap:14px;overflow-x:auto;scroll-behavior:smooth;padding:6px 40px 14px;scrollbar-width:none;scroll-snap-type:x proximity}
+.track{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-y:none;touch-action:pan-x pan-y pinch-zoom;scroll-behavior:smooth;padding:6px 40px 14px;scrollbar-width:none;scroll-snap-type:x proximity}
 .track::-webkit-scrollbar{display:none}
 
 .card{flex:0 0 auto;width:158px;text-align:left;scroll-snap-align:start;border-radius:var(--r);transition:transform .2s ease}
@@ -457,6 +457,7 @@ html.tv .hitem:focus{background:var(--card)}
 </style>
 <style id="vvgate">html.vvgate,html.vvgate body{background:#0a0a0f}html.vvgate body>*:not(#vvIntro):not(#profiles):not(.xmodal):not(#toast){visibility:hidden!important}</style>
 <script>(function(){try{var h=location.hash.slice(1);if(!/^(comando|colab|lista)=/.test(h)&&!sessionStorage.getItem('vv_prof'))document.documentElement.classList.add('vvgate')}catch(e){}})();</script>
+<style>.t10row .track{padding-top:22px}.t10{overflow:hidden}.t10 .n{padding-top:8px}</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--ac)"/><stop offset="1" stop-color="var(--ac2)"/></linearGradient></defs></svg>
@@ -531,9 +532,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.7.2';
+const APP_VERSION = '1.7.3';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ["Ao abrir: primeiro a logo, depois “Quem está a ver?” com os teus perfis (sem nada a aparecer antes)", "“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)", "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores", "Abertura animada com o “ta-dum” do vinovim", "Trailer a tocar no destaque do início e pré-visualização ao passar o rato pelos cartões", "“% para ti”: quanto cada título combina contigo", "Filas “Porque viste…”, Top 10 de filmes e séries e filas para o teu momento do dia", "“Continuar a ver” com a imagem da cena onde paraste", "No fim de um filme, 3 sugestões parecidas com contagem", "Novo separador “Novidades” com as estreias e o botão “Avisa-me”"];
+const CHANGELOG = ["Top 10 e outras filas já não ficam cortadas ao fazer scroll", "Ao abrir: primeiro a logo, depois “Quem está a ver?” com os teus perfis (sem nada a aparecer antes)", "“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)", "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores", "Abertura animada com o “ta-dum” do vinovim", "Trailer a tocar no destaque do início e pré-visualização ao passar o rato pelos cartões", "“% para ti”: quanto cada título combina contigo", "Filas “Porque viste…”, Top 10 de filmes e séries e filas para o teu momento do dia", "“Continuar a ver” com a imagem da cena onde paraste", "No fim de um filme, 3 sugestões parecidas com contagem", "Novo separador “Novidades” com as estreias e o botão “Avisa-me”"];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;

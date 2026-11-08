@@ -1,7 +1,8 @@
 {
-  "version": "1.7.2",
+  "version": "1.7.3",
   "date": "2026-11-08",
   "notes": [
+    "Top 10 e outras filas já não ficam cortadas ao fazer scroll",
     "Ao abrir: primeiro a logo, depois “Quem está a ver?” com os teus perfis (sem nada a aparecer antes)",
     "“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)",
     "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores",
