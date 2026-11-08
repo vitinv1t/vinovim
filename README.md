@@ -5,7 +5,7 @@
 <br>
 
 [![Compilação](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml/badge.svg)](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml)
-![Versão](https://img.shields.io/badge/versão-1.7.6-e0315b?style=flat-square)
+![Versão](https://img.shields.io/badge/versão-1.7.7-e0315b?style=flat-square)
 ![Plataformas](https://img.shields.io/badge/plataformas-Windows%20·%20Android%20·%20TV%20·%20Web-7c5cff?style=flat-square)
 ![Addons](https://img.shields.io/badge/addons-protocolo%20Stremio-f5c26b?style=flat-square)
 ![Idiomas](https://img.shields.io/badge/idiomas-PT%20·%20EN%20·%20ES-2ea043?style=flat-square)
@@ -70,6 +70,7 @@
 <td valign="top">
 
 ### 👤 Pessoal
+- 🔐 Entrar com **Google** ou com email
 - 👨‍👩‍👧 Até 6 perfis com foto, cor e **PIN**
 - 🧒 Perfil infantil (só animação e família)
 - 📌 “A minha lista”, notas e listas partilhadas
@@ -144,7 +145,8 @@ vinovim/
 │       ├── modulo-1.5.js       → avatares, listas partilhadas, notas, atalhos
 │       ├── modulo-1.6.js       → Windows (menu Iniciar / barra de tarefas) e Wrapped
 │       ├── modulo-1.7-netflix.js → abertura, trailers, Top 10, Novidades, % para ti
-│       └── modulo-1.7-visual.js  → menu no topo, menu “Mais”, separadores
+│       ├── modulo-1.7-visual.js  → menu no topo, menu “Mais”, separadores
+│       └── modulo-1.7-login.js   → ecrã de entrada (Google, email ou sem conta)
 ├── 📁 desktop/                 → app de Windows (Electron)
 │   ├── main.js
 │   └── preload.js
@@ -153,6 +155,8 @@ vinovim/
 ├── 📁 server/                  → funções do site no Vercel
 │   ├── 📁 api/
 │   │   ├── account.js          → contas, sincronização e cópias de segurança
+│   │   ├── google.js           → login com Google (configuração e espera)
+│   │   ├── google-callback.js  → volta do Google depois de escolheres a conta
 │   │   └── lists.js            → listas partilhadas
 │   ├── package.json
 │   └── vercel.json

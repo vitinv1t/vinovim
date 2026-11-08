@@ -4,7 +4,11 @@ Todas as mudanças importantes do vinovim, da mais recente para a mais antiga.
 
 ---
 
-## 🔧 1.7.6 — 8 de novembro de 2026
+## 🎉 1.7.7 — 8 de novembro de 2026
+- 🔐 Ecrã de entrada depois da abertura: entra com Google ou com email, ou continua sem conta.
+- 🗒️ Janela de novidades mais compacta, no PC e no telemóvel.
+
+## 🔧 1.7.6
 - 🔤 A app passa a chamar-se **Vinovim**, com maiúscula, no Windows e no Android (é preciso instalar a app nova).
 
 ## 🔧 1.7.5

@@ -1,23 +1,9 @@
 {
-  "version": "1.7.6",
+  "version": "1.7.7",
   "date": "2026-11-08",
   "notes": [
-    "Nome da app com maiúscula: Vinovim (Windows, Android e janela)",
-    "Discord com textos ao estilo da Netflix: “A navegar”, “T1:E3 “Nome do episódio”” e “Em pausa”",
-    "O PIN é pedido sempre que entras num perfil com PIN, mesmo que seja o teu",
-    "A abertura já não deixa ver nada por trás antes da logo",
-    "Avatar do perfil: só foto ou inicial",
-    "Top 10 e outras filas já não ficam cortadas ao fazer scroll",
-    "Ao abrir: primeiro a logo, depois “Quem está a ver?” com os teus perfis (sem nada a aparecer antes)",
-    "“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)",
-    "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores",
-    "Abertura animada com o “ta-dum” do vinovim",
-    "Trailer a tocar no destaque do início e pré-visualização ao passar o rato pelos cartões",
-    "“% para ti”: quanto cada título combina contigo",
-    "Filas “Porque viste…”, Top 10 de filmes e séries e filas para o teu momento do dia",
-    "“Continuar a ver” com a imagem da cena onde paraste",
-    "No fim de um filme, 3 sugestões parecidas com contagem",
-    "Novo separador “Novidades” com as estreias e o botão “Avisa-me”"
+    "Ecrã de entrada depois da abertura: entra com Google ou com email, ou continua sem conta",
+    "Janela de novidades mais compacta, no PC e no telemóvel"
   ],
   "native": {
     "min": "1.3.0",
