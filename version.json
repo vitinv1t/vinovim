@@ -1,7 +1,8 @@
 {
-  "version": "1.7.0",
+  "version": "1.7.1",
   "date": "2026-11-08",
   "notes": [
+    "“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)",
     "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores",
     "Abertura animada com o “ta-dum” do vinovim",
     "Trailer a tocar no destaque do início e pré-visualização ao passar o rato pelos cartões",
