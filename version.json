@@ -1,19 +1,17 @@
 {
-  "version": "1.5.0",
+  "version": "1.6.0",
   "date": "2026-11-08",
   "notes": [
-    "Barra lateral arrumada: cabe toda em janelas mais pequenas",
-    "Avatares e fotos nos perfis",
-    "Próximo episódio automático com contagem",
-    "Listas partilhadas com amigos, ao vivo",
-    "“Avisa-me” para estreias e notas privadas",
-    "Início diferente para cada perfil e modo “Não sei o que ver”",
-    "Atalhos configuráveis, comandos Xbox/PlayStation, página de ator e cópia de segurança automática"
+    "O teu ano no vinovim: resumo animado em cartões, com imagem para partilhar",
+    "Windows: “Continuar a ver” no menu Iniciar e na barra de tarefas",
+    "Windows: reproduzir, pausar e avançar a partir da miniatura da barra de tarefas, com o progresso no ícone"
   ],
   "native": {
-    "min": "1.1.0",
+    "min": "1.2.0",
     "notes": [
-      "Esta atualização precisa de reinstalar a app."
+      "Nova app para Windows: “Continuar a ver” no menu Iniciar e na barra de tarefas",
+      "Controla o vídeo a partir da miniatura da barra de tarefas",
+      "Instala por cima da versão que tens: não perdes nada"
     ],
     "download": "https://vinovim.vercel.app/download"
   }

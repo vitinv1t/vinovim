@@ -1,6 +1,6 @@
 {
   "name": "vinovim",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "vinovim — hub de filmes e séries compatível com addons Stremio",
   "main": "electron/main.js",
   "author": "vinovim",

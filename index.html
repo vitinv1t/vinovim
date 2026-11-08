@@ -529,9 +529,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.5.0';
+const APP_VERSION = '1.6.0';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ["Barra lateral arrumada: cabe toda em janelas mais pequenas", "Avatares e fotos nos perfis", "Próximo episódio automático com contagem", "Listas partilhadas com amigos, ao vivo", "“Avisa-me” para estreias e notas privadas", "Início diferente para cada perfil e modo “Não sei o que ver”", "Atalhos configuráveis, comandos Xbox/PlayStation, página de ator e cópia de segurança automática"];
+const CHANGELOG = ["O teu ano no vinovim: resumo animado em cartões, com imagem para partilhar", "Windows: “Continuar a ver” no menu Iniciar e na barra de tarefas", "Windows: reproduzir, pausar e avançar a partir da miniatura da barra de tarefas, com o progresso no ícone"];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1568,5 +1568,6 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigat
 <script src="extra.js"></script>
 <script src="extra2.js"></script>
 <script src="extra3.js"></script>
+<script src="extra4.js"></script>
 </body>
 </html>
