@@ -535,9 +535,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.7.4';
+const APP_VERSION = '1.7.5';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ["O PIN é pedido sempre que entras num perfil com PIN, mesmo que seja o teu", "A abertura já não deixa ver nada por trás antes da logo", "Avatar do perfil: só foto ou inicial", "Top 10 e outras filas já não ficam cortadas ao fazer scroll", "Ao abrir: primeiro a logo, depois “Quem está a ver?” com os teus perfis (sem nada a aparecer antes)", "“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)", "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores", "Abertura animada com o “ta-dum” do vinovim", "Trailer a tocar no destaque do início e pré-visualização ao passar o rato pelos cartões", "“% para ti”: quanto cada título combina contigo", "Filas “Porque viste…”, Top 10 de filmes e séries e filas para o teu momento do dia", "“Continuar a ver” com a imagem da cena onde paraste", "No fim de um filme, 3 sugestões parecidas com contagem", "Novo separador “Novidades” com as estreias e o botão “Avisa-me”"];
+const CHANGELOG = ["Discord com textos ao estilo da Netflix: “A navegar”, “T1:E3 “Nome do episódio”” e “Em pausa”", "O PIN é pedido sempre que entras num perfil com PIN, mesmo que seja o teu", "A abertura já não deixa ver nada por trás antes da logo", "Avatar do perfil: só foto ou inicial", "Top 10 e outras filas já não ficam cortadas ao fazer scroll", "Ao abrir: primeiro a logo, depois “Quem está a ver?” com os teus perfis (sem nada a aparecer antes)", "“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)", "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores", "Abertura animada com o “ta-dum” do vinovim", "Trailer a tocar no destaque do início e pré-visualização ao passar o rato pelos cartões", "“% para ti”: quanto cada título combina contigo", "Filas “Porque viste…”, Top 10 de filmes e séries e filas para o teu momento do dia", "“Continuar a ver” com a imagem da cena onde paraste", "No fim de um filme, 3 sugestões parecidas com contagem", "Novo separador “Novidades” com as estreias e o botão “Avisa-me”"];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1414,27 +1414,27 @@ window.addEventListener('scroll', () => { const tb = document.querySelector('.ho
 /* ---------- Discord Rich Presence (app de PC) ---------- */
 let CUR_VIEW = 'home', lastPres = '';
 const SESSION_START = Date.now();
-const VIEW_TXT = { home: 'No menu principal', movies: 'A explorar filmes', series: 'A explorar séries', search: 'A pesquisar', library: 'Na biblioteca', addons: 'A gerir addons', settings: 'Nas definições' };
+const VIEW_TXT = { home: 'Início', movies: 'Filmes', series: 'Séries', search: 'Pesquisa', library: 'A minha lista', novidades: 'Novidades', calendar: 'Calendário', stats: 'Estatísticas', downloads: 'Transferências', addons: 'Definições', settings: 'Definições' };
 function presence(p) {
   if (!NATIVE || !NATIVE.rpc) return;
   if (!S.prefs.rpc) { if (lastPres !== 'off') { NATIVE.rpc(null); lastPres = 'off'; } return; }
   const k = JSON.stringify(p); if (k === lastPres) return; lastPres = k; NATIVE.rpc(p);
 }
 const imdbBtn = m => m && /^tt\d+$/.test(m.id) && !S.prefs.rpcPrivate ? [{ label: 'Ver no IMDb', url: 'https://www.imdb.com/title/' + m.id + '/' }] : undefined;
-function presenceView(name) { presence({ details: 'A explorar o vinovim', state: VIEW_TXT[name] || VIEW_TXT.home, start: SESSION_START }); }
+function presenceView(name) { presence({ details: 'A navegar', state: VIEW_TXT[name] || VIEW_TXT.home, start: SESSION_START }); }
 function presenceDetail(m) {
-  if (S.prefs.rpcPrivate) return presence({ details: 'A escolher o que ver', state: 'vinovim', start: SESSION_START });
-  presence({ details: m.name, state: m.type === 'series' ? 'A ver os detalhes da série' : 'A ver os detalhes do filme', image: m.poster, imageText: m.name, start: SESSION_START, buttons: imdbBtn(m) });
+  if (S.prefs.rpcPrivate) return presence({ details: 'A navegar', state: 'A escolher o que ver', start: SESSION_START });
+  presence({ details: m.type === 'series' ? 'A ver detalhes da série' : 'A ver detalhes do filme', state: m.name, image: m.poster, imageText: m.name, start: SESSION_START, buttons: imdbBtn(m) });
 }
 function presencePlay() {
   if (!PC || !PC.meta || PC.stream.ytId) return;
   const m = PC.meta, v = PC.video, paused = V.paused, priv = S.prefs.rpcPrivate;
-  const ep = v ? `${epLabel(v)}${v.name || v.title ? ' · ' + (v.name || v.title) : ''}` : (m.releaseInfo ? 'Filme · ' + m.releaseInfo : 'Filme');
+  const ep = v ? `T${v.season}:E${v.episode}${v.name || v.title ? ' “' + (v.name || v.title) + '”' : ''}` : 'Filme' + (m.releaseInfo ? ' · ' + String(m.releaseInfo).slice(0, 4) : '');
   const dur = V.duration && isFinite(V.duration) ? V.duration : 0;
   presence({
     details: priv ? (m.type === 'series' ? 'A ver uma série' : 'A ver um filme') : m.name,
-    state: paused ? 'Em pausa' + (priv ? '' : ' · ' + ep) : (priv ? 'vinovim' : ep),
-    image: priv ? undefined : m.poster, imageText: priv ? undefined : m.name,
+    state: priv ? (paused ? 'Em pausa' : 'A ver') : (paused ? '⏸ Em pausa · ' + ep : ep),
+    image: priv ? undefined : m.poster, imageText: priv ? undefined : (paused ? 'Em pausa' : 'A ver ' + m.name),
     start: paused ? undefined : Date.now() - Math.floor(V.currentTime * 1000),
     end: paused || !dur ? undefined : Date.now() + Math.floor((dur - V.currentTime) * 1000),
     buttons: imdbBtn(m)
