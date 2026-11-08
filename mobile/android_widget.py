@@ -33,7 +33,7 @@ public class VinovimWidget extends AppWidgetProvider {{
 
     public static void update(Context ctx, AppWidgetManager mgr, int id) {{
         RemoteViews v = new RemoteViews(ctx.getPackageName(), R.layout.widget_vinovim);
-        String title = "Abre o vinovim";
+        String title = "Abre o Vinovim";
         String sub = "Nada a meio por agora";
         try {{
             SharedPreferences sp = ctx.getSharedPreferences("CapacitorStorage", Context.MODE_PRIVATE);
@@ -121,7 +121,7 @@ w(os.path.join(res, 'layout/widget_vinovim.xml'), '''
             android:id="@+id/vv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="vinovim"
+            android:text="Vinovim"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -164,7 +164,7 @@ w(os.path.join(res, 'xml/widget_info.xml'), '''
 m_path = 'android/app/src/main/AndroidManifest.xml'
 m = open(m_path, encoding='utf-8').read()
 if 'VinovimWidget' not in m:
-    m = m.replace('</application>', '''    <receiver android:name=".VinovimWidget" android:exported="false" android:label="vinovim · Continuar a ver">
+    m = m.replace('</application>', '''    <receiver android:name=".VinovimWidget" android:exported="false" android:label="Vinovim · Continuar a ver">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
