@@ -4,7 +4,13 @@ Todas as mudanças importantes do vinovim, da mais recente para a mais antiga.
 
 ---
 
-## 🔧 1.7.4 — 8 de novembro de 2026
+## 🔧 1.7.6 — 8 de novembro de 2026
+- 🔤 A app passa a chamar-se **Vinovim**, com maiúscula, no Windows e no Android (é preciso instalar a app nova).
+
+## 🔧 1.7.5
+- 🎮 Discord com textos ao estilo da Netflix: “A navegar”, “T1:E3 “Nome do episódio”” e “Em pausa”.
+
+## 🔧 1.7.4
 - 🔒 O PIN é pedido sempre que entras num perfil com PIN, mesmo que seja o teu.
 - 🎬 A abertura já não deixa ver nada por trás antes da logo.
 - 🖼️ Avatar do perfil: só foto ou inicial.
