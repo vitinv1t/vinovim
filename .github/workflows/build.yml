@@ -75,6 +75,10 @@ jobs:
       - run: npx cap sync android
       - name: Widget Continuar a ver e microfone
         run: python mobile/android_widget.py
+      - name: Atualizar dentro da app, versão e assinatura
+        env:
+          VINOVIM_ANDROID_KEY: ${{ secrets.VINOVIM_ANDROID_KEY }}
+        run: python mobile/android_update.py
       - name: Suporte para Android TV (comando e launcher da TV)
         run: |
           M=android/app/src/main/AndroidManifest.xml
