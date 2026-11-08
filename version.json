@@ -1,7 +1,10 @@
 {
-  "version": "1.7.3",
+  "version": "1.7.4",
   "date": "2026-11-08",
   "notes": [
+    "O PIN é pedido sempre que entras num perfil com PIN, mesmo que seja o teu",
+    "A abertura já não deixa ver nada por trás antes da logo",
+    "Avatar do perfil: só foto ou inicial",
     "Top 10 e outras filas já não ficam cortadas ao fazer scroll",
     "Ao abrir: primeiro a logo, depois “Quem está a ver?” com os teus perfis (sem nada a aparecer antes)",
     "“Mais bem avaliados” em Filmes e Séries agora ordena mesmo pela nota, do melhor para o pior (também por ano e género)",
