@@ -62,6 +62,14 @@ jobs:
         run: npx --yes @capacitor/assets generate --android --iconBackgroundColor '#09080d' --splashBackgroundColor '#09080d'
         continue-on-error: true
       - run: npx cap sync android
+      - name: Suporte para Android TV (comando e launcher da TV)
+        run: |
+          M=android/app/src/main/AndroidManifest.xml
+          sed -i -E 's#(<category android:name="android.intent.category.LAUNCHER" ?/>)#\1\n                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />#' "$M"
+          sed -i -E 's#<application#<uses-feature android:name="android.software.leanback" android:required="false" />\n    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />\n    <application android:banner="@drawable/tv_banner"#' "$M"
+          mkdir -p android/app/src/main/res/drawable
+          cp assets/tv-banner.png android/app/src/main/res/drawable/tv_banner.png
+          grep -n "LEANBACK\|leanback\|banner" "$M"
       - name: Compilar APK
         working-directory: android
         run: |
