@@ -76,6 +76,18 @@ O site precisa de um **Vercel Blob** privado ligado ao projeto (cria a variável
 |:--|:--:|:--|
 | `BLOB_READ_WRITE_TOKEN` | ✅ | Guardar contas, cópias de segurança e listas partilhadas |
 | `SESSION_SECRET` | ➖ | Assinar as sessões das contas (se não existir, o servidor cria uma e guarda-a no Blob) |
+| `GOOGLE_CLIENT_ID` | ➖ | Login com Google (sem ela, o botão avisa que ainda não está ativo) |
+| `GOOGLE_CLIENT_SECRET` | ➖ | Login com Google |
+
+### 🔐 Ativar o login com Google
+
+1. Em [console.cloud.google.com](https://console.cloud.google.com), cria um projeto e abre **APIs e serviços → Ecrã de consentimento OAuth**. Escolhe **Externo**, põe o nome **Vinovim** e o teu email, e publica.
+2. Em **Credenciais → Criar credenciais → ID de cliente OAuth**, escolhe **Aplicação Web**.
+3. Em **URIs de redirecionamento autorizados**, acrescenta `https://vinovim.vercel.app/api/google-callback`.
+4. Copia o **ID de cliente** e o **Segredo do cliente** para as variáveis `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` do projeto no Vercel e volta a publicar.
+
+O login abre no browser do sistema (no Windows e no Android também) e a app entra sozinha quando terminares.
+
 
 > [!CAUTION]
 > Nunca escrevas tokens ou senhas no código. Usa sempre as variáveis de ambiente do Vercel ou os *secrets* do GitHub.
