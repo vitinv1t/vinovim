@@ -529,9 +529,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.4.0';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ['Conta vinovim: a tua lista e o teu progresso iguais em todos os dispositivos', 'Calendário de estreias e aviso de novos episódios', 'Saltar a introdução e o resumo dos episódios', 'Estatísticas e o teu ano no vinovim', 'Ver em conjunto com amigos, sincronizado e com chat', 'Listas personalizadas que podes partilhar por link', 'Recomendações para ti, Chromecast no Chrome e mais idiomas'];
+const CHANGELOG = ["Capas corrigidas: os títulos sem imagem já aparecem com capa", "Perfil infantil e PIN nos perfis", "Transferir vídeos para ver offline", "Comando no telemóvel e pesquisa por voz", "Novos temas, cor à tua escolha e mini-player", "Conquistas, importar do Letterboxd/Trakt e gestor de addons", "Widget de “Continuar a ver” no Android"];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -654,7 +654,7 @@ function card(it) {
   remember(it);
   const year = (it.releaseInfo || '').toString().slice(0, 9);
   return `<button class="card" data-open="${esc(it.type)}|${esc(it.id)}" title="${esc(it.name)}">
-    <div class="pimg"><img loading="lazy" src="${esc(it.poster || IMG.poster(it.id))}" alt="" onerror="this.parentNode.classList.add('noimg')"><span class="ptitle">${esc(it.name)}</span>${it.imdbRating ? `<span class="badge">★ ${esc(it.imdbRating)}</span>` : ''}</div>
+    <div class="pimg"><img loading="lazy" src="${esc(it.poster || IMG.poster(it.id))}" alt="" onerror="window.vvPoster?vvPoster(this):this.parentNode.classList.add('noimg')"><span class="ptitle">${esc(it.name)}</span>${it.imdbRating ? `<span class="badge">★ ${esc(it.imdbRating)}</span>` : ''}</div>
     <div class="cinfo"><span>${esc(it.name)}</span><small>${esc(year)}${it.type === 'series' ? ' · Série' : ''}</small></div></button>`;
 }
 function wideCard(p) {
@@ -1566,5 +1566,6 @@ document.addEventListener('DOMContentLoaded', boot);
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 <script src="extra.js"></script>
+<script src="extra2.js"></script>
 </body>
 </html>

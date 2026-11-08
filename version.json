@@ -1,14 +1,14 @@
 {
-  "version": "1.3.0",
+  "version": "1.4.0",
   "date": "2026-11-08",
   "notes": [
-    "Conta vinovim: lista e progresso iguais em todos os dispositivos",
-    "Calendário de estreias e aviso de novos episódios",
-    "Saltar a introdução e o resumo dos episódios",
-    "Estatísticas e o teu ano no vinovim",
-    "Ver em conjunto com amigos, com chat",
-    "Listas personalizadas partilháveis",
-    "Recomendações, Chromecast (Chrome) e novos idiomas"
+    "Capas corrigidas nos títulos que apareciam sem imagem",
+    "Perfil infantil e PIN nos perfis",
+    "Transferir vídeos para ver offline",
+    "Comando no telemóvel e pesquisa por voz",
+    "Novos temas, cor à tua escolha e mini-player",
+    "Conquistas, importar do Letterboxd/Trakt e gestor de addons",
+    "Android: widget “Continuar a ver” e voz (instala o .apk novo do site)"
   ],
   "native": {
     "min": "1.1.0",
