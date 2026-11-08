@@ -327,6 +327,23 @@ html.amoled{--bg:#000;--bg2:#060509;--card:#0f0e14;--card2:#17151d;--line:#221f2
 .uprog b{display:block;height:100%;width:30%;background:linear-gradient(90deg,var(--ac),var(--ac2));animation:load 1s ease-in-out infinite}
 @keyframes load{from{transform:translateX(-100%)}to{transform:translateX(330%)}}
 
+.hist{margin-bottom:28px;max-width:760px}
+.histh{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.histh .sec{margin:0}
+.hlist{display:grid;gap:2px}
+.hitem{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;cursor:pointer;color:#ddd6e5;transition:.15s}
+.hitem:hover{background:var(--card)}
+.hitem>svg{width:18px;height:18px;color:var(--mu2);flex:0 0 auto}
+.hitem span{flex:1;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hitem button{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--mu2);opacity:0;transition:.15s;flex:0 0 auto}
+.hitem:hover button{opacity:1}.hitem button:hover{background:var(--card2);color:var(--tx)}
+.hitem button svg{width:14px;height:14px}
+@media (hover:none){.hitem button{opacity:1}}
+.sbox .sclr{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;display:none;place-items:center;color:var(--mu)}
+.sbox .sclr.show{display:grid}.sbox .sclr:hover{background:var(--card2);color:var(--tx)}
+.sbox .sclr svg{position:static;transform:none;width:16px;height:16px;color:currentColor}
+.sbox input{padding-right:60px}
+
 /* ---------- toast ---------- */
 #toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(30px);opacity:0;z-index:100;background:var(--tx);color:#0b0a10;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;transition:.3s;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.4)}
 #toast.show{opacity:1;transform:translateX(-50%)}
@@ -436,9 +453,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.1.1';
+const APP_VERSION = '1.1.2';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ['Nova página de downloads em vinovim.vercel.app', 'O site deteta se estás no Windows ou no Android e descarrega a app certa', 'Os trailers do YouTube já funcionam dentro da app', 'Discord Rich Presence no PC e avisos de atualização dentro da app'];
+const CHANGELOG = ['Histórico das tuas pesquisas recentes', 'A pesquisa começa sempre vazia quando voltas a ela', 'Botão para limpar o que escreveste na pesquisa', 'Remove pesquisas do histórico uma a uma ou todas de uma vez'];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -446,6 +463,7 @@ const I = {
   play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>',
   pause:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg>',
   plus:sv('<path d="M12 5v14M5 12h14"/>'), check:sv('<path d="m5 12 5 5 9-10"/>'),
+  clock:sv('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
   x:sv('<path d="M6 6l12 12M18 6 6 18"/>'), back:sv('<path d="M15 5l-7 7 7 7"/>'),
   left:sv('<path d="M15 5l-7 7 7 7"/>'), right:sv('<path d="m9 5 7 7-7 7"/>'),
   film:sv('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16"/>'),
@@ -594,10 +612,15 @@ const VIEWS = {
   series() { return browse('series', 'Séries'); },
   search() {
     app.className = '';
-    app.innerHTML = `<div class="view">${topbar('Pesquisar')}<div class="pad"><div class="sbox">${I.search}<input id="q" placeholder="Filmes, séries, atores…" autocomplete="off"></div><div id="sres"></div></div></div>`;
-    const q = $('#q'); q.value = VIEWS._lastQ || ''; q.focus();
-    let t; q.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => doSearch(q.value), 350); });
-    if (q.value) doSearch(q.value); else showSearchHints();
+    app.innerHTML = `<div class="view">${topbar('Pesquisar')}<div class="pad"><div class="sbox">${I.search}<input id="q" placeholder="Filmes, séries, atores…" autocomplete="off" enterkeyhint="search"><button class="sclr" id="qclr" aria-label="Limpar pesquisa">${I.x}</button></div><div id="sres"></div></div></div>`;
+    const q = $('#q'), clr = $('#qclr'); q.value = ''; VIEWS._lastQ = ''; q.focus();
+    let t; q.addEventListener('input', () => { clr.classList.toggle('show', !!q.value); clearTimeout(t); t = setTimeout(() => doSearch(q.value), 350); });
+    q.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { clearTimeout(t); addHistory(q.value); doSearch(q.value); q.blur(); }
+      if (e.key === 'Escape' && q.value) { e.stopPropagation(); q.value = ''; clr.classList.remove('show'); doSearch(''); }
+    });
+    clr.onclick = () => { q.value = ''; clr.classList.remove('show'); doSearch(''); q.focus(); };
+    showSearchHints();
   },
   library() {
     app.className = '';
@@ -764,8 +787,20 @@ async function browse(type, title) {
 }
 
 /* search */
+function addHistory(q) {
+  q = String(q || '').trim(); if (q.length < 2) return;
+  const h = (S.searchHistory || []).filter(x => x.toLowerCase() !== q.toLowerCase());
+  h.unshift(q); S.searchHistory = h.slice(0, 10); save();
+}
+function histHTML() {
+  const h = S.searchHistory || [];
+  if (!h.length) return '';
+  return `<div class="hist"><div class="histh"><h3 class="sec">Pesquisas recentes</h3><button class="chip" data-hclear>Limpar</button></div>
+    <div class="hlist">${h.map((s, i) => `<div class="hitem" data-hq="${esc(s)}">${I.clock}<span>${esc(s)}</span><button data-hdel="${i}" title="Remover do histórico">${I.x}</button></div>`).join('')}</div></div>`;
+}
 function showSearchHints() {
-  $('#sres').innerHTML = `<h3 class="sec">Explora por género</h3><div class="chips">${GENRES.map(([g, p]) => `<a class="chip" style="display:inline-flex;align-items:center;text-decoration:none" href="#movies" data-pickg="${g}">${p}</a>`).join('')}</div>`;
+  if (!$('#sres')) return;
+  $('#sres').innerHTML = histHTML() + `<h3 class="sec">Explora por género</h3><div class="chips">${GENRES.map(([g, p]) => `<a class="chip" style="display:inline-flex;align-items:center;text-decoration:none" href="#movies" data-pickg="${g}">${p}</a>`).join('')}</div>`;
 }
 let searchSeq = 0;
 async function doSearch(q) {
@@ -1078,7 +1113,11 @@ document.addEventListener('click', async e => {
   const t = e.target;
   const sc = t.closest('[data-scroll]'); if (sc) { const tr = sc.closest('.row').querySelector('.track'); tr.scrollBy({ left: +sc.dataset.scroll * tr.clientWidth * .85 }); return; }
   const un = t.closest('[data-unprog]'); if (un) { e.stopPropagation(); delete S.progress[un.dataset.unprog]; save(); un.closest('.card').remove(); toast('Removido de “Continuar a ver”'); return; }
-  const op = t.closest('[data-open]'); if (op) { const [ty, id] = op.dataset.open.split('|'); openDetail(ty, id); return; }
+  const hd = t.closest('[data-hdel]'); if (hd) { e.stopPropagation(); (S.searchHistory || []).splice(+hd.dataset.hdel, 1); save(); showSearchHints(); return; }
+  if (t.closest('[data-hclear]')) { S.searchHistory = []; save(); showSearchHints(); return; }
+  const hq = t.closest('[data-hq]'); if (hq) { const q = $('#q'); if (q) { q.value = hq.dataset.hq; $('#qclr')?.classList.add('show'); } addHistory(hq.dataset.hq); doSearch(hq.dataset.hq); return; }
+  const op = t.closest('[data-open]'); if (op && CUR_VIEW === 'search' && VIEWS._lastQ) addHistory(VIEWS._lastQ);
+  if (op) { const [ty, id] = op.dataset.open.split('|'); openDetail(ty, id); return; }
   const lb = t.closest('[data-lib]');
   if (lb) {
     const id = lb.dataset.lib, m = (D.meta && D.meta.id === id) ? D.meta : ITEMS.get(id); if (!m) return;
@@ -1212,6 +1251,7 @@ function afterBoot() {
 
 /* ---------- router ---------- */
 function route() {
+  if (CUR_VIEW === 'search' && VIEWS._lastQ) addHistory(VIEWS._lastQ);
   const v = location.hash.slice(1) || 'home';
   const name = VIEWS[v] && v[0] !== '_' ? v : 'home';
   document.querySelectorAll('.nv').forEach(a => a.classList.toggle('on', a.dataset.v === name));
