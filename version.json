@@ -1,10 +1,12 @@
 {
-  "version": "1.1.2",
+  "version": "1.2.0",
   "date": "2026-11-08",
   "notes": [
-    "Histórico das tuas pesquisas recentes",
-    "A pesquisa começa sempre vazia quando voltas a ela",
-    "Botão para limpar o que escreveste na pesquisa"
+    "Perfis: cada pessoa com a sua lista, progresso e histórico",
+    "Elenco com fotos e avaliações na página de cada título",
+    "Filtros por ano, avaliação e ordenação nos Filmes e nas Séries",
+    "Legendas: tamanho, cor, fundo, sincronização e arrastar ficheiros",
+    "Modo TV com navegação pelo comando (Android TV)"
   ],
   "native": {
     "min": "1.1.0",

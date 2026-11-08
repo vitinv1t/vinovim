@@ -344,6 +344,80 @@ html.amoled{--bg:#000;--bg2:#060509;--card:#0f0e14;--card2:#17151d;--line:#221f2
 .sbox .sclr svg{position:static;transform:none;width:16px;height:16px;color:currentColor}
 .sbox input{padding-right:60px}
 
+/* perfis */
+.pav{display:inline-grid;place-items:center;border-radius:28%;background:linear-gradient(135deg,var(--pc),color-mix(in srgb,var(--pc) 55%,#000));color:#fff;font-family:var(--fd);font-weight:800;flex:0 0 auto;transition:.2s}
+.pav svg{width:40%;height:40%}
+#profiles{position:fixed;inset:0;z-index:110;background:radial-gradient(800px 500px at 50% 0,rgba(224,49,91,.18),transparent 60%),var(--bg);display:none;place-items:center;padding:24px;overflow:auto}
+#profiles.open{display:grid;animation:fade .3s}
+.pwrap{text-align:center;max-width:900px}
+.pwrap h2{font-family:var(--fd);font-size:clamp(30px,5vw,48px);font-weight:800;letter-spacing:-.02em;margin-bottom:34px}
+.plist{display:flex;flex-wrap:wrap;justify-content:center;gap:22px;margin-bottom:38px}
+.pcard{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--mu);padding:8px;border-radius:24px;outline:none}
+.pcard:hover,.pcard:focus{color:var(--tx)}
+.pcard:hover .pav,.pcard:focus .pav{box-shadow:0 0 0 3px #fff;transform:scale(1.05)}
+.pcard.on .pav{box-shadow:0 0 0 3px var(--ac)}
+.pcard b{font-size:16px;font-weight:600}
+.pcard small{font-size:12px;color:var(--mu2);margin-top:-8px}
+.pact{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.pedit{display:flex;flex-direction:column;align-items:center;gap:18px;margin-bottom:30px}
+.pedit .inp{width:320px;max-width:100%;flex:none;text-align:center;font-size:18px}
+.nv.prof{height:auto;padding:8px 0;gap:6px;margin-top:6px}
+.nv.prof span:last-child{max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plinks{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.plinks .pcard{flex-direction:row;padding:6px 12px 6px 6px;border-radius:999px;background:var(--bg2);border:1px solid var(--line);gap:10px}
+.plinks .pcard b{font-size:14px}
+/* elenco e avaliações */
+.castt{gap:18px}
+.person{flex:0 0 auto;width:112px;text-align:center;outline:none}
+.person .ph{position:relative;display:block;width:96px;height:96px;margin:0 auto 10px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,var(--card2),var(--card));box-shadow:0 0 0 1px var(--line);transition:.2s}
+.person .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.person .ph i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-family:var(--fd);font-weight:800;font-size:26px;color:var(--mu)}
+.person:hover .ph,.person:focus .ph{box-shadow:0 0 0 3px var(--ac);transform:scale(1.04)}
+.person b{display:block;font-size:13px;line-height:1.25}
+.person small{display:block;color:var(--mu2);font-size:12px;margin-top:3px;line-height:1.3}
+.rinfo{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:14px 0 20px}
+.rate-card{display:flex;align-items:center;gap:14px}
+.ring{--p:0;width:72px;height:72px;border-radius:50%;background:conic-gradient(var(--ac2) calc(var(--p)*1%),rgba(255,255,255,.1) 0);display:grid;place-items:center}
+.ring span{width:58px;height:58px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-family:var(--fd);font-weight:800;font-size:20px}
+.rate-card b{display:block;font-size:15px}.rate-card small{color:var(--mu2);font-size:12px}
+.rate-link{display:inline-flex;align-items:center;gap:6px;color:var(--mu);font-size:13.5px;text-decoration:none;padding:9px 14px;border:1px solid var(--line);border-radius:999px}
+.rate-link svg{width:14px;height:14px}.rate-link:hover{color:var(--tx)}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.facts div{padding:14px 16px;border-radius:14px;background:rgba(25,22,33,.7);border:1px solid var(--line)}
+.facts small{display:block;color:var(--mu2);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.facts b{font-size:14px;font-weight:600;line-height:1.4}
+/* filtros */
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.seg2{display:inline-flex;padding:4px;border-radius:999px;background:var(--card);border:1px solid var(--line);transition:.2s}
+.seg2 button{height:34px;padding:0 16px;border-radius:999px;font-size:13px;font-weight:600;color:var(--mu)}
+.seg2 button.on{background:var(--tx);color:#0b0a10}
+.seg2.dim{opacity:.45}
+.filters .sel{height:44px;border-radius:999px;padding:0 16px;background:var(--card)}
+.grid .empty{grid-column:1/-1}
+/* legendas */
+.pmenu .prow{display:flex;gap:6px;padding:2px 8px 8px;flex-wrap:wrap}
+.pmenu .prow button{width:auto;padding:7px 12px;border-radius:999px;background:var(--card2);font-size:12.5px}
+.pmenu .prow button.on{background:var(--tx);color:#0b0a10}
+.pmenu .prow button.on::after{content:none}
+.pmenu .phint{display:block;color:var(--mu2);font-size:11.5px;padding:0 10px 6px}
+#player.drop::after{content:"Larga aqui a legenda (.srt/.vtt) ou o vídeo";position:absolute;inset:20px;border:3px dashed var(--ac);border-radius:24px;display:grid;place-items:center;font-family:var(--fd);font-size:26px;font-weight:800;background:rgba(9,8,13,.75);pointer-events:none;z-index:5}
+.subprev{height:120px;border-radius:14px;margin:4px 0 8px;display:grid;place-items:end center;padding-bottom:18px;background:linear-gradient(135deg,#3a2a40,#141019 60%,#2a1d18)}
+#subPrev{padding:2px 8px;border-radius:4px;font-family:var(--fb)}
+/* TV */
+html.tv{font-size:17px}
+html.tv button,html.tv a,html.tv select,html.tv input,html.tv [tabindex]{outline:none}
+html.tv button:focus,html.tv a:focus,html.tv select:focus,html.tv input:focus,html.tv [tabindex]:focus{box-shadow:0 0 0 3px #fff}
+html.tv .card:focus{box-shadow:none;z-index:2}
+html.tv .card:focus .pimg{box-shadow:0 0 0 4px #fff,0 18px 40px rgba(0,0,0,.6);transform:scale(1.06)}
+html.tv .card:focus .cinfo span{color:#fff}
+html.tv .nv:focus{background:var(--acs);color:var(--tx);box-shadow:inset 0 0 0 2px #fff}
+html.tv .person:focus,html.tv .pcard:focus{box-shadow:none}
+html.tv .card{width:180px}html.tv .card.wide{width:330px}
+html.tv .pad,html.tv .rowh,html.tv .track{padding-left:56px;padding-right:56px}
+html.tv .track{padding-top:14px;padding-bottom:22px}
+html.tv .arr{display:none}
+html.tv .hitem:focus{background:var(--card)}
+
 /* ---------- toast ---------- */
 #toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(30px);opacity:0;z-index:100;background:var(--tx);color:#0b0a10;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;transition:.3s;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.4)}
 #toast.show{opacity:1;transform:translateX(-50%)}
@@ -398,6 +472,7 @@ html.amoled{--bg:#000;--bg2:#060509;--card:#0f0e14;--card2:#17151d;--line:#221f2
   <div class="nvsp"></div>
   <a class="nv" data-v="addons" href="#addons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M10 3h4v3a2 2 0 1 0 4 0V3h3v7h-3a2 2 0 1 0 0 4h3v7h-7v-3a2 2 0 1 0-4 0v3H3v-7h3a2 2 0 1 0 0-4H3V3z"/></svg>Addons</a>
   <a class="nv" data-v="settings" href="#settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Definições</a>
+  <button class="nv dk prof" id="profBtn" title="Mudar de perfil"></button>
 </nav>
 
 <main id="app"></main>
@@ -438,6 +513,7 @@ html.amoled{--bg:#000;--bg2:#060509;--card:#0f0e14;--card2:#17151d;--line:#221f2
 <input type="file" id="fileImport" accept=".json" hidden>
 <div id="toast"></div>
 <div id="upd"></div>
+<div id="profiles"></div>
 
 <script>
 /* =========================================================
@@ -453,9 +529,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.1.2';
+const APP_VERSION = '1.2.0';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ['Histórico das tuas pesquisas recentes', 'A pesquisa começa sempre vazia quando voltas a ela', 'Botão para limpar o que escreveste na pesquisa', 'Remove pesquisas do histórico uma a uma ou todas de uma vez'];
+const CHANGELOG = ['Perfis: cada pessoa com a sua lista, progresso e histórico', 'Elenco com fotos e avaliações na página de cada título', 'Filtros por ano, avaliação e ordenação nos Filmes e nas Séries', 'Legendas: tamanho, cor, fundo, sincronização e arrastar ficheiros', 'Modo TV com navegação pelo comando (Android TV)'];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -493,11 +569,24 @@ const S = (() => {
   let d = {};
   try { d = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
   const o = Object.assign({ addons: [], library: {}, progress: {}, watched: {}, accent: 0, volume: 1, cats: { order: [], on: {} } }, d);
-  o.prefs = Object.assign({ sortQ: true, autoplay: false, hideTorrent: true, subLang: 'pt', amoled: false, rpc: true, rpcPrivate: false }, d.prefs || {});
+  o.prefs = Object.assign({ sortQ: true, autoplay: false, hideTorrent: true, subLang: 'pt', amoled: false, rpc: true, rpcPrivate: false, subSize: 'm', subColor: '#ffffff', subBg: 'semi' }, d.prefs || {});
   return o;
 })();
 const SUBLANGS = { off: ['Desligadas', []], pt: ['Português (PT)', ['por', 'pt', 'pt-pt', 'portuguese']], br: ['Português (BR)', ['pob', 'pt-br', 'ptbr', 'brazilian']], en: ['Inglês', ['eng', 'en', 'english']], es: ['Espanhol', ['spa', 'es', 'spanish']], fr: ['Francês', ['fre', 'fra', 'fr', 'french']] };
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+/* cada perfil tem a sua lista, progresso, vistos e histórico */
+const PCOLORS = ['#e0315b', '#7c5cff', '#16c784', '#ff7a1a', '#2f8cff', '#ff4fd8', '#f5c26b', '#5ce1e6'];
+const PKEYS = ['library', 'progress', 'watched', 'searchHistory'];
+const emptyPData = () => ({ library: {}, progress: {}, watched: {}, searchHistory: [] });
+(function migrateProfiles() {
+  if (!Array.isArray(S.profiles) || !S.profiles.length) { S.profiles = [{ id: 'p1', name: 'Eu', color: 0 }]; S.activeProfile = 'p1'; }
+  S.pdata = S.pdata || {};
+  S.profiles.forEach(p => { S.pdata[p.id] = Object.assign(emptyPData(), S.pdata[p.id] || {}); });
+  const first = S.pdata[S.profiles[0].id];
+  PKEYS.forEach(k => { if (Object.prototype.hasOwnProperty.call(S, k)) { const v = S[k]; delete S[k]; if (v && (Array.isArray(v) ? v.length : Object.keys(v).length)) first[k] = v; } });
+  if (!S.pdata[S.activeProfile]) S.activeProfile = S.profiles[0].id;
+  PKEYS.forEach(k => Object.defineProperty(S, k, { enumerable: false, configurable: true, get() { return S.pdata[S.activeProfile][k]; }, set(v) { S.pdata[S.activeProfile][k] = v; } }));
+})();
 
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
@@ -505,7 +594,7 @@ const ITEMS = new Map();
 const remember = it => { if (it && it.id) ITEMS.set(it.id, Object.assign(ITEMS.get(it.id) || {}, it)); return it; };
 function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2400); }
 function fmt(s) { s = Math.max(0, Math.floor(s || 0)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); }
-function applyAccent() { const [a, b] = ACCENTS[S.accent] || ACCENTS[0]; const r = document.documentElement.style; r.setProperty('--ac', a); r.setProperty('--ac2', b); r.setProperty('--acs', a + '29'); document.documentElement.classList.toggle('amoled', !!S.prefs.amoled); }
+function applyAccent() { const [a, b] = ACCENTS[S.accent] || ACCENTS[0]; const r = document.documentElement.style; r.setProperty('--ac', a); r.setProperty('--ac2', b); r.setProperty('--acs', a + '29'); document.documentElement.classList.toggle('amoled', !!S.prefs.amoled); if (typeof applyTV === 'function') applyTV(); }
 
 /* ---------- addons (protocolo Stremio) ---------- */
 const normUrl = u => u.trim().replace(/^stremio:\/\//i, 'https://');
@@ -621,6 +710,7 @@ const VIEWS = {
     });
     clr.onclick = () => { q.value = ''; clr.classList.remove('show'); doSearch(''); q.focus(); };
     showSearchHints();
+    if (VIEWS._pendingQ) { q.value = VIEWS._pendingQ; VIEWS._pendingQ = ''; clr.classList.add('show'); doSearch(q.value); }
   },
   library() {
     app.className = '';
@@ -661,13 +751,20 @@ const VIEWS = {
   settings() {
     app.className = '';
     app.innerHTML = `<div class="view">${topbar('Definições')}<div class="pad" style="max-width:980px">
+      <div class="panel"><h3>Perfis</h3><p class="m">Cada perfil tem a sua lista, o seu progresso e o seu histórico de pesquisas. Estás a usar o perfil <b style="color:var(--tx)">${esc(curProfile().name)}</b>.</p>
+        <div class="plinks">${S.profiles.map(p => `<button class="pcard ${p.id === S.activeProfile ? 'on' : ''}" data-prof="${p.id}">${avatar(p, 34)}<b>${esc(p.name)}</b></button>`).join('')}</div>
+        <div class="inrow"><button class="btn gho" data-prof-manage>Gerir perfis</button></div></div>
       <div class="panel"><h3>Aparência</h3><p class="m">Dá ao vinovim a tua cara.</p><div class="swatches" style="margin-bottom:14px">${ACCENTS.map((c, i) => `<button class="sw ${i == S.accent ? 'on' : ''}" data-acc="${i}" style="background:linear-gradient(135deg,${c[0]},${c[1]})"></button>`).join('')}</div>
+        <div class="srow"><div class="tx"><b>Modo TV</b><small>Interface maior e navegação pelo comando (liga-se sozinho nas TVs)</small></div><button class="tg ${(S.prefs.tv ?? IS_TV) ? 'on' : ''}" data-pref="tv"></button></div>
         <div class="srow"><div class="tx"><b>Preto AMOLED</b><small>Fundo totalmente preto, ideal para ecrãs OLED</small></div><button class="tg ${S.prefs.amoled ? 'on' : ''}" data-pref="amoled"></button></div></div>
       <div class="panel"><h3>Reprodução</h3>
         <div class="srow"><div class="tx"><b>Ordenar fontes por qualidade</b><small>4K e 1080p primeiro</small></div><button class="tg ${S.prefs.sortQ ? 'on' : ''}" data-pref="sortQ"></button></div>
         <div class="srow"><div class="tx"><b>Reproduzir automaticamente</b><small>Começa logo com a primeira fonte disponível</small></div><button class="tg ${S.prefs.autoplay ? 'on' : ''}" data-pref="autoplay"></button></div>
         <div class="srow"><div class="tx"><b>Esconder torrents</b><small>Não podem ser reproduzidos nesta app</small></div><button class="tg ${S.prefs.hideTorrent ? 'on' : ''}" data-pref="hideTorrent"></button></div>
         <div class="srow"><div class="tx"><b>Idioma das legendas</b><small>Ativadas automaticamente quando um addon as fornece</small></div><select class="sel" id="subLang">${Object.entries(SUBLANGS).map(([k, [n]]) => `<option value="${k}" ${S.prefs.subLang === k ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
+      <div class="panel"><h3>Aparência das legendas</h3><p class="m">Também podes mudar isto durante o vídeo, no botão de legendas, e arrastar um ficheiro .srt ou .vtt para cima do vídeo.</p>
+        <div class="subprev"><span id="subPrev">Assim ficam as tuas legendas.</span></div>
+        ${Object.entries(SUBOPTS).map(([k, [lbl, opts]]) => `<div class="srow"><div class="tx"><b>${lbl}</b></div><select class="sel" data-sp="${k}">${opts.map(([v, l]) => `<option value="${v}" ${S.prefs[k] === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>`).join('')}</div>
       <div class="panel"><h3>Catálogos do início</h3><p class="m">Escolhe que filas aparecem no início e em que ordem. Os catálogos dos addons que instalares também aparecem aqui.</p><div id="catl" style="max-height:420px;overflow:auto">${catListHTML()}</div></div>
       ${NATIVE && NATIVE.rpc ? `<div class="panel"><h3>Discord</h3><p class="m">Mostra no teu perfil do Discord o que estás a ver no vinovim. O Discord tem de estar aberto neste PC.</p>
         <div class="srow"><div class="tx"><b>Rich Presence</b><small>Mostrar a tua atividade no Discord</small></div><button class="tg ${S.prefs.rpc ? 'on' : ''}" data-pref="rpc"></button></div>
@@ -682,9 +779,11 @@ const VIEWS = {
       <p class="legal">vinovim · inspirado no Nuvio · metadados de Cinemeta (IMDb). Esta app não aloja nenhum conteúdo.</p>
     </div></div>`;
     app.querySelectorAll('[data-acc]').forEach(b => b.onclick = () => { S.accent = +b.dataset.acc; save(); applyAccent(); app.querySelectorAll('[data-acc]').forEach(x => x.classList.toggle('on', x === b)); });
-    app.querySelectorAll('[data-pref]').forEach(b => b.onclick = () => { const k = b.dataset.pref; S.prefs[k] = !S.prefs[k]; save(); b.classList.toggle('on', S.prefs[k]); applyAccent(); refreshPresence(); });
+    app.querySelectorAll('[data-pref]').forEach(b => b.onclick = () => { const k = b.dataset.pref; S.prefs[k] = k === 'tv' ? !(S.prefs.tv ?? IS_TV) : !S.prefs[k]; save(); b.classList.toggle('on', !!S.prefs[k]); applyAccent(); refreshPresence(); });
     $('#subLang').onchange = e => { S.prefs.subLang = e.target.value; save(); };
     $('#chkUpd').onclick = () => checkUpdates(true);
+    app.querySelectorAll('[data-sp]').forEach(s => s.onchange = () => { S.prefs[s.dataset.sp] = s.value; save(); applySubStyle(); });
+    applySubStyle();
     $('#seeNews').onclick = showNews;
     $('#catl').onclick = e => {
       const tg = e.target.closest('[data-cattg]'), mv = e.target.closest('[data-catmv]');
@@ -759,31 +858,64 @@ function hero(list) {
     requestAnimationFrame(() => el.querySelector('.hbg')?.classList.add('show'));
     el.querySelectorAll('[data-hi]').forEach(b => b.onclick = () => { i = +b.dataset.hi; show(); restart(); });
   };
-  const restart = () => { clearInterval(heroTimer); heroTimer = setInterval(() => { if (!document.body.contains(el)) return clearInterval(heroTimer); i = (i + 1) % list.length; show(); }, 9000); };
+  const restart = () => { clearInterval(heroTimer); heroTimer = setInterval(() => { if (!document.body.contains(el)) return clearInterval(heroTimer); if (el.contains(document.activeElement)) return; i = (i + 1) % list.length; show(); }, 9000); };
   show(); restart();
 }
 
 /* browse */
 async function browse(type, title) {
   app.className = '';
-  const st = { genre: '', items: [], done: false };
-  app.innerHTML = `<div class="view">${topbar(title)}<div class="pad"><div class="chips" id="gch"><button class="chip on" data-g="">Popular</button>${GENRES.map(([g, p]) => `<button class="chip" data-g="${g}">${p}</button>`).join('')}</div><div class="grid" id="bgrid"></div><div class="more"><button class="btn gho" id="bmore">Carregar mais</button></div></div></div>`;
+  const st = Object.assign({ genre: '', year: '', sort: 'top', min: 0 }, (VIEWS._bf || {})[type] || {}, { items: [], done: false, skip: 0 });
+  const thisYear = new Date().getFullYear(), years = Array.from({ length: thisYear - 1949 }, (_, i) => thisYear - i);
+  app.innerHTML = `<div class="view">${topbar(title)}<div class="pad">
+    <div class="filters">
+      <div class="seg2" id="fsort"><button data-sort="top">Populares</button><button data-sort="imdbRating">Mais bem avaliados</button></div>
+      <select class="sel" id="fyear"><option value="">Todos os anos</option>${years.map(y => `<option>${y}</option>`).join('')}</select>
+      <select class="sel" id="fmin"><option value="0">Qualquer avaliação</option><option value="6">★ 6 ou mais</option><option value="7">★ 7 ou mais</option><option value="8">★ 8 ou mais</option></select>
+      <button class="btn sm gho" id="freset">Limpar filtros</button>
+    </div>
+    <div class="chips" id="gch"><button class="chip" data-g="">Todos os géneros</button>${GENRES.map(([g, p]) => `<button class="chip" data-g="${g}">${p}</button>`).join('')}</div>
+    <div class="grid" id="bgrid"></div><div class="more"><button class="btn gho" id="bmore">Carregar mais</button></div></div></div>`;
   const grid = $('#bgrid'), more = $('#bmore');
+  const sync = () => {
+    [...$('#fsort').children].forEach(x => x.classList.toggle('on', x.dataset.sort === st.sort));
+    [...$('#gch').children].forEach(x => x.classList.toggle('on', x.dataset.g === st.genre));
+    $('#fyear').value = st.year; $('#fmin').value = String(st.min);
+    $('#fsort').classList.toggle('dim', !!st.year);
+    VIEWS._bf = Object.assign(VIEWS._bf || {}, { [type]: { genre: st.genre, year: st.year, sort: st.sort, min: st.min } });
+  };
+  const pass = m => (!st.min || parseFloat(m.imdbRating) >= st.min) && (!st.year || !st.genre || (m.genres || []).includes(st.genre));
+  let seq = 0;
   const load = async (reset) => {
-    if (reset) { st.items = []; st.done = false; grid.innerHTML = Array.from({ length: 18 }, () => '<div class="card"><div class="pimg sk"></div></div>').join(''); }
+    const my = reset ? ++seq : seq;
+    if (reset) { st.items = []; st.skip = 0; st.done = false; grid.innerHTML = Array.from({ length: 18 }, () => '<div class="card"><div class="pimg sk"></div></div>').join(''); }
     more.disabled = true; more.innerHTML = '<span class="spin"></span>';
     try {
-      const x = await catalog(cinemeta(), type, 'top', { genre: st.genre || undefined, skip: st.items.length || undefined });
-      if (reset) grid.innerHTML = '';
-      const fresh = x.filter(n => !st.items.some(o => o.id === n.id));
-      st.items.push(...fresh); grid.insertAdjacentHTML('beforeend', fresh.map(card).join(''));
-      if (!fresh.length) st.done = true;
-    } catch (e) { if (reset) grid.outerHTML = offlineHTML(); }
+      let added = 0, tries = 0, first = reset;
+      while (added < 12 && !st.done && tries < 5) {
+        tries++;
+        const x = st.year ? await catalog(cinemeta(), type, 'year', { genre: st.year, skip: st.skip || undefined })
+          : await catalog(cinemeta(), type, st.sort, { genre: st.genre || undefined, skip: st.skip || undefined });
+        if (my !== seq) return;
+        if (first) { grid.innerHTML = ''; first = false; }
+        if (!x.length) { st.done = true; break; }
+        st.skip += x.length;
+        const fresh = x.filter(n => !st.items.some(o => o.id === n.id)).filter(pass);
+        st.items.push(...fresh); grid.insertAdjacentHTML('beforeend', fresh.map(card).join('')); added += fresh.length;
+      }
+      if (!st.items.length) grid.innerHTML = emptyHTML(I.search, 'Nada com estes filtros', 'Experimenta outro ano, outro género ou uma avaliação mais baixa.');
+    } catch (e) { if (reset && my === seq) grid.innerHTML = offlineHTML(); }
+    if (my !== seq) return;
     more.disabled = false; more.textContent = 'Carregar mais'; more.parentNode.classList.toggle('hidden', st.done);
   };
-  $('#gch').onclick = e => { const b = e.target.closest('[data-g]'); if (!b) return; [...$('#gch').children].forEach(c => c.classList.toggle('on', c === b)); st.genre = b.dataset.g; load(true); };
+  const apply = () => { sync(); load(true); };
+  $('#gch').onclick = e => { const x = e.target.closest('[data-g]'); if (!x) return; st.genre = x.dataset.g; apply(); };
+  $('#fsort').onclick = e => { const x = e.target.closest('[data-sort]'); if (!x) return; st.sort = x.dataset.sort; st.year = ''; apply(); };
+  $('#fyear').onchange = e => { st.year = e.target.value; apply(); };
+  $('#fmin').onchange = e => { st.min = +e.target.value; apply(); };
+  $('#freset').onclick = () => { Object.assign(st, { genre: '', year: '', sort: 'top', min: 0 }); apply(); };
   more.onclick = () => load(false);
-  load(true);
+  sync(); load(true);
 }
 
 /* search */
@@ -796,7 +928,7 @@ function histHTML() {
   const h = S.searchHistory || [];
   if (!h.length) return '';
   return `<div class="hist"><div class="histh"><h3 class="sec">Pesquisas recentes</h3><button class="chip" data-hclear>Limpar</button></div>
-    <div class="hlist">${h.map((s, i) => `<div class="hitem" data-hq="${esc(s)}">${I.clock}<span>${esc(s)}</span><button data-hdel="${i}" title="Remover do histórico">${I.x}</button></div>`).join('')}</div></div>`;
+    <div class="hlist">${h.map((s, i) => `<div class="hitem" tabindex="0" data-hq="${esc(s)}">${I.clock}<span>${esc(s)}</span><button data-hdel="${i}" title="Remover do histórico">${I.x}</button></div>`).join('')}</div></div>`;
 }
 function showSearchHints() {
   if (!$('#sres')) return;
@@ -860,14 +992,37 @@ function detailShell(m, loading) {
       <img class="dlogo" src="${esc(m.logo || IMG.logo(m.id))}" alt="${esc(m.name || '')}" onerror="this.outerHTML='<h1 class=dtitle>${esc(m.name || '').replace(/'/g, '&#39;')}</h1>'">
       <div class="dmeta">${m.imdbRating ? `<span class="pill g">${I.star}${esc(m.imdbRating)}</span>` : ''}${m.releaseInfo ? `<span class="pill">${esc(m.releaseInfo)}</span>` : ''}${m.runtime ? `<span class="pill">${esc(m.runtime)}</span>` : ''}${isS ? '<span class="pill">Série</span>' : ''}${(m.genres || []).map(g => `<span class="pill">${esc(GPT[g] || g)}</span>`).join('')}</div>
       ${loading ? '<div class="sk" style="height:80px;border-radius:12px;max-width:640px;margin-bottom:24px"></div>' : `<p class="ddesc">${esc(m.description || 'Sem sinopse disponível.')}</p>
-      ${cast || dir ? `<div class="dcrew">${dir ? `<b>Realização</b><span>${esc(dir)}</span>` : ''}${wr ? `<b>Argumento</b><span>${esc(wr)}</span>` : ''}${cast ? `<b>Elenco</b><span>${esc(cast)}</span>` : ''}</div>` : ''}`}
+`}
       <div class="hbtns">${loading ? '' : `<button class="btn pri" data-dplay>${I.play}${esc(playLbl)}</button>
         ${(m.trailerStreams || []).length ? `<button class="btn gho" data-trailer>${I.yt}Trailer</button>` : ''}`}
         <button class="btn gho ico ${inLib(m.id) ? 'on' : ''}" data-lib="${esc(m.id)}" title="A minha lista">${inLib(m.id) ? I.check : I.plus}</button></div>
     </div><img class="dposter" src="${esc(m.poster || IMG.poster(m.id))}" alt="" onerror="this.style.visibility='hidden'"></div>
     ${!loading && isS ? episodesHTML(m) : ''}
+    ${!loading ? castHTML(m) + ratingsHTML(m) : ''}
     ${!loading ? '<div class="dsec flush" id="similar"></div>' : ''}
   </div>`;
+}
+const initials = n => String(n || '?').split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+function castList(m) {
+  const ex = m.app_extras && Array.isArray(m.app_extras.cast) ? m.app_extras.cast : [];
+  if (ex.length) return ex.slice(0, 20).map(c => ({ name: c.name, role: c.character, photo: c.photo }));
+  const links = (m.links || []).filter(l => l.category === 'Cast').map(l => ({ name: l.name }));
+  return (links.length ? links : (m.cast || []).map(n => ({ name: n }))).slice(0, 20);
+}
+function castHTML(m) {
+  const c = castList(m); if (!c.length) return '';
+  return `<section class="row dsec flush"><div class="rowh"><h2>Elenco</h2><div class="tsp"></div><button class="arr" data-scroll="-1">${I.left}</button><button class="arr" data-scroll="1">${I.right}</button></div>
+    <div class="track castt">${c.map(p => `<button class="person" data-person="${esc(p.name)}" title="Procurar ${esc(p.name)}"><span class="ph"><i>${esc(initials(p.name))}</i>${p.photo ? `<img loading="lazy" src="${esc(p.photo)}" alt="" onerror="this.remove()">` : ''}</span><b>${esc(p.name)}</b>${p.role ? `<small>${esc(p.role)}</small>` : ''}</button>`).join('')}</div></section>`;
+}
+function ratingsHTML(m) {
+  const r = parseFloat(m.imdbRating);
+  const imdb = (m.links || []).find(l => l.category === 'imdb') || (/^tt\d+$/.test(m.id) ? { url: 'https://www.imdb.com/title/' + m.id + '/' } : null);
+  const rel = m.released ? new Date(m.released) : null;
+  const facts = [['Estreia', rel && !isNaN(rel) ? rel.toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' }) : ''], ['Duração', m.runtime], ['País', m.country], ['Idioma', m.language], ['Realização', [].concat(m.director || []).join(', ')], ['Argumento', [].concat(m.writer || []).slice(0, 3).join(', ')], ['Prémios', m.awards]].filter(x => x[1]);
+  if (isNaN(r) && !facts.length) return '';
+  return `<div class="dsec"><div class="rowh" style="padding:0"><h2>Avaliações e informação</h2></div>
+    <div class="rinfo">${!isNaN(r) ? `<div class="rate-card"><div class="ring" style="--p:${r * 10}"><span>${r.toFixed(1)}</span></div><div><b>IMDb</b><small>${r >= 8 ? 'Excelente' : r >= 7 ? 'Muito bom' : r >= 6 ? 'Bom' : r >= 5 ? 'Razoável' : 'Fraco'} · de 10</small></div></div>` : ''}${imdb ? `<a class="rate-link" href="${esc(imdb.url)}" target="_blank" rel="noopener">Ver no IMDb ${I.right}</a>` : ''}</div>
+    <div class="facts">${facts.map(([k, v]) => `<div><small>${k}</small><b>${esc(v)}</b></div>`).join('')}</div></div>`;
 }
 function episodesHTML(m) {
   const ss = seasonList(m);
@@ -1050,6 +1205,7 @@ async function loadAddonSubs() {
 }
 const toVtt = t => t.trim().startsWith('WEBVTT') ? t : 'WEBVTT\n\n' + t.replace(/\r/g, '').replace(/(\d\d:\d\d:\d\d),(\d\d\d)/g, '$1.$2');
 async function setSub(i) {
+  if (PC) PC.subDelay = 0;
   [...V.querySelectorAll('track')].forEach(t => t.remove());
   subs.forEach(s => s.on = false);
   if (i == null) return renderMenu();
@@ -1064,10 +1220,45 @@ async function setSub(i) {
   renderMenu();
 }
 function renderMenu() {
-  const rate = V.playbackRate;
-  $('#pMenu').innerHTML = `<h5>Legendas</h5><button class="${subs.some(s => s.on) ? '' : 'on'}" data-sub="">Desligadas</button>${subs.map((s, i) => `<button class="${s.on ? 'on' : ''}" data-sub="${i}">${esc(s.label)}</button>`).join('')}<button data-subfile>${I.folder.replace('<svg', '<svg width="16" height="16"')} Carregar ficheiro .srt/.vtt</button>
+  const rate = V.playbackRate, pr = S.prefs, d = (PC && PC.subDelay) || 0;
+  const row = (key, opts, cur) => `<div class="prow">${opts.map(([v, l]) => `<button class="${String(cur) === String(v) ? 'on' : ''}" data-${key}="${v}">${l}</button>`).join('')}</div>`;
+  $('#pMenu').innerHTML = `<h5>Legendas</h5><button class="${subs.some(s => s.on) ? '' : 'on'}" data-sub="">Desligadas</button>${subs.map((s, i) => `<button class="${s.on ? 'on' : ''}" data-sub="${i}">${esc(s.label)}</button>`).join('')}<button data-subfile>${I.folder.replace('<svg', '<svg width="16" height="16"')} Carregar ficheiro .srt/.vtt</button><small class="phint">Também podes arrastar o ficheiro para cima do vídeo.</small>
+  <h5>Tamanho</h5>${row('subsz', [['s', 'P'], ['m', 'M'], ['l', 'G'], ['xl', 'XG']], pr.subSize)}
+  <h5>Cor</h5>${row('subcol', [['#ffffff', 'Branco'], ['#ffe14d', 'Amarelo'], ['#7ee8ff', 'Ciano']], pr.subColor)}
+  <h5>Fundo</h5>${row('subbg', [['none', 'Nenhum'], ['semi', 'Suave'], ['solid', 'Sólido']], pr.subBg)}
+  <h5>Sincronizar · ${d > 0 ? '+' : ''}${d.toFixed(1)} s</h5>${row('subdelay', [['-0.5', '−0,5 s'], ['0.5', '+0,5 s']], '')}
   <h5>Velocidade</h5>${[.75, 1, 1.25, 1.5, 2].map(r => `<button class="${r === rate ? 'on' : ''}" data-rate="${r}">${r === 1 ? 'Normal' : r + '×'}</button>`).join('')}`;
 }
+const SUBSZ = { s: 'clamp(14px,1.8vw,22px)', m: 'clamp(16px,2.4vw,28px)', l: 'clamp(20px,3vw,36px)', xl: 'clamp(24px,3.8vw,46px)' };
+const SUBBG = { none: 'transparent', semi: 'rgba(0,0,0,.55)', solid: '#000' };
+const SUBOPTS = { subSize: ['Tamanho', [['s', 'Pequeno'], ['m', 'Médio'], ['l', 'Grande'], ['xl', 'Muito grande']]], subColor: ['Cor', [['#ffffff', 'Branco'], ['#ffe14d', 'Amarelo'], ['#7ee8ff', 'Ciano']]], subBg: ['Fundo', [['none', 'Sem fundo'], ['semi', 'Fundo suave'], ['solid', 'Fundo sólido']]] };
+function applySubStyle() {
+  const pr = S.prefs, sz = SUBSZ[pr.subSize] || SUBSZ.m, bg = SUBBG[pr.subBg] || SUBBG.semi, col = pr.subColor || '#fff', sh = pr.subBg === 'none' ? '0 0 4px #000,0 2px 3px #000,0 0 2px #000' : 'none';
+  let el = document.getElementById('cueStyle'); if (!el) { el = document.createElement('style'); el.id = 'cueStyle'; document.head.appendChild(el); }
+  el.textContent = `#vid::cue{font-size:${sz};color:${col};background:${bg};text-shadow:${sh};font-family:var(--fb)}`;
+  const pv = document.getElementById('subPrev'); if (pv) Object.assign(pv.style, { fontSize: sz, color: col, background: bg, textShadow: sh });
+}
+function shiftSubs(d) {
+  if (PC) PC.subDelay = Math.round(((PC.subDelay || 0) + d) * 10) / 10;
+  const tr = [...V.textTracks].find(t => t.mode === 'showing');
+  if (tr && tr.cues) [...tr.cues].forEach(c => { c.startTime = Math.max(0, c.startTime + d); c.endTime = Math.max(0, c.endTime + d); });
+  renderMenu();
+}
+P.addEventListener('dragover', e => { e.preventDefault(); P.classList.add('drop'); });
+P.addEventListener('dragleave', e => { if (!P.contains(e.relatedTarget)) P.classList.remove('drop'); });
+P.addEventListener('drop', async e => {
+  e.preventDefault(); e.stopPropagation(); P.classList.remove('drop');
+  const f = e.dataTransfer.files[0]; if (!f) return;
+  if (/\.(srt|vtt)$/i.test(f.name)) { subs.push({ label: f.name, text: await f.text() }); setSub(subs.length - 1); toast('Legenda carregada'); }
+  else if (/^video\//.test(f.type) || /\.(mkv|mp4|webm|m4v|mov)$/i.test(f.name)) play({ url: URL.createObjectURL(f), name: f.name, _local: true }, PC && PC.meta ? PC : { title: f.name });
+  else toast('Esse ficheiro não é suportado');
+});
+document.addEventListener('dragover', e => { if (e.dataTransfer && [...e.dataTransfer.types].includes('Files')) e.preventDefault(); });
+document.addEventListener('drop', e => {
+  if (P.classList.contains('open')) return;
+  const f = e.dataTransfer && e.dataTransfer.files[0]; if (!f) return; e.preventDefault();
+  if (/^video\//.test(f.type) || /\.(mkv|mp4|webm|m4v|mov)$/i.test(f.name)) play({ url: URL.createObjectURL(f), name: f.name, _local: true }, { title: f.name });
+});
 
 /* controlos */
 $('#pBack').innerHTML = I.back; $('#pPlay').innerHTML = I.play; $('#pRew').innerHTML = I.rew; $('#pFwd').innerHTML = I.fwd;
@@ -1086,7 +1277,11 @@ V.onclick = () => { if ($('#pMenu').classList.contains('open')) return $('#pMenu
 V.ondblclick = toggleFs;
 $('#pMenu').onclick = e => {
   const b = e.target.closest('button'); if (!b) return;
-  if (b.dataset.rate) { V.playbackRate = +b.dataset.rate; renderMenu(); }
+  if (b.dataset.subsz) { S.prefs.subSize = b.dataset.subsz; save(); applySubStyle(); renderMenu(); }
+  else if (b.dataset.subcol) { S.prefs.subColor = b.dataset.subcol; save(); applySubStyle(); renderMenu(); }
+  else if (b.dataset.subbg) { S.prefs.subBg = b.dataset.subbg; save(); applySubStyle(); renderMenu(); }
+  else if (b.dataset.subdelay) shiftSubs(+b.dataset.subdelay);
+  else if (b.dataset.rate) { V.playbackRate = +b.dataset.rate; renderMenu(); }
   else if ('sub' in b.dataset) setSub(b.dataset.sub === '' ? null : +b.dataset.sub);
   else if ('subfile' in b.dataset) $('#fileSub').click();
 };
@@ -1103,7 +1298,7 @@ $('#fileVideo').onchange = e => { const f = e.target.files[0]; if (f) play({ url
 $('#fileSub').onchange = async e => { const f = e.target.files[0]; if (!f) return; subs.push({ label: f.name, text: await f.text() }); setSub(subs.length - 1); e.target.value = ''; };
 $('#fileImport').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
-  try { const d = JSON.parse(await f.text()); ['addons', 'library', 'progress', 'watched'].forEach(k => { if (d[k]) S[k] = d[k]; }); save(); toast('Cópia importada'); setTimeout(() => location.reload(), 700); }
+  try { const d = JSON.parse(await f.text()); ['profiles', 'pdata', 'activeProfile', 'addons', 'prefs', 'cats', 'accent'].forEach(k => { if (d[k] !== undefined) S[k] = d[k]; }); if (!d.pdata) ['library', 'progress', 'watched'].forEach(k => { if (d[k]) S[k] = d[k]; }); save(); toast('Cópia importada'); setTimeout(() => location.reload(), 700); }
   catch (err) { toast('Ficheiro inválido'); }
   e.target.value = '';
 };
@@ -1113,6 +1308,12 @@ document.addEventListener('click', async e => {
   const t = e.target;
   const sc = t.closest('[data-scroll]'); if (sc) { const tr = sc.closest('.row').querySelector('.track'); tr.scrollBy({ left: +sc.dataset.scroll * tr.clientWidth * .85 }); return; }
   const un = t.closest('[data-unprog]'); if (un) { e.stopPropagation(); delete S.progress[un.dataset.unprog]; save(); un.closest('.card').remove(); toast('Removido de “Continuar a ver”'); return; }
+  const pf = t.closest('[data-prof]'); if (pf) { if ($('#profiles').dataset.manage && $('#profiles').classList.contains('open')) editProfile(pf.dataset.prof); else switchProfile(pf.dataset.prof); return; }
+  if (t.closest('[data-prof-add]')) return editProfile(null);
+  if (t.closest('[data-prof-manage]')) return showProfiles(true);
+  if (t.closest('[data-prof-done]')) { $('#profiles').classList.remove('open'); route(); return; }
+  if (t.closest('#profBtn')) return showProfiles(false);
+  const ps = t.closest('[data-person]'); if (ps) { VIEWS._pendingQ = ps.dataset.person; if (location.hash === '#search') route(); else location.hash = 'search'; return; }
   const hd = t.closest('[data-hdel]'); if (hd) { e.stopPropagation(); (S.searchHistory || []).splice(+hd.dataset.hdel, 1); save(); showSearchHints(); return; }
   if (t.closest('[data-hclear]')) { S.searchHistory = []; save(); showSearchHints(); return; }
   const hq = t.closest('[data-hq]'); if (hq) { const q = $('#q'); if (q) { q.value = hq.dataset.hq; $('#qclr')?.classList.add('show'); } addHistory(hq.dataset.hq); doSearch(hq.dataset.hq); return; }
@@ -1162,7 +1363,9 @@ document.addEventListener('keydown', e => {
   if (P.classList.contains('open')) {
     if (e.target.tagName === 'INPUT' && e.target.type !== 'range') return;
     const k = e.key.toLowerCase();
-    if (k === ' ' || k === 'k') { e.preventDefault(); togglePlay(); }
+    if (k === ' ' || k === 'k' || k === 'mediaplaypause' || (k === 'enter' && !(e.target.closest && e.target.closest('button')))) { e.preventDefault(); togglePlay(); }
+    else if (k === 'mediaplay') V.play().catch(() => {}); else if (k === 'mediapause') V.pause();
+    else if (k === 'mediafastforward') skip(30); else if (k === 'mediarewind') skip(-30); else if (k === 'mediatracknext') goNext();
     else if (k === 'arrowleft') skip(-10); else if (k === 'arrowright') skip(10);
     else if (k === 'arrowup') { e.preventDefault(); V.volume = Math.min(1, V.volume + .1); }
     else if (k === 'arrowdown') { e.preventDefault(); V.volume = Math.max(0, V.volume - .1); }
@@ -1170,6 +1373,11 @@ document.addEventListener('keydown', e => {
     else if (k === 'escape' && !document.fullscreenElement) uiBack();
     poke(); return;
   }
+  if (e.key === 'Escape' && $('#profiles').classList.contains('open')) { $('#profiles').classList.remove('open'); return; }
+  if (e.key === 'Escape' && $('#upd').classList.contains('open')) { $('#upd').classList.remove('open'); return; }
+  const dirs = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' };
+  if (dirs[e.key] && document.documentElement.classList.contains('tv') && e.target.tagName !== 'SELECT' && !(e.target.tagName === 'INPUT' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight'))) { e.preventDefault(); moveFocus(dirs[e.key]); return; }
+  if (e.key === 'Enter' && document.activeElement && document.activeElement.matches('[tabindex]:not(button):not(a):not(input)')) { document.activeElement.click(); return; }
   if (e.key === 'Escape' && openCount()) uiBack();
   if (e.key === '/' && e.target.tagName !== 'INPUT') { e.preventDefault(); location.hash = 'search'; }
 });
@@ -1243,10 +1451,94 @@ async function checkUpdates(manual) {
 }
 function showNews() { showUpdate({ title: 'Novidades do vinovim', version: APP_VERSION, notes: CHANGELOG, go: 'Vamos lá!' }); }
 function afterBoot() {
+  updateProfBtn(); applySubStyle();
+  if (S.profiles.length > 1) showProfiles(false);
+  if (document.documentElement.classList.contains('tv')) setTimeout(() => { if (document.activeElement === document.body) moveFocus('down'); }, 900);
   if (S.seenVersion !== APP_VERSION) { setTimeout(showNews, 1200); S.seenVersion = APP_VERSION; save(); }
   setTimeout(() => checkUpdates(false), 5000);
   setInterval(() => checkUpdates(false), 30 * 60 * 1000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) checkUpdates(false); });
+}
+
+/* ---------- perfis ---------- */
+const curProfile = () => S.profiles.find(p => p.id === S.activeProfile) || S.profiles[0];
+const avatar = (p, size = 40) => `<span class="pav" style="--pc:${PCOLORS[(p.color || 0) % PCOLORS.length]};width:${size}px;height:${size}px;font-size:${Math.round(size * .42)}px">${esc(((p.name || '?').trim()[0] || '?').toUpperCase())}</span>`;
+function updateProfBtn() { const b = $('#profBtn'); if (b) b.innerHTML = avatar(curProfile(), 34) + '<span>' + esc(curProfile().name) + '</span>'; }
+function switchProfile(id) {
+  if (!S.pdata[id]) return;
+  S.activeProfile = id; save(); updateProfBtn(); $('#profiles').classList.remove('open');
+  toast('Olá, ' + curProfile().name + '!'); route();
+}
+function showProfiles(manage) {
+  const el = $('#profiles');
+  el.dataset.manage = manage ? '1' : '';
+  el.innerHTML = `<div class="pwrap"><h2>${manage ? 'Gerir perfis' : 'Quem está a ver?'}</h2>
+    <div class="plist">${S.profiles.map(p => `<button class="pcard ${p.id === S.activeProfile ? 'on' : ''}" data-prof="${p.id}">${avatar(p, 104)}<b>${esc(p.name)}</b>${manage ? '<small>Editar</small>' : ''}</button>`).join('')}
+    ${S.profiles.length < 6 ? `<button class="pcard" data-prof-add><span class="pav" style="--pc:#3a3446;width:104px;height:104px">${I.plus}</span><b>Adicionar</b></button>` : ''}</div>
+    <div class="pact">${manage ? '<button class="btn pri" data-prof-done>Concluído</button>' : '<button class="btn gho" data-prof-manage>Gerir perfis</button>'}</div></div>`;
+  el.classList.add('open');
+  setTimeout(() => el.querySelector('.pcard.on, .pcard')?.focus(), 50);
+}
+function editProfile(id) {
+  const p = id ? Object.assign({}, S.profiles.find(x => x.id === id)) : { id: 'p' + Date.now().toString(36), name: '', color: S.profiles.length % PCOLORS.length };
+  const el = $('#profiles');
+  el.innerHTML = `<div class="pwrap"><h2>${id ? 'Editar perfil' : 'Novo perfil'}</h2><div class="pedit">${avatar(p, 112)}<input class="inp" id="pname" maxlength="18" placeholder="Nome" value="${esc(p.name)}">
+    <div class="swatches" id="pcol">${PCOLORS.map((c, i) => `<button class="sw ${i === p.color ? 'on' : ''}" data-pc="${i}" style="background:${c}"></button>`).join('')}</div></div>
+    <div class="pact"><button class="btn pri" id="psave">Guardar</button><button class="btn gho" data-prof-manage>Cancelar</button>${id && S.profiles.length > 1 ? '<button class="btn gho" id="pdel" style="color:#ff8fa8">Apagar perfil</button>' : ''}</div></div>`;
+  const av = el.querySelector('.pedit .pav');
+  $('#pcol').onclick = e => { const b = e.target.closest('[data-pc]'); if (!b) return; p.color = +b.dataset.pc; [...$('#pcol').children].forEach(x => x.classList.toggle('on', x === b)); av.style.setProperty('--pc', PCOLORS[p.color]); };
+  $('#pname').oninput = e => { av.textContent = (e.target.value.trim()[0] || '?').toUpperCase(); };
+  $('#pname').onkeydown = e => { if (e.key === 'Enter') $('#psave').click(); };
+  setTimeout(() => $('#pname').focus(), 50);
+  $('#psave').onclick = () => {
+    const name = $('#pname').value.trim(); if (!name) return toast('Escreve um nome para o perfil');
+    const ex = S.profiles.find(x => x.id === p.id);
+    if (ex) Object.assign(ex, { name, color: p.color }); else { S.profiles.push({ id: p.id, name, color: p.color }); S.pdata[p.id] = emptyPData(); }
+    save(); updateProfBtn(); showProfiles(true);
+  };
+  const del = $('#pdel');
+  if (del) del.onclick = function () {
+    if (!this.dataset.c) { this.dataset.c = 1; this.textContent = 'Carrega outra vez para apagar'; return; }
+    S.profiles = S.profiles.filter(x => x.id !== id); delete S.pdata[id];
+    if (S.activeProfile === id) S.activeProfile = S.profiles[0].id;
+    save(); updateProfBtn(); showProfiles(true);
+  };
+}
+
+/* ---------- TV e comando ---------- */
+const IS_TV = /Android TV|\bAFT|BRAVIA|SmartTV|SMART-TV|GoogleTV|Tizen|Web0S|WebOS|HbbTV|Leanback|\bTV\b.*Android|Android.*\bTV\b/i.test(navigator.userAgent);
+function applyTV() { document.documentElement.classList.toggle('tv', !!(S.prefs.tv ?? IS_TV)); }
+function topLayer() {
+  if ($('#profiles').classList.contains('open')) return $('#profiles');
+  if ($('#upd').classList.contains('open')) return $('#upd');
+  if (drawer.classList.contains('open')) return $('.dpanel');
+  if ($('#detail').classList.contains('open')) return $('#detail');
+  return document.body;
+}
+function focusables() {
+  const top = topLayer();
+  return [...top.querySelectorAll('button, a[href], input, select, [tabindex]:not([tabindex="-1"])')].filter(el => {
+    if (el.disabled || el.closest('#player') || el.closest('.hdots')) return false;
+    const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0;
+  });
+}
+function moveFocus(dir) {
+  const list = focusables(); if (!list.length) return;
+  const cur = list.includes(document.activeElement) ? document.activeElement : null;
+  if (!cur) { const first = list.find(el => { const r = el.getBoundingClientRect(); return r.top >= 0 && r.top < innerHeight && !el.closest('#nav'); }) || list[0]; first.focus({ preventScroll: true }); first.scrollIntoView({ block: 'center', inline: 'nearest' }); return; }
+  const a = cur.getBoundingClientRect(), ax = a.left + a.width / 2, ay = a.top + a.height / 2;
+  let best = null, bs = Infinity;
+  for (const el of list) {
+    if (el === cur) continue;
+    const r = el.getBoundingClientRect(), dx = r.left + r.width / 2 - ax, dy = r.top + r.height / 2 - ay;
+    let main, cross;
+    if (dir === 'left') { if (r.right > a.left + 2) continue; main = -dx; cross = Math.abs(dy); }
+    else if (dir === 'right') { if (r.left < a.right - 2) continue; main = dx; cross = Math.abs(dy); }
+    else if (dir === 'up') { if (r.bottom > a.top + 2) continue; main = -dy; cross = Math.abs(dx); }
+    else { if (r.top < a.bottom - 2) continue; main = dy; cross = Math.abs(dx); }
+    const sc = main + cross * 2.5; if (sc < bs) { bs = sc; best = el; }
+  }
+  if (best) { best.focus({ preventScroll: true }); best.scrollIntoView({ block: best.closest('#nav') ? 'nearest' : 'center', inline: 'center', behavior: 'smooth' }); }
 }
 
 /* ---------- router ---------- */

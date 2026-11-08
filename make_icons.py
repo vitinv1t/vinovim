@@ -1,6 +1,6 @@
 # Gera os ícones do vinovim (corre na compilação)
 import os
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 A, B = (224, 49, 91), (245, 194, 107)
 def grad(S):
     h = Image.linear_gradient('L').rotate(45, expand=True).resize((S, S))
@@ -24,4 +24,11 @@ grad(1024).save('assets/icon-background.png')
 fg = Image.new('RGBA', (1024, 1024), (0, 0, 0, 0)); mark(fg, 1024, .6, 1024 * .2); fg.save('assets/icon-foreground.png')
 for n in ('splash.png', 'splash-dark.png'):
     sp = Image.new('RGBA', (2732, 2732), (9, 8, 13, 255)); s = big.resize((420, 420), Image.LANCZOS); sp.paste(s, (1156, 1156), s); sp.save('assets/' + n)
+# banner para o Android TV (320x180)
+bn = Image.new('RGBA', (320, 180), (9, 8, 13, 255)); sm = big.resize((92, 92), Image.LANCZOS); bn.paste(sm, (30, 44), sm)
+dr = ImageDraw.Draw(bn)
+try: fnt = ImageFont.truetype('DejaVuSans-Bold.ttf', 40)
+except Exception: fnt = ImageFont.load_default()
+dr.text((138, 68), 'vinovim', fill='white', font=fnt)
+bn.convert('RGB').save('assets/tv-banner.png')
 print('icones gerados')
