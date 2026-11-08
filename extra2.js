@@ -32,6 +32,7 @@ const XI = {
 
 /* =================== estilos =================== */
 document.head.insertAdjacentHTML('beforeend', `<style>
+.pimg img[data-tried]:not(.vvok){visibility:hidden}
 .pimg.vvart{display:flex;flex-direction:column;justify-content:flex-end}
 .pimg.vvart .ptitle{font-size:16px;text-shadow:0 2px 12px rgba(0,0,0,.5);inset:auto 12px 30px}
 .pimg.vvart .vvico{position:absolute;top:14px;left:14px;width:30px;height:30px;opacity:.55}
@@ -126,7 +127,7 @@ window.vvPoster = function (img) {
   const tried = new Set((img.dataset.tried || '').split('\n').filter(Boolean)); tried.add(img.src);
   img.dataset.tried = [...tried].join('\n');
   const give = () => { POSTERS[id] = '-'; savePosters(); artCard(pimg, type, name, (year.match(/\d{4}/) || [''])[0]); };
-  const tryUrl = u => { if (!u || tried.has(u)) return false; img.onload = () => { if (img.naturalWidth > 40) { POSTERS[id] = u; savePosters(); } else window.vvPoster(img); }; img.src = u; return true; };
+  const tryUrl = u => { if (!u || tried.has(u)) return false; img.onload = () => { if (img.naturalWidth > 40) { img.classList.add('vvok'); POSTERS[id] = u; savePosters(); } else window.vvPoster(img); }; img.src = u; return true; };
   if (POSTERS[id] === '-') return give();
   const cands = [POSTERS[id]];
   if (/^tt\d+$/.test(id)) cands.push(`https://images.metahub.space/poster/medium/${id}/img`, `https://images.metahub.space/poster/small/${id}/img`, `https://live.metahub.space/poster/medium/${id}/img`);
@@ -134,7 +135,7 @@ window.vvPoster = function (img) {
   if (img.dataset.meta) return give();
   img.dataset.meta = '1';
   let job = metaTries.get(id);
-  if (!job) { job = getMeta(type || 'movie', id).catch(() => null); metaTries.set(id, job); }
+  if (!job) { job = Promise.race([getMeta(type || 'movie', id).catch(() => null), new Promise(r => setTimeout(() => r(null), 6000))]); metaTries.set(id, job); }
   job.then(m => {
     if (m && (tryUrl(m.poster) || tryUrl(m.background) || tryUrl(m.logo && /^tt/.test(id) ? `https://images.metahub.space/background/medium/${id}/img` : null))) return;
     give();
