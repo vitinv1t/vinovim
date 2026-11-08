@@ -55,6 +55,7 @@ export default async function handler(req, res) {
         return res.json({ token: await sign(uid), email });
       }
       await new Promise(r => setTimeout(r, 300));
+      if (ex && !ex.hash) return res.status(401).json({ error: 'Esta conta usa o login com Google. Carrega em “Continuar com Google”.' });
       if (!ex || hashPw(pw, ex.salt) !== ex.hash) return res.status(401).json({ error: 'Email ou palavra-passe errados' });
       return res.json({ token: await sign(ex.uid), email });
     }
