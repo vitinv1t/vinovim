@@ -1,10 +1,15 @@
 {
-  "version": "1.6.0",
+  "version": "1.7.0",
   "date": "2026-11-08",
   "notes": [
-    "O teu ano no vinovim: resumo animado em cartões, com imagem para partilhar",
-    "Windows: “Continuar a ver” no menu Iniciar e na barra de tarefas",
-    "Windows: reproduzir, pausar e avançar a partir da miniatura da barra de tarefas, com o progresso no ícone"
+    "Novo visual organizado como a Netflix: menu no topo, menu “Mais” e definições por separadores",
+    "Abertura animada com o “ta-dum” do vinovim",
+    "Trailer a tocar no destaque do início e pré-visualização ao passar o rato pelos cartões",
+    "“% para ti”: quanto cada título combina contigo",
+    "Filas “Porque viste…”, Top 10 de filmes e séries e filas para o teu momento do dia",
+    "“Continuar a ver” com a imagem da cena onde paraste",
+    "No fim de um filme, 3 sugestões parecidas com contagem",
+    "Novo separador “Novidades” com as estreias e o botão “Avisa-me”"
   ],
   "native": {
     "min": "1.2.0",
