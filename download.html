@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Descarregar o vinovim</title>
+<meta name="theme-color" content="#09080d">
+<meta name="description" content="Descarrega o vinovim para Windows e Android.">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#09080d;--card:#15121c;--line:#2b2636;--tx:#f4f0f8;--mu:#a39cb1;--mu2:#6f687c;--ac:#e0315b;--ac2:#f5c26b;--fd:'Bricolage Grotesque',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--tx);font-family:var(--fb);-webkit-font-smoothing:antialiased;min-height:100%}
+a{color:inherit}
+body{overflow-x:hidden}
+.bg{position:fixed;inset:0;pointer-events:none;background:radial-gradient(900px 500px at 15% -10%,rgba(224,49,91,.28),transparent 60%),radial-gradient(700px 500px at 100% 10%,rgba(245,194,107,.14),transparent 60%)}
+.wrap{position:relative;max-width:1080px;margin:0 auto;padding:28px 24px 60px}
+nav{display:flex;align-items:center;gap:10px;margin-bottom:9vh}
+nav svg{width:38px;height:38px}
+nav b{font-family:var(--fd);font-size:22px;font-weight:800;letter-spacing:-.02em}
+nav .sp{flex:1}
+nav a.web{font-size:13.5px;color:var(--mu);text-decoration:none;padding:9px 14px;border-radius:999px;border:1px solid var(--line)}
+nav a.web:hover{color:var(--tx);border-color:var(--mu2)}
+.hero{text-align:center;max-width:720px;margin:0 auto 54px}
+.kick{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ac2);margin-bottom:18px}
+.kick i{width:22px;height:2px;background:var(--ac2)}
+h1{font-family:var(--fd);font-size:clamp(40px,7vw,72px);line-height:.95;font-weight:800;letter-spacing:-.035em;margin-bottom:18px}
+h1 span{background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#d4cedc;font-size:17px;line-height:1.6}
+.status{margin:26px auto 0;display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:14px;color:var(--mu)}
+.status .spin{width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--ac);border-radius:50%;animation:rot .8s linear infinite}
+.status.done .spin{display:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{position:relative;padding:28px;border-radius:26px;background:linear-gradient(180deg,#17141f,#0f0d15);border:1px solid var(--line);overflow:hidden;transition:.25s}
+.card.rec{border-color:rgba(224,49,91,.6);box-shadow:0 30px 80px rgba(224,49,91,.15)}
+.card .tag{position:absolute;top:18px;right:18px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px;background:var(--ac);color:#fff;display:none}
+.card.rec .tag{display:block}
+.os{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.06);margin-bottom:18px}
+.os svg{width:30px;height:30px}
+.card h2{font-family:var(--fd);font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.meta{color:var(--mu2);font-size:13px;margin-bottom:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;height:54px;border-radius:999px;font-weight:700;font-size:15.5px;text-decoration:none;transition:.18s;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.btn:hover{background:rgba(255,255,255,.14)}
+.card.rec .btn{background:linear-gradient(135deg,var(--ac),#ff5c7f);border:0;color:#fff}
+.card.rec .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn svg{width:20px;height:20px}
+.steps{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);display:grid;gap:10px}
+.steps div{display:flex;gap:12px;font-size:13.5px;line-height:1.5;color:#cfc8d8}
+.steps i{flex:0 0 22px;height:22px;border-radius:50%;background:rgba(224,49,91,.16);color:#ff8fa8;font-style:normal;font-size:12px;font-weight:800;display:grid;place-items:center}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:46px}
+.feat{padding:18px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.feat b{display:block;font-size:14px;margin-bottom:4px}
+.feat span{color:var(--mu2);font-size:12.5px;line-height:1.45}
+footer{margin-top:46px;text-align:center;color:var(--mu2);font-size:12.5px;line-height:1.7}
+footer a{color:var(--mu)}
+@media(max-width:760px){.cards{grid-template-columns:1fr}.feats{grid-template-columns:1fr 1fr}nav{margin-bottom:6vh}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="wrap">
+  <nav>
+    <svg viewBox="0 0 48 48"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0315b"/><stop offset="1" stop-color="#f5c26b"/></linearGradient></defs><rect width="48" height="48" rx="14" fill="url(#g)"/><path d="M14 13 L24 35 L34 13" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="13" r="3" fill="#fff"/></svg>
+    <b>vinovim</b><div class="sp"></div>
+    <a class="web" href="/?web">Usar no browser →</a>
+  </nav>
+
+  <section class="hero">
+    <div class="kick"><i></i>Versão <span id="ver">1.1</span></div>
+    <h1>Os teus filmes e séries, <span>num só sítio.</span></h1>
+    <p class="lead">Instala o vinovim no teu PC ou no teu telemóvel. As atualizações chegam sozinhas, dentro da própria app.</p>
+    <div class="status" id="status"><span class="spin"></span><span id="stxt">A preparar o download…</span></div>
+  </section>
+
+  <section class="cards">
+    <article class="card" id="win">
+      <span class="tag">Para este dispositivo</span>
+      <div class="os"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.1 10.4 4v7.2H3zM11.3 3.9 21 2.5v8.7h-9.7zM3 12.1h7.4v7.2L3 18.2zM11.3 12.1H21v8.7l-9.7-1.4z"/></svg></div>
+      <h2>Windows</h2>
+      <p class="meta">Windows 10 e 11 · <span data-size="vinovim-setup.exe">instalador .exe</span></p>
+      <a class="btn" href="/downloads/vinovim-setup.exe" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Descarregar para Windows</a>
+      <div class="steps">
+        <div><i>1</i><span>Abre o ficheiro <b>vinovim-setup.exe</b> que descarregaste.</span></div>
+        <div><i>2</i><span>Se aparecer “O Windows protegeu o seu PC”, carrega em <b>Mais informações → Executar mesmo assim</b>.</span></div>
+        <div><i>3</i><span>Segue o instalador. O vinovim fica no menu Iniciar.</span></div>
+      </div>
+    </article>
+    <article class="card" id="and">
+      <span class="tag">Para este dispositivo</span>
+      <div class="os"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 9.3 19.3 6a.5.5 0 0 0-.9-.4l-1.8 3.3A10.6 10.6 0 0 0 12 8a10.6 10.6 0 0 0-4.6 1L5.6 5.6a.5.5 0 1 0-.9.4l1.8 3.3A8.4 8.4 0 0 0 2 16h20a8.4 8.4 0 0 0-4.5-6.7zM7.5 13.3a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm9 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg></div>
+      <h2>Android</h2>
+      <p class="meta">Android 7 ou mais recente · <span data-size="vinovim.apk">ficheiro .apk</span></p>
+      <a class="btn" href="/downloads/vinovim.apk" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Descarregar para Android</a>
+      <div class="steps">
+        <div><i>1</i><span>Abre o <b>vinovim.apk</b> nas notificações ou nos Downloads.</span></div>
+        <div><i>2</i><span>Se pedir, ativa <b>Permitir desta fonte</b> e volta atrás.</span></div>
+        <div><i>3</i><span>Toca em <b>Instalar</b>. Se o Play Protect avisar, escolhe <b>Instalar mesmo assim</b>.</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="feats">
+    <div class="feat"><b>Addons Stremio</b><span>Catálogos, fontes e legendas dos addons que instalares.</span></div>
+    <div class="feat"><b>Continuar a ver</b><span>Retoma onde paraste, com o próximo episódio automático.</span></div>
+    <div class="feat"><b>Discord</b><span>Mostra no teu perfil o que estás a ver (PC).</span></div>
+    <div class="feat"><b>Sempre atualizado</b><span>As novidades aparecem dentro da app.</span></div>
+  </section>
+
+  <footer>O vinovim não aloja nem distribui conteúdo. Tudo o que aparece vem dos addons que instalas.<br>
+    <a href="/?web">Abrir a versão web</a></footer>
+</div>
+<script>
+(function () {
+  var ua = navigator.userAgent, os = /Android/i.test(ua) ? 'and' : /Windows/i.test(ua) ? 'win' : null;
+  var st = document.getElementById('status'), tx = document.getElementById('stxt');
+  function fmt(b) { return b > 1048576 ? (b / 1048576).toFixed(0) + ' MB' : Math.round(b / 1024) + ' KB'; }
+  fetch('/version.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (v) { document.getElementById('ver').textContent = v.version; }).catch(function () {});
+  fetch('/downloads.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
+    document.querySelectorAll('[data-size]').forEach(function (el) { var s = d[el.getAttribute('data-size')]; if (s) el.textContent += ' · ' + fmt(s); });
+  }).catch(function () {});
+  if (!os) { st.classList.add('done'); tx.textContent = 'Escolhe a versão para o teu dispositivo'; return; }
+  var card = document.getElementById(os); card.classList.add('rec');
+  if (os === 'and') card.parentNode.insertBefore(card, card.parentNode.firstChild);
+  var link = card.querySelector('.btn');
+  tx.textContent = 'O download para ' + (os === 'win' ? 'Windows' : 'Android') + ' vai começar…';
+  var started = false;
+  function go() { if (started) return; started = true; st.classList.add('done'); tx.textContent = 'Download iniciado. Não começou? Carrega no botão abaixo.'; location.href = link.getAttribute('href'); }
+  link.addEventListener('click', function () { started = true; st.classList.add('done'); tx.textContent = 'Download iniciado.'; });
+  setTimeout(go, 1800);
+})();
+</script>
+</body>
+</html>

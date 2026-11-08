@@ -6,6 +6,16 @@
 <title>vinovim</title>
 <meta name="theme-color" content="#09080d">
 <meta name="description" content="vinovim — o teu hub de filmes e séries">
+<script>
+// No browser normal, o site abre a página de downloads; as apps instaladas abrem o vinovim
+(function () { try {
+  if (/[?&]web\b/.test(location.search)) localStorage.setItem('vinovim.web', '1');
+  var ua = navigator.userAgent;
+  var isApp = window.vinovimNative || window.Capacitor || /Electron|; wv\)/.test(ua) || navigator.standalone ||
+    (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || localStorage.getItem('vinovim.web');
+  if (!isApp && /^https?:$/.test(location.protocol)) location.replace('/download');
+} catch (e) {} })();
+</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -426,9 +436,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.1.1';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ['Os trailers do YouTube já funcionam dentro da app', 'Discord Rich Presence: mostra no teu perfil o que estás a ver (app de PC)', 'Avisos de atualização bonitos dentro da própria app', 'A app passa a atualizar-se sozinha, sem reinstalar'];
+const CHANGELOG = ['Nova página de downloads em vinovim.vercel.app', 'O site deteta se estás no Windows ou no Android e descarrega a app certa', 'Os trailers do YouTube já funcionam dentro da app', 'Discord Rich Presence no PC e avisos de atualização dentro da app'];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;

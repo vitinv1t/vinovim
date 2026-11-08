@@ -1,11 +1,10 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "date": "2026-11-08",
   "notes": [
-    "Os trailers do YouTube já funcionam dentro da app",
-    "Discord Rich Presence: mostra no teu perfil o que estás a ver (app de PC)",
-    "Avisos de atualização bonitos dentro da própria app",
-    "A app passa a atualizar-se sozinha, sem reinstalar"
+    "Nova página de downloads em vinovim.vercel.app",
+    "O site deteta se estás no Windows ou no Android e descarrega a app certa",
+    "Os links de atualização da app passam a apontar para o site"
   ],
-  "native": { "min": "1.1.0", "notes": ["Esta atualização precisa de reinstalar a app."], "download": "" }
+  "native": { "min": "1.1.0", "notes": ["Esta atualização precisa de reinstalar a app."], "download": "https://vinovim.vercel.app/download" }
 }
