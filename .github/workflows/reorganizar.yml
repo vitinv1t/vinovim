@@ -27,7 +27,7 @@ jobs:
           npx --yes prettier@3.8.1 --write "app/js/**/*.js" "app/css/*.css" "app/sw.js" "desktop/*.js" "server/**/*.js" > /dev/null
           base64 -d /tmp/reorg/patch.xz.b64 | xz -d > /tmp/reorg/changes.patch
           git add -A
-          git apply --index /tmp/reorg/changes.patch
+          git apply --index --unidiff-zero /tmp/reorg/changes.patch
           got=$(git ls-files -s | grep -v 'reorganizar.yml' | sha256sum | cut -c1-64)
           echo "obtido $got"
           test "$got" = "d19878b6f58de321e8d6b997b832cdd9c1f77b5fa66d80828e0142472c00cab6"
