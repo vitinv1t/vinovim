@@ -121,7 +121,7 @@
     if (/^(comando|colab|lista)=/.test(h)) return;
     const el = document.createElement('div');
     el.id = 'vvIntro';
-    el.innerHTML = `<div class="burst"></div><div class="lg"><svg viewBox="0 0 48 48"><defs><linearGradient id="vvig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0315b"/><stop offset="1" stop-color="#f5c26b"/></linearGradient></defs><rect width="48" height="48" rx="14" fill="url(#vvig)"/><path class="v" d="M14 13 L24 35 L34 13" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle class="dot" cx="24" cy="13" r="3" fill="#fff"/></svg></div><div class="name">VINOVIM</div>`;
+    el.innerHTML = `<div class="burst"></div><div class="lg"><svg viewBox="0 0 48 48"><defs><linearGradient id="vvigA" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient><linearGradient id="vvigB" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#c8195f"/><stop offset="1" stop-color="#e17828"/></linearGradient></defs><rect width="48" height="48" rx="11" fill="#0c0911"/><path class="v" d="M32.6 13.6 24 34.4" fill="none" stroke="url(#vvigB)" stroke-width="6.1" stroke-linecap="round"/><path class="v" d="M15.4 13.6 24 34.4" fill="none" stroke="url(#vvigA)" stroke-width="6.1" stroke-linecap="round"/></svg></div><div class="name">VINOVIM</div>`;
     document.body.appendChild(el);
     const end = () => {
       el.classList.add('out');
