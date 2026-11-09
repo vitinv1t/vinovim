@@ -108,7 +108,7 @@ el.querySelector('[data-g]').onclick = async () => {
   try { cfg = await fetch(API + '/api/google?a=config', { cache: 'no-store' }).then(r => r.json()); } catch (e) { return say('Sem ligação à internet.'); }
   if (!cfg.clientId) return say('O login com Google ainda não está ativo. Por agora, entra com email.');
   const c = code();
-  const url = 'https://accounts.google.com/o/oauth2/v2/auth?' + new URLSearchParams({ client_id: cfg.clientId, redirect_uri: cfg.redirect, response_type: 'code', scope: 'openid email profile', state: c, prompt: 'select_account' });
+  const url = 'https://accounts.google.com/o/oauth2/v2/auth?' + new URLSearchParams({ client_id: cfg.clientId, redirect_uri: cfg.redirect, response_type: 'id_token', scope: 'openid email profile', state: c, nonce: c, prompt: 'select_account' });
   if (IS_ELECTRON) window.open(url, '_blank');            // a app de Windows abre no browser do sistema
   else if (IS_CAP) location.href = url;                    // no Android, o Capacitor abre o browser do sistema
   else if (!window.open(url, 'vvgoogle', 'width=480,height=640')) location.href = url;
