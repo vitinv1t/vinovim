@@ -1,4 +1,4 @@
-/* vinovim — funcionalidades extra (v1.3)
+/* Vinovim — módulo
    Conta e sincronização · Calendário · Saltar introdução · Estatísticas ·
    Ver em conjunto · Listas · Recomendações · Chromecast · Idiomas */
 (() => {

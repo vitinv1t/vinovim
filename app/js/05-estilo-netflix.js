@@ -1,4 +1,4 @@
-/* vinovim — funcionalidades extra (v1.7) · experiência estilo Netflix, só para ti
+/* Vinovim — módulo · experiência estilo Netflix, só para ti
    Abertura animada · Trailer no destaque · Pré-visualização nos cartões · “% para ti” · “Porque viste…” ·
    Top 10 · Continuar a ver com a cena · Fim do filme com sugestões · Novidades · Filas do momento */
 (() => {

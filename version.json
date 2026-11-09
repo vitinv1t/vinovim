@@ -1,13 +1,17 @@
 {
-  "version": "1.7.9",
-  "date": "2026-11-08",
+  "version": "1.0.0",
+  "date": "2026-11-09",
   "notes": [
-    "O scroll da página inicial voltou a funcionar bem com o rato por cima das filas e do Top 10"
+    "Bem-vindo ao Vinovim 1.0 🎉",
+    "Ecrã de pausa e “Da última vez…” ao voltar a uma série",
+    "Continua noutro dispositivo o que estavas a ver",
+    "Início que muda com a época e contagem para as estreias",
+    "Protetor de ecrã com imagens do título que estás a ver"
   ],
   "native": {
-    "min": "1.4.0",
+    "min": "1.0.0",
     "notes": [
-      "A partir desta versão, a app atualiza-se sozinha: basta carregar em “Atualizar agora”",
+      "Vinovim 1.0: a app atualiza-se sozinha a partir de agora",
       "Instala por cima da versão que tens: não perdes nada"
     ],
     "download": "https://vinovim.vercel.app/download"

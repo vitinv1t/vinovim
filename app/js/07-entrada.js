@@ -1,4 +1,4 @@
-/* vinovim — ecrã de entrada (v1.7.7)
+/* Vinovim — ecrã de entrada
    Depois da abertura, quem não tem sessão iniciada vê este ecrã:
    continuar com Google, entrar ou criar conta com email, ou continuar sem conta. */
 (() => {

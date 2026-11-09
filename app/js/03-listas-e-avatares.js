@@ -1,4 +1,4 @@
-/* vinovim — funcionalidades extra (v1.5)
+/* Vinovim — módulo
    Barra lateral compacta · Avatares e fotos · Próximo episódio automático · Listas partilhadas ·
    Avisa-me · Início por perfil · “Não sei o que ver” · Atalhos e comandos de jogos ·
    Cópia de segurança automática · Página de ator · Notas privadas */

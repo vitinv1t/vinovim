@@ -1,4 +1,4 @@
-/* vinovim — organização estilo Netflix (v1.7)
+/* Vinovim — organização estilo Netflix
    Barra de navegação no topo · menu “Mais” · página do título arrumada · definições e biblioteca por separadores */
 (() => {
 'use strict';

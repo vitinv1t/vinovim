@@ -5,7 +5,7 @@
 <br>
 
 [![Compilação](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml/badge.svg)](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml)
-![Versão](https://img.shields.io/badge/versão-1.7.9-e0315b?style=flat-square)
+![Versão](https://img.shields.io/badge/versão-1.0.0-e0315b?style=flat-square)
 ![Plataformas](https://img.shields.io/badge/plataformas-Windows%20·%20Android%20·%20TV%20·%20Web-7c5cff?style=flat-square)
 ![Addons](https://img.shields.io/badge/addons-protocolo%20Stremio-f5c26b?style=flat-square)
 ![Idiomas](https://img.shields.io/badge/idiomas-PT%20·%20EN%20·%20ES-2ea043?style=flat-square)
@@ -49,6 +49,8 @@
 - ⏭️ Próximo episódio automático com contagem decrescente
 - 🖼️ Mini-player e imagem-em-imagem (PiP)
 - 🎞️ Trailer a tocar no destaque e pré-visualização ao passar o rato
+- ⏸️ Ecrã de pausa com o título, o episódio, a sinopse e o elenco
+- 🧠 “Da última vez…”: um resumo de onde ficaste quando voltas a uma série
 - 🍿 No fim de um filme, 3 sugestões parecidas
 - ⬇️ Transferências para ver sem internet
 
@@ -60,6 +62,8 @@
 - 💡 Filas “Porque viste…” e para o teu momento do dia
 - 🎯 “% para ti”: quanto cada título combina contigo
 - 🆕 Separador **Novidades** com estreias e botão “Avisa-me”
+- ⏳ Contagem decrescente para as estreias que estás à espera
+- 🎄 Início que muda com a época: Natal, Halloween, São Martinho e verão
 - ⭐ Filtros por género, ano e “Mais bem avaliados”
 - 🎲 “Não sei o que ver” e “Surpreende-me”
 - 🎭 Página de cada ator com a filmografia
@@ -88,6 +92,8 @@
 - 🎮 Comando de jogos e atalhos de teclado
 - 📱 Usa o telemóvel como comando
 - ☁️ Cópia de segurança e sincronização da conta
+- 📲 Continua no telemóvel ou na TV o que estavas a ver no PC
+- 🖼️ Protetor de ecrã com imagens do título que estás a ver
 - 🎮 Estado no **Discord** (opcional)
 - 🌍 Em português, inglês e espanhol
 
@@ -139,22 +145,24 @@ vinovim/
 │   ├── sw.js                   → service worker (abre mesmo sem rede)
 │   ├── manifest.webmanifest    → dados da app instalável (PWA)
 │   ├── icon.svg                → logótipo
-│   └── 📁 js/                  → módulos que acrescentam funções por versão
-│       ├── modulo-1.3.js       → sincronização, calendário, estatísticas, ver juntos
-│       ├── modulo-1.4.js       → perfil infantil, transferências, temas, conquistas
-│       ├── modulo-1.5.js       → avatares, listas partilhadas, notas, atalhos
-│       ├── modulo-1.6.js       → Windows (menu Iniciar / barra de tarefas) e Wrapped
-│       ├── modulo-1.7-netflix.js → abertura, trailers, Top 10, Novidades, % para ti
-│       ├── modulo-1.7-visual.js  → menu no topo, menu “Mais”, separadores
-│       └── modulo-1.7-login.js   → ecrã de entrada (Google, email ou sem conta)
+│   └── 📁 js/                  → as funções da app, por temas
+│       ├── 01-conta.js         → conta, sincronização, calendário, estatísticas, ver em conjunto
+│       ├── 02-perfis-e-temas.js → perfil infantil, transferências, temas, comando, conquistas
+│       ├── 03-listas-e-avatares.js → avatares, listas partilhadas, notas, atalhos, página de ator
+│       ├── 04-windows-e-wrapped.js → menu Iniciar, barra de tarefas e o teu ano (Wrapped)
+│       ├── 05-estilo-netflix.js → abertura, trailers, Top 10, Novidades, % para ti
+│       ├── 06-menus-e-separadores.js → menu no topo, menu “Mais”, definições por separadores
+│       ├── 07-entrada.js       → ecrã de entrada (Google, email ou sem conta)
+│       └── 08-cinema-em-casa.js → pausa, “Da última vez…”, continuar noutro dispositivo, época, estreias, protetor de ecrã
 ├── 📁 desktop/                 → app de Windows (Electron)
 │   ├── main.js
 │   └── preload.js
 ├── 📁 mobile/                  → extras do Android (widget, microfone)
-│   └── android_widget.py
+│   ├── android_widget.py       → widget “Continuar a ver” e microfone
+│   └── android_update.py       → atualização dentro da app, versão e assinatura
 ├── 📁 server/                  → funções do site no Vercel
 │   ├── 📁 api/
-│   │   ├── account.js          → contas, sincronização e cópias de segurança
+│   │   ├── account.js          → contas, sincronização, cópias de segurança e “a ver agora”
 │   │   ├── google.js           → login com Google (configuração e espera)
 │   │   ├── google-callback.js  → volta do Google depois de escolheres a conta
 │   │   └── lists.js            → listas partilhadas

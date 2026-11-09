@@ -1,4 +1,4 @@
-/* vinovim — funcionalidades extra (v1.4)
+/* Vinovim — módulo
    Capas que faltavam · Perfil infantil com PIN · Transferências offline · Widget Android ·
    Comando no telemóvel · Pesquisa por voz · Temas · Mini-player · Conquistas ·
    Importar Trakt/Letterboxd · Gestor de addons */

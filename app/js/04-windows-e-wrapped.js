@@ -1,4 +1,4 @@
-/* vinovim — funcionalidades extra (v1.6)
+/* Vinovim — módulo
    Windows: “Continuar a ver” no menu Iniciar e na barra de tarefas · botões na miniatura · progresso no ícone
    O teu ano no vinovim (Wrapped) com cartões animados para partilhar */
 (() => {

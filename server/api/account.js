@@ -87,6 +87,20 @@ export default async function handler(req, res) {
       }
       return res.status(405).end();
     }
+    if (a === 'now') {
+      // o que estás a ver agora, para continuar noutro dispositivo
+      const uid = await verify((req.headers.authorization || '').replace(/^Bearer\s+/i, ''));
+      if (!uid) return res.status(401).json({ error: 'A sessão expirou. Entra outra vez.' });
+      const path = 'now/' + uid + '.json';
+      if (req.method === 'GET') return res.json((await readJSON(path)) || {});
+      if (req.method === 'PUT' || req.method === 'POST') {
+        const raw = JSON.stringify(body || {});
+        if (raw.length > 20000) return res.status(413).json({ error: 'Demasiado grande' });
+        await writeJSON(path, Object.assign({}, body, { at: Date.now() }));
+        return res.json({ ok: true });
+      }
+      return res.status(405).end();
+    }
     return res.status(404).json({ error: 'Pedido desconhecido' });
   } catch (e) {
     return res.status(500).json({ error: 'Erro no servidor' });

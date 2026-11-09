@@ -134,7 +134,11 @@ else:
 gr = 'android/app/build.gradle'
 g = open(gr, encoding='utf-8').read()
 maj, mi, pa = (int(n) for n in (version.split('.') + ['0', '0'])[:3])
-g = re.sub(r'versionCode\s+\d+', 'versionCode %d' % (maj * 10000 + mi * 100 + pa), g, count=1)
+# o versionCode tem de subir sempre (o Android recusa instalar um número mais baixo por cima):
+# usa o número da compilação do GitHub, acima de tudo o que já foi instalado (a 1.4.0 era 10400)
+run = int(os.environ.get('GITHUB_RUN_NUMBER', '0') or 0)
+code = 20000 + run if run else maj * 10000 + mi * 100 + pa
+g = re.sub(r'versionCode\s+\d+', 'versionCode %d' % code, g, count=1)
 g = re.sub(r'versionName\s+"[^"]*"', 'versionName "%s"' % version, g, count=1)
 key = os.environ.get('VINOVIM_ANDROID_KEY', '').strip()
 if key and '.' in key:
@@ -161,4 +165,4 @@ android {
 else:
     print('AVISO: sem VINOVIM_ANDROID_KEY; o .apk fica com uma chave temporária')
 open(gr, 'w', encoding='utf-8').write(g)
-print('android pronto: versão', version)
+print('android pronto: versão', version, '· código', code)
