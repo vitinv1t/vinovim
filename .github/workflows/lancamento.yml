@@ -1,0 +1,61 @@
+name: Preparar o lançamento 1.0.0 (uma vez)
+
+on:
+  push:
+    branches: [main]
+    paths: ['_lancamento.json']
+
+permissions:
+  contents: write
+
+jobs:
+  lancar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Nomes de lançamento, versão 1.0.0 e documentação
+        run: |
+          set -e
+          python3 - <<'PY'
+          import json, os, re, subprocess
+          d = json.load(open('_lancamento.json', encoding='utf-8'))
+          idx = 'app/index.html'
+          s = open(idx, encoding='utf-8').read()
+          for src, dst in d['moves']:
+              if not os.path.exists(src):
+                  raise SystemExit('falta ' + src)
+              subprocess.check_call(['git', 'mv', src, dst])
+              a = '<script src="js/%s"></script>' % os.path.basename(src)
+              if s.count(a) != 1:
+                  raise SystemExit('tag ' + a)
+              s = s.replace(a, '<script src="js/%s"></script>' % os.path.basename(dst))
+              m = open(dst, encoding='utf-8').read()
+              first, rest = m.split('\n', 1)
+              first = re.sub(r'\s*\(v1\.[\d.]+\)', '', first).replace('vinovim — funcionalidades extra', 'Vinovim — módulo').replace('vinovim — ', 'Vinovim — ')
+              open(dst, 'w', encoding='utf-8').write(first + '\n' + rest)
+          last = '<script src="js/07-entrada.js"></script>'
+          s = s.replace(last, last + '\n<script src="js/08-cinema-em-casa.js"></script>')
+          s, n1 = re.subn(r"const APP_VERSION = '[\d.]+';", "const APP_VERSION = '1.0.0';", s, count=1)
+          s, n2 = re.subn(r'const CHANGELOG = \[.*?\];', 'const CHANGELOG = ' + json.dumps(d['notes'], ensure_ascii=False) + ';', s, count=1)
+          if n1 != 1 or n2 != 1 or s.count('08-cinema-em-casa.js') != 1:
+              raise SystemExit('index inesperado')
+          open(idx, 'w', encoding='utf-8').write(s)
+          v = json.load(open('version.json', encoding='utf-8'))
+          v['version'] = '1.0.0'; v['date'] = '2026-11-09'; v['notes'] = d['notes']
+          v['native']['min'] = '1.0.0'
+          v['native']['notes'] = ['Vinovim 1.0: a app atualiza-se sozinha a partir de agora', 'Instala por cima da versão que tens: não perdes nada']
+          open('version.json', 'w', encoding='utf-8').write(json.dumps(v, indent=2, ensure_ascii=False) + '\n')
+          pk = json.load(open('package.json', encoding='utf-8'))
+          pk['version'] = '1.0.0'
+          open('package.json', 'w', encoding='utf-8').write(json.dumps(pk, indent=2, ensure_ascii=False) + '\n')
+          for path, txt in d['files'].items():
+              os.makedirs(os.path.dirname(path) or '.', exist_ok=True)
+              open(path, 'w', encoding='utf-8').write(txt)
+          os.remove('_lancamento.json')
+          PY
+          git config user.name "vinovim-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status --short
+          git commit -q -m "Vinovim 1.0.0: lançamento"
+          git push
