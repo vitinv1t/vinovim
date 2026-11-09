@@ -1,0 +1,37 @@
+name: Reorganizar o código (uma vez)
+
+on:
+  push:
+    branches: [main]
+    paths: ['_reorg/go']
+
+permissions:
+  contents: write
+
+jobs:
+  reorganizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Aplicar a reorganização
+        run: |
+          set -e
+          cp -r _reorg /tmp/reorg
+          git rm -rq _reorg
+          python3 /tmp/reorg/prep.py
+          cp /tmp/reorg/prettierrc.json .prettierrc.json
+          cp /tmp/reorg/prettierignore .prettierignore
+          npx --yes prettier@3.8.1 --write "app/js/**/*.js" "app/css/*.css" "app/sw.js" "desktop/*.js" "server/**/*.js" > /dev/null
+          base64 -d /tmp/reorg/patch.xz.b64 | xz -d > /tmp/reorg/changes.patch
+          git add -A
+          git apply --index /tmp/reorg/changes.patch
+          got=$(git ls-files -s | grep -v 'reorganizar.yml' | sha256sum | cut -c1-64)
+          echo "obtido $got"
+          test "$got" = "d19878b6f58de321e8d6b997b832cdd9c1f77b5fa66d80828e0142472c00cab6"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "Reorganizar o código: núcleo dividido, hooks e estilos separados" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          git push
