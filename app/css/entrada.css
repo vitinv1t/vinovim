@@ -1,0 +1,154 @@
+#vvLogin {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow: auto;
+  background:
+    radial-gradient(900px 520px at 50% -10%, rgba(224, 49, 91, 0.22), transparent 60%),
+    radial-gradient(700px 500px at 100% 110%, rgba(124, 92, 255, 0.14), transparent 60%), var(--bg, #09080d);
+  animation: fade 0.35s;
+}
+#vvLogin .lw {
+  width: min(400px, 100%);
+  text-align: center;
+}
+#vvLogin .lg {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  filter: drop-shadow(0 12px 30px rgba(224, 49, 91, 0.45));
+}
+#vvLogin h1 {
+  font-family: var(--fd);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+#vvLogin .sub {
+  color: var(--mu, #b9b4c7);
+  font-size: 14.5px;
+  line-height: 1.5;
+  margin: 0 0 26px;
+}
+#vvLogin .gbtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 50px;
+  border-radius: 14px;
+  border: 0;
+  background: #fff;
+  color: #1f1f1f;
+  font:
+    600 15px/1 Inter,
+    Segoe UI,
+    system-ui,
+    sans-serif;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+#vvLogin .gbtn:hover,
+#vvLogin .gbtn:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  outline: none;
+}
+#vvLogin .gbtn svg {
+  width: 20px;
+  height: 20px;
+}
+#vvLogin .or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--mu2, #7d7790);
+  font-size: 12.5px;
+  margin: 20px 0;
+}
+#vvLogin .or:before,
+#vvLogin .or:after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line, rgba(255, 255, 255, 0.1));
+}
+#vvLogin form {
+  display: grid;
+  gap: 10px;
+}
+#vvLogin .inp {
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+}
+#vvLogin .go {
+  height: 48px;
+  justify-content: center;
+  width: 100%;
+}
+#vvLogin .lsw {
+  margin-top: 18px;
+  font-size: 13.5px;
+  color: var(--mu, #b9b4c7);
+}
+#vvLogin .lsw button,
+#vvLogin .skip {
+  background: none;
+  border: 0;
+  color: var(--ac, #e0315b);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+#vvLogin .skip {
+  display: block;
+  margin: 26px auto 0;
+  color: var(--mu2, #7d7790);
+  font-weight: 600;
+  font-size: 13.5px;
+}
+#vvLogin .skip:hover {
+  color: #fff;
+}
+#vvLogin .err {
+  min-height: 20px;
+  color: #ff8fa8;
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+#vvLogin .wait {
+  display: none;
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.1));
+  margin-top: 6px;
+}
+#vvLogin.waiting .wait {
+  display: block;
+}
+#vvLogin.waiting .main {
+  display: none;
+}
+#vvLogin .wait .spin {
+  width: 30px;
+  height: 30px;
+  border-width: 3px;
+  margin: 0 auto 14px;
+  display: block;
+}
+#vvLogin .wait p {
+  margin: 0 0 14px;
+  color: var(--mu, #b9b4c7);
+  font-size: 14px;
+  line-height: 1.5;
+}

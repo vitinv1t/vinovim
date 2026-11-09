@@ -1,4 +1,4 @@
-// vinovim — funções partilhadas pelas APIs (o "_" no nome faz com que o Vercel não a publique como rota)
+// Vinovim — funções partilhadas pelas APIs (o "_" no nome faz com que o Vercel não a publique como rota)
 import { put, get } from '@vercel/blob';
 import crypto from 'node:crypto';
 
@@ -9,10 +9,18 @@ export async function readJSON(path) {
     const r = await get(path, { access: 'private', useCache: false });
     if (!r || r.statusCode !== 200) return null;
     return JSON.parse(await new Response(r.stream).text());
-  } catch (e) { return null; }
+  } catch (e) {
+    return null;
+  }
 }
 
-export const writeJSON = (path, obj) => put(path, JSON.stringify(obj), { access: 'private', addRandomSuffix: false, allowOverwrite: true, contentType: 'application/json' });
+export const writeJSON = (path, obj) =>
+  put(path, JSON.stringify(obj), {
+    access: 'private',
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    contentType: 'application/json'
+  });
 
 // a mesma chave e o mesmo formato de sessão que /api/account usa
 let SECRET = process.env.SESSION_SECRET || null;

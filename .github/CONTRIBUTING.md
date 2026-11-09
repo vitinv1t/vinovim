@@ -1,6 +1,6 @@
 # 🤝 Como contribuir
 
-Obrigado por quereres ajudar o vinovim! 💜
+Obrigado por quereres ajudar o Vinovim! 💜
 
 ## 🐞 Reportar um problema
 
@@ -22,7 +22,8 @@ Abre um issue com o modelo **💡 Sugestão** e explica o que gostavas de fazer 
 ### ✅ Regras do código
 
 - **Sem frameworks** e sem passo de compilação na interface: HTML, CSS e JavaScript simples.
-- Funções novas vão para um **módulo** em `app/js/`, que embrulha as funções existentes em vez de as reescrever ([como funciona](../docs/ARQUITETURA.md)).
+- Funcionalidades novas vão para `app/js/features/` e ligam-se ao núcleo pelos **hooks**, sem substituir funções do núcleo ([como funciona](../docs/ARQUITETURA.md#-pontos-de-extensão)).
+- Corre `npm run format` antes do *commit*.
 - Os textos que o utilizador vê são em **português de Portugal**.
 - Nada de chaves, tokens ou senhas no código.
 - Testa no **computador** e com o ecrã **estreito** (telemóvel).

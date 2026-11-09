@@ -1,11 +1,11 @@
-// vinovim — o Google volta para aqui depois de a pessoa escolher a conta.
+// Vinovim — o Google volta para aqui depois de a pessoa escolher a conta.
 // Usa o fluxo "id_token" do Google: não precisa de segredo, só do ID do cliente (que é público).
 //   GET  → página que lê o token que o Google pôs no endereço (#id_token=…) e envia-o para aqui
 //   POST → confirma o token junto do Google, cria/encontra a conta e deixa a sessão pronta para a app
 import crypto from 'node:crypto';
 import { readJSON, writeJSON, sha, sign, validCode } from './_lib.js';
 
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const PAGE = `<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vinovim</title>
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(700px 400px at 50% 0,rgba(224,49,91,.25),transparent 60%),#09080d;color:#fff;font-family:Inter,Segoe UI,system-ui,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
 .c{max-width:420px}.i{width:76px;height:76px;margin:0 auto 22px;border-radius:24px;display:grid;place-items:center;font-size:38px;background:#2a2433}.i.ok{background:linear-gradient(135deg,#e0315b,#f5c26b)}
@@ -36,18 +36,28 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
   try {
     let body = req.body || {};
-    if (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { body = {}; } }
-    const idToken = String(body.id_token || ''), state = String(body.state || '');
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        body = {};
+      }
+    }
+    const idToken = String(body.id_token || ''),
+      state = String(body.state || '');
     const id = process.env.GOOGLE_CLIENT_ID;
     if (!id) return res.status(503).json({ error: 'O login com Google ainda não está ativo.' });
-    if (!idToken || idToken.length > 5000 || !validCode(state)) return res.status(400).json({ error: 'Pedido inválido.' });
+    if (!idToken || idToken.length > 5000 || !validCode(state))
+      return res.status(400).json({ error: 'Pedido inválido.' });
 
     // o próprio Google confirma a assinatura e a validade do token
     const r = await fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + encodeURIComponent(idToken));
     const c = await r.json().catch(() => ({}));
-    if (!r.ok || c.aud !== id || !/^(https:\/\/)?accounts\.google\.com$/.test(c.iss || '')) return res.status(401).json({ error: 'O Google não confirmou o login. Tenta outra vez.' });
+    if (!r.ok || c.aud !== id || !/^(https:\/\/)?accounts\.google\.com$/.test(c.iss || ''))
+      return res.status(401).json({ error: 'O Google não confirmou o login. Tenta outra vez.' });
     if (c.nonce !== state) return res.status(401).json({ error: 'Pedido inválido.' });
-    if (!c.email || String(c.email_verified) !== 'true') return res.status(401).json({ error: 'Esta conta Google não tem um email confirmado.' });
+    if (!c.email || String(c.email_verified) !== 'true')
+      return res.status(401).json({ error: 'Esta conta Google não tem um email confirmado.' });
     if (Number(c.exp) * 1000 < Date.now()) return res.status(401).json({ error: 'O login expirou. Tenta outra vez.' });
 
     const email = String(c.email).toLowerCase();

@@ -10,7 +10,7 @@ cd vinovim
 npx serve app
 ```
 
-Abre **http://localhost:3000/?web**. O `?web` diz ao vinovim para abrir a app em vez da página de downloads.
+Abre **http://localhost:3000/?web**. O `?web` diz ao Vinovim para abrir a app em vez da página de downloads.
 
 > [!NOTE]
 > As funções que usam o servidor (conta, cópias de segurança, listas partilhadas) só funcionam no site publicado ou com o `vercel dev` dentro de `server/`.
@@ -64,7 +64,7 @@ O ficheiro `.github/workflows/build.yml` corre a cada *push* na `main`:
 | 🤖 **android** | Gera o projeto Capacitor, junta o widget e o suporte de TV e cria o `.apk` |
 | 🌐 **publish** | Junta a interface, o servidor e os downloads e envia tudo para a branch **`site`** |
 
-O **Vercel** publica automaticamente a branch `site` em **vinovim.vercel.app**.
+O **Vercel** publica automaticamente a branch `site` em **Vinovim.vercel.app**.
 
 Se fizeres vários *pushes* seguidos, só o último é compilado: os anteriores são cancelados.
 
@@ -96,7 +96,7 @@ O `.apk` é assinado sempre com a mesma chave, guardada no secret **`VINOVIM_AND
 
 ## 🚀 Lançar uma versão nova
 
-1. Muda `APP_VERSION` e `CHANGELOG` em `app/index.html` (o `CHANGELOG` da app só leva as novidades dessa versão).
+1. Muda `APP_VERSION` e `CHANGELOG` em `app/js/core/base.js` (o `CHANGELOG` da app só leva as novidades dessa versão).
 2. Atualiza `version.json` com a mesma versão e as notas.
 3. Se mudaste `desktop/` ou `mobile/`, sobe `native.min` em `version.json` e a versão em `package.json`. As apps mostram “Atualizar agora” e instalam sozinhas.
 4. Acrescenta a versão ao `CHANGELOG.md`.

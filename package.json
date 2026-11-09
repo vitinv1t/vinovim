@@ -1,9 +1,9 @@
 {
   "name": "vinovim",
   "version": "1.0.0",
-  "description": "vinovim — hub de filmes e séries compatível com addons Stremio",
+  "description": "Vinovim — hub de filmes e séries compatível com addons Stremio",
   "main": "electron/main.js",
-  "author": "vinovim",
+  "author": "vitinv1t",
   "private": true,
   "scripts": {
     "web": "npx serve app",
@@ -13,7 +13,8 @@
     "dist:linux": "electron-builder --linux",
     "android": "npx cap add android && npx cap sync android && npx cap open android",
     "android:sync": "npx cap sync android",
-    "ios": "npx cap add ios && npx cap sync ios && npx cap open ios"
+    "ios": "npx cap add ios && npx cap sync ios && npx cap open ios",
+    "format": "prettier --write \"app/js/**/*.js\" \"app/css/*.css\" app/sw.js \"desktop/*.js\" \"server/**/*.js\""
   },
   "devDependencies": {
     "@capacitor/android": "^6.1.2",
@@ -21,7 +22,8 @@
     "@capacitor/ios": "^6.1.2",
     "@capacitor/cli": "^6.1.2",
     "electron": "^33.0.0",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "prettier": "^3.8.1"
   },
   "build": {
     "appId": "app.vinovim",
@@ -54,5 +56,6 @@
   },
   "dependencies": {
     "discord-rpc": "^4.0.1"
-  }
+  },
+  "homepage": "https://vinovim.vercel.app"
 }

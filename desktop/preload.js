@@ -1,4 +1,4 @@
-// Ponte segura entre a app de PC e a página do vinovim
+// Ponte segura entre a app de PC e a página do Vinovim
 const { contextBridge, ipcRenderer } = require('electron');
 const info = ipcRenderer.sendSync('vinovim:info');
 contextBridge.exposeInMainWorld('vinovimNative', {
@@ -11,5 +11,8 @@ contextBridge.exposeInMainWorld('vinovimNative', {
   onUpdateProgress: cb => ipcRenderer.on('vinovim:update-progress', (e, p) => cb(p)),
   playing: s => ipcRenderer.send('vinovim:playing', s || null),
   onCommand: cb => ipcRenderer.on('vinovim:cmd', (e, c) => cb(c)),
-  onOpen: cb => { ipcRenderer.on('vinovim:open', (e, o) => cb(o)); ipcRenderer.send('vinovim:ready'); }
+  onOpen: cb => {
+    ipcRenderer.on('vinovim:open', (e, o) => cb(o));
+    ipcRenderer.send('vinovim:ready');
+  }
 });

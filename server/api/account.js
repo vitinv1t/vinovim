@@ -1,4 +1,4 @@
-// vinovim — contas e sincronização (Vercel Function + Vercel Blob privado)
+// Vinovim — contas e sincronização (Vercel Function + Vercel Blob privado)
 import { put, get } from '@vercel/blob';
 import crypto from 'node:crypto';
 
@@ -8,9 +8,17 @@ async function readJSON(path) {
     const r = await get(path, { access: 'private', useCache: false });
     if (!r || r.statusCode !== 200) return null;
     return JSON.parse(await new Response(r.stream).text());
-  } catch (e) { return null; }
+  } catch (e) {
+    return null;
+  }
 }
-const writeJSON = (path, obj) => put(path, JSON.stringify(obj), { access: 'private', addRandomSuffix: false, allowOverwrite: true, contentType: 'application/json' });
+const writeJSON = (path, obj) =>
+  put(path, JSON.stringify(obj), {
+    access: 'private',
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    contentType: 'application/json'
+  });
 
 let SECRET = process.env.SESSION_SECRET || null;
 async function secret() {
@@ -29,9 +37,15 @@ async function sign(uid) {
 async function verify(tok) {
   const [p, sig] = String(tok || '').split('.');
   if (!p || !sig) return null;
-  const a = Buffer.from(sig), b = Buffer.from(hmac(await secret(), p));
+  const a = Buffer.from(sig),
+    b = Buffer.from(hmac(await secret(), p));
   if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
-  try { const d = JSON.parse(Buffer.from(p, 'base64url').toString()); return d.exp > Date.now() ? d.uid : null; } catch (e) { return null; }
+  try {
+    const d = JSON.parse(Buffer.from(p, 'base64url').toString());
+    return d.exp > Date.now() ? d.uid : null;
+  } catch (e) {
+    return null;
+  }
 }
 const hashPw = (pw, salt) => crypto.pbkdf2Sync(pw, salt, 120000, 32, 'sha256').toString('hex');
 
@@ -39,24 +53,38 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   try {
     let body = req.body || {};
-    if (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { body = {}; } }
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        body = {};
+      }
+    }
     const a = req.query.a;
     if (a === 'register' || a === 'login') {
       if (req.method !== 'POST') return res.status(405).end();
-      const email = String(body.email || '').trim().toLowerCase(), pw = String(body.password || '');
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 120) return res.status(400).json({ error: 'Email inválido' });
-      if (pw.length < 6 || pw.length > 200) return res.status(400).json({ error: 'A palavra-passe precisa de pelo menos 6 caracteres' });
+      const email = String(body.email || '')
+          .trim()
+          .toLowerCase(),
+        pw = String(body.password || '');
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 120)
+        return res.status(400).json({ error: 'Email inválido' });
+      if (pw.length < 6 || pw.length > 200)
+        return res.status(400).json({ error: 'A palavra-passe precisa de pelo menos 6 caracteres' });
       const path = 'users/' + sha(email) + '.json';
       const ex = await readJSON(path);
       if (a === 'register') {
         if (ex) return res.status(409).json({ error: 'Já existe uma conta com este email' });
-        const salt = crypto.randomBytes(16).toString('hex'), uid = crypto.randomBytes(12).toString('hex');
+        const salt = crypto.randomBytes(16).toString('hex'),
+          uid = crypto.randomBytes(12).toString('hex');
         await writeJSON(path, { uid, salt, hash: hashPw(pw, salt), created: Date.now() });
         return res.json({ token: await sign(uid), email });
       }
       await new Promise(r => setTimeout(r, 300));
-      if (ex && !ex.hash) return res.status(401).json({ error: 'Esta conta usa o login com Google. Carrega em “Continuar com Google”.' });
-      if (!ex || hashPw(pw, ex.salt) !== ex.hash) return res.status(401).json({ error: 'Email ou palavra-passe errados' });
+      if (ex && !ex.hash)
+        return res.status(401).json({ error: 'Esta conta usa o login com Google. Carrega em “Continuar com Google”.' });
+      if (!ex || hashPw(pw, ex.salt) !== ex.hash)
+        return res.status(401).json({ error: 'Email ou palavra-passe errados' });
       return res.json({ token: await sign(ex.uid), email });
     }
     if (a === 'data') {

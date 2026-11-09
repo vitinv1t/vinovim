@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="vinovim" width="100%">
+<img src="docs/banner.svg" alt="Vinovim" width="100%">
 
 <br>
 
@@ -22,7 +22,7 @@
 ---
 
 > [!IMPORTANT]
-> O **vinovim não aloja, não vende e não distribui filmes nem séries.** É apenas um leitor e organizador: mostra catálogos e reproduz conteúdo vindo dos **addons que tu instalas**. Cada pessoa é responsável pelos addons que usa e por respeitar as leis do seu país. Lê o [aviso legal](#️-aviso-legal).
+> O **Vinovim não aloja, não vende e não distribui filmes nem séries.** É apenas um leitor e organizador: mostra catálogos e reproduz conteúdo vindo dos **addons que tu instalas**. Cada pessoa é responsável pelos addons que usa e por respeitar as leis do seu país. Lê o [aviso legal](#️-aviso-legal).
 
 ## 📖 Índice
 
@@ -118,7 +118,7 @@
 
 ## 🧩 Como funcionam os addons
 
-O vinovim fala o **protocolo de addons do Stremio**. Um addon é só um endereço que responde com JSON:
+O Vinovim fala o **protocolo de addons do Stremio**. Um addon é só um endereço que responde com JSON:
 
 ```text
 https://exemplo-de-addon.com/manifest.json          → quem é o addon e o que oferece
@@ -140,20 +140,33 @@ O **Cinemeta** (catálogos e informação dos títulos) vem instalado por defeit
 ```text
 vinovim/
 ├── 📁 app/                     → a app (igual em todas as plataformas)
-│   ├── index.html              → núcleo: ecrãs, leitor, perfis, addons
+│   ├── index.html              → estrutura da página (e o que tem de correr antes de tudo)
 │   ├── download.html           → página de downloads do site
+│   ├── privacidade.html        → política de privacidade
+│   ├── termos.html             → termos de utilização
 │   ├── sw.js                   → service worker (abre mesmo sem rede)
 │   ├── manifest.webmanifest    → dados da app instalável (PWA)
-│   ├── icon.svg                → logótipo
-│   └── 📁 js/                  → as funções da app, por temas
-│       ├── 01-conta.js         → conta, sincronização, calendário, estatísticas, ver em conjunto
-│       ├── 02-perfis-e-temas.js → perfil infantil, transferências, temas, comando, conquistas
-│       ├── 03-listas-e-avatares.js → avatares, listas partilhadas, notas, atalhos, página de ator
-│       ├── 04-windows-e-wrapped.js → menu Iniciar, barra de tarefas e o teu ano (Wrapped)
-│       ├── 05-estilo-netflix.js → abertura, trailers, Top 10, Novidades, % para ti
-│       ├── 06-menus-e-separadores.js → menu no topo, menu “Mais”, definições por separadores
-│       ├── 07-entrada.js       → ecrã de entrada (Google, email ou sem conta)
-│       └── 08-cinema-em-casa.js → pausa, “Da última vez…”, continuar noutro dispositivo, época, estreias, protetor de ecrã
+│   ├── 📁 css/                 → estilos: base.css + um ficheiro por funcionalidade
+│   └── 📁 js/
+│       ├── 📁 core/            → o núcleo, carregado por esta ordem
+│       │   ├── base.js         → pontos de extensão (hooks), ícones, estado, addons, ajudantes
+│       │   ├── vistas.js       → início, filmes, séries, pesquisa, biblioteca, addons, definições
+│       │   ├── detalhe.js      → página de cada título e escolha da fonte
+│       │   ├── leitor.js       → leitor de vídeo, legendas e progresso
+│       │   ├── eventos.js      → cliques, teclado e botão “voltar”
+│       │   ├── sistema.js      → Discord e atualizações
+│       │   ├── perfis.js       → “Quem está a ver?”, foto, perfil infantil e PIN
+│       │   ├── tv.js           → modo TV e navegação com o comando
+│       │   └── arranque.js     → navegação entre vistas e arranque
+│       └── 📁 features/        → funcionalidades que se ligam ao núcleo pelos hooks
+│           ├── conta.js        → conta, sincronização, calendário, estatísticas, ver em conjunto, idiomas
+│           ├── temas-e-extras.js → temas, transferências, comando no telemóvel, conquistas, gestor de addons
+│           ├── listas-e-descoberta.js → listas partilhadas, próximo episódio, “Não sei o que ver”, atalhos
+│           ├── windows-e-resumo-anual.js → menu Iniciar, barra de tarefas e o teu ano no Vinovim
+│           ├── estilo-netflix.js → abertura, trailers, Top 10, Novidades, “% para ti”
+│           ├── navegacao.js    → menu no topo, menu “Mais”, definições por separadores
+│           ├── entrada.js      → ecrã de entrada (Google, email ou sem conta)
+│           └── cinema-em-casa.js → pausa, “Da última vez…”, continuar noutro dispositivo, época, protetor de ecrã
 ├── 📁 desktop/                 → app de Windows (Electron)
 │   ├── main.js
 │   └── preload.js
@@ -197,7 +210,7 @@ npx serve app
 
 1. 🪟 compila o **.exe** de Windows;
 2. 🤖 compila o **.apk** de Android;
-3. 🌐 publica o site e os downloads em **vinovim.vercel.app**.
+3. 🌐 publica o site e os downloads em **Vinovim.vercel.app**.
 
 Passo a passo para compilar no teu computador: [docs/COMPILAR.md](docs/COMPILAR.md).
 
@@ -232,9 +245,9 @@ Sugestões e correções são bem-vindas! 💜
 
 ## ⚖️ Aviso legal
 
-O vinovim é um **leitor e organizador de conteúdo**. Não aloja, não indexa, não carrega e não distribui filmes, séries ou outros conteúdos protegidos. Toda a informação e todas as fontes vêm de **addons de terceiros** que o utilizador escolhe instalar e que **não têm ligação** a este projeto.
+O Vinovim é um **leitor e organizador de conteúdo**. Não aloja, não indexa, não carrega e não distribui filmes, séries ou outros conteúdos protegidos. Toda a informação e todas as fontes vêm de **addons de terceiros** que o utilizador escolhe instalar e que **não têm ligação** a este projeto.
 
-O projeto não apoia a pirataria. Usa o vinovim apenas com conteúdo a que tenhas direito de aceder.
+O projeto não apoia a pirataria. Usa o Vinovim apenas com conteúdo a que tenhas direito de aceder.
 
 ---
 

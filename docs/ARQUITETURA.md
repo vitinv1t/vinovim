@@ -1,6 +1,6 @@
-# 🏗️ Arquitetura do vinovim
+# 🏗️ Arquitetura do Vinovim
 
-Este documento explica como as peças do vinovim encaixam umas nas outras.
+Este documento explica como as peças do Vinovim encaixam umas nas outras.
 
 ## 🧱 Visão geral
 
@@ -11,7 +11,7 @@ flowchart TB
         A[🤖 Android / TV<br>Capacitor]
         B[🌐 Browser<br>PWA]
     end
-    subgraph Site["▲ vinovim.vercel.app"]
+    subgraph Site["▲ Vinovim.vercel.app"]
         UI[app/ — interface]
         API[server/api — contas e listas]
         BLOB[(Vercel Blob<br>privado)]
@@ -27,37 +27,75 @@ flowchart TB
 
 - A **interface** é a mesma em todas as plataformas: HTML, CSS e JavaScript simples, sem frameworks e sem passo de compilação.
 - As apps de **Windows** e **Android** são “cascas” nativas que carregam a interface a partir do site (`config/remote.json`). Se não houver rede, usam a cópia que vem dentro da app.
-- Os **addons** são chamados diretamente pela app. O site do vinovim nunca vê nem guarda conteúdo.
+- Os **addons** são chamados diretamente pela app. O site do Vinovim nunca vê nem guarda conteúdo.
 
 ## 🧩 A interface (`app/`)
 
-O `index.html` é o núcleo: ecrãs, navegação, leitor, perfis, gestão de addons e atualizações.
+A interface divide-se em duas partes:
 
-As funções novas de cada versão vivem em **módulos** dentro de `app/js/`, carregados por ordem no fim do `index.html`. Cada módulo:
+- **`js/core/`** — o núcleo: estado, addons, vistas, página do título, leitor, perfis e navegação. Não sabe nada das funcionalidades extra.
+- **`js/features/`** — cada ficheiro junta funcionalidades do mesmo tema e liga-se ao núcleo através de **pontos de extensão** (*hooks*). Cada um corre dentro da sua própria função, por isso não deixa variáveis soltas no espaço global.
 
-1. corre dentro de uma função própria (não suja o espaço global);
-2. acrescenta comportamento “embrulhando” as funções que já existem, por exemplo:
+Os estilos seguem a mesma divisão: `css/base.css` para o núcleo e um ficheiro por funcionalidade.
+
+### 🪝 Pontos de extensão
+
+O núcleo anuncia o que está a acontecer e as funcionalidades registam-se para reagir. Nenhuma funcionalidade substitui funções do núcleo.
 
 ```js
-const _afterBoot = window.afterBoot;
-window.afterBoot = function () {
-  _afterBoot();        // faz o que já fazia
-  minhaNovaFuncao();   // e acrescenta o novo
-};
+// núcleo (core/leitor.js)
+function play(stream, ctx) {
+  if (!hooks.allow('play:allow', stream, ctx)) return; // alguém pode impedir
+  hooks.emit('play:start', stream, ctx);               // antes de começar
+  startPlayback(stream, ctx);
+  hooks.emit('play:started', stream, ctx);             // depois de começar
+}
+
+// funcionalidade (features/temas-e-extras.js)
+hooks.on('play:allow', (stream, ctx) => {
+  if (isKids() && kidOk(ctx.meta) === false) return false; // perfil infantil
+});
 ```
 
-Assim cada versão pode ser lida, testada e desligada sozinha.
-
-| Módulo | O que traz |
+| Função | Para quê |
 |:--|:--|
-| `01-conta.js` | Conta e sincronização, calendário, saltar introdução, estatísticas, ver em conjunto, listas, Chromecast, idiomas |
-| `02-perfis-e-temas.js` | Capas que faltavam, perfil infantil com PIN, transferências, comando no telemóvel, voz, temas, mini-player, conquistas, importar Trakt e Letterboxd, gestor de addons |
-| `03-listas-e-avatares.js` | Avatares e fotos, próximo episódio automático, listas partilhadas, “Avisa-me”, início por perfil, “Não sei o que ver”, atalhos e comandos de jogos, cópia de segurança, página de ator, notas |
-| `04-windows-e-wrapped.js` | Integração com o Windows (menu Iniciar, barra de tarefas) e o teu ano em formato Wrapped |
-| `05-estilo-netflix.js` | Abertura animada, trailer no destaque, pré-visualizações, “% para ti”, Top 10, “Porque viste…”, Novidades |
-| `06-menus-e-separadores.js` | Menu no topo, menu “Mais”, menu inferior no telemóvel, definições e biblioteca por separadores |
-| `07-entrada.js` | Ecrã de entrada: Google, email ou continuar sem conta |
-| `08-cinema-em-casa.js` | Ecrã de pausa, “Da última vez…”, continuar noutro dispositivo, início da época, contagem para estreias, protetor de ecrã |
+| `hooks.on(nome, fn)` | registar uma função |
+| `hooks.emit(nome, ...)` | avisar todas as funções registadas |
+| `hooks.allow(nome, ...)` | perguntar se a ação pode continuar (`false` cancela) |
+| `hooks.pipe(nome, valor, ...)` | passar um valor por todas as funções e usar o resultado |
+
+Os principais:
+
+| Hook | Quando |
+|:--|:--|
+| `boot` | a app acabou de arrancar |
+| `save` | o estado foi guardado |
+| `route`, `route:start`, `route:done` | navegação entre endereços (`#home`, `#lista=…`, `#comando=…`) |
+| `view:<nome>:before`, `view:<nome>` | antes e depois de uma vista ser desenhada (`view:home`, `view:settings`…) |
+| `detail:shown` | a página de um título abriu |
+| `play:allow`, `play:start`, `play:started` | o leitor vai abrir / abriu |
+| `player:closing`, `player:closed`, `player:menu` | o leitor vai fechar / fechou / o menu do leitor foi desenhado |
+| `profile:switch`, `profile:saved` | mudou o perfil ativo / um perfil foi guardado |
+| `sync:remote`, `sync:merged` | chegaram dados da conta / foram juntados com os deste aparelho |
+| `card`, `catalog:extra`, `catalog:items`, `progress:image`, `offline` | transformar cartões, pedidos ao catálogo e mensagens |
+
+As vistas novas registam-se com `defineView('calendar', fn)`, o que lhes dá automaticamente os mesmos hooks.
+
+| Funcionalidade | O que traz |
+|:--|:--|
+| `conta.js` | Conta e sincronização, calendário, saltar introdução, estatísticas, ver em conjunto, listas, Chromecast, idiomas |
+| `temas-e-extras.js` | Capas que faltavam, catálogo do perfil infantil, transferências, comando no telemóvel, voz, temas, mini-player, conquistas, importar Trakt e Letterboxd, gestor de addons |
+| `listas-e-descoberta.js` | Próximo episódio automático, listas partilhadas, “Avisa-me”, início por perfil, “Não sei o que ver”, atalhos e comandos de jogos, cópia de segurança, página de ator, notas |
+| `windows-e-resumo-anual.js` | Integração com o Windows (menu Iniciar, barra de tarefas) e o teu ano no Vinovim |
+| `estilo-netflix.js` | Abertura animada, trailer no destaque, pré-visualizações, “% para ti”, Top 10, “Porque viste…”, Novidades |
+| `navegacao.js` | Menu no topo, menu “Mais”, menu inferior no telemóvel, definições e biblioteca por separadores |
+| `entrada.js` | Ecrã de entrada: Google, email ou continuar sem conta |
+| `cinema-em-casa.js` | Ecrã de pausa, “Da última vez…”, continuar noutro dispositivo, início da época, contagem para estreias, protetor de ecrã |
+
+### ✍️ Estilo do código
+
+- JavaScript e CSS formatados com **Prettier** (`npm run format`, regras em `.prettierrc.json`).
+- Comentários e textos da interface em **português de Portugal**.
 
 ## 💾 Onde ficam os dados
 

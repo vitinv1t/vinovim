@@ -148,7 +148,7 @@ if key and '.' in key:
     g += '''
 android {
     signingConfigs {
-        vinovim {
+        Vinovim {
             storeFile file('vinovim.keystore')
             storePassword '%s'
             keyAlias 'vinovim'

@@ -1,4 +1,4 @@
-// vinovim — login com Google
+// Vinovim — login com Google
 // ?a=config      → diz à app se o login com Google está ativo
 // ?a=poll&code=… → a app pergunta se o login feito no browser já terminou
 import { readJSON, writeJSON, sha, GOOGLE_REDIRECT, validCode } from './_lib.js';

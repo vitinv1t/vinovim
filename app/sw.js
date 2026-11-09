@@ -1,9 +1,14 @@
-// vinovim — service worker: guarda a app para abrir mesmo sem rede
-const CACHE = 'vinovim-v2';
+// Vinovim — service worker: guarda a app para abrir mesmo sem rede
+const CACHE = 'vinovim-v3';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(() => {}));
+  e.waitUntil(
+    caches
+      .open(CACHE)
+      .then(c => c.addAll(SHELL))
+      .catch(() => {})
+  );
   self.skipWaiting();
 });
 
@@ -18,7 +23,11 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET' || url.origin !== location.origin || url.pathname.endsWith('/version.json')) return;
   e.respondWith(
     fetch(e.request)
-      .then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); return r; })
+      .then(r => {
+        const copy = r.clone();
+        caches.open(CACHE).then(c => c.put(e.request, copy));
+        return r;
+      })
       .catch(() => caches.match(e.request).then(r => r || caches.match('./index.html')))
   );
 });
