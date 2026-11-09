@@ -112,7 +112,7 @@ main{margin-left:var(--side);min-height:100vh;padding-bottom:60px}
 .arr{width:34px;height:34px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--mu);transition:.15s}
 .arr:hover{color:var(--tx);border-color:var(--mu2)}
 .arr svg{width:16px;height:16px}
-.track{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-y:none;touch-action:pan-x pan-y pinch-zoom;scroll-behavior:smooth;padding:6px 40px 14px;scrollbar-width:none;scroll-snap-type:x proximity}
+.track{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;padding:6px 40px 14px;scrollbar-width:none;scroll-snap-type:x proximity}
 .track::-webkit-scrollbar{display:none}
 
 .card{flex:0 0 auto;width:158px;text-align:left;scroll-snap-align:start;border-radius:var(--r);transition:transform .2s ease}
@@ -536,9 +536,9 @@ const GENRES = [['Action','Ação'],['Adventure','Aventura'],['Animation','Anima
 const GPT = Object.fromEntries(GENRES);
 const ACCENTS = [['#e0315b','#f5c26b'],['#7c5cff','#5ce1e6'],['#16c784','#d4f55c'],['#ff7a1a','#ffd25c'],['#2f8cff','#9ed0ff'],['#ff4fd8','#ffb86b']];
 
-const APP_VERSION = '1.7.8';
+const APP_VERSION = '1.7.9';
 const NATIVE = window.vinovimNative || null;
-const CHANGELOG = ["Atualizações da app dentro da própria app, no Windows e no Android"];
+const CHANGELOG = ["O scroll da página inicial voltou a funcionar bem com o rato por cima das filas e do Top 10"];
 
 /* ---------- icons ---------- */
 const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
