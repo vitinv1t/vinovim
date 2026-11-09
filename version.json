@@ -1,8 +1,8 @@
 {
-  "version": "1.7.8",
+  "version": "1.7.9",
   "date": "2026-11-08",
   "notes": [
-    "Atualizações da app dentro da própria app, no Windows e no Android"
+    "O scroll da página inicial voltou a funcionar bem com o rato por cima das filas e do Top 10"
   ],
   "native": {
     "min": "1.4.0",

@@ -4,6 +4,9 @@ Todas as mudanças importantes do vinovim, da mais recente para a mais antiga.
 
 ---
 
+## 🔧 1.7.9 — 9 de novembro de 2026
+- 🖱️ O scroll da página inicial voltou a funcionar bem com o rato por cima das filas e do Top 10.
+
 ## 🎉 1.7.8 — 8 de novembro de 2026
 - 🔄 A app atualiza-se sozinha: no Windows descarrega e instala o novo instalador; no Android descarrega o .apk e abre o instalador.
 - 🔏 O .apk passa a ser sempre assinado com a mesma chave, para o Android aceitar as atualizações por cima.
