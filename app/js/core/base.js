@@ -418,6 +418,6 @@ function offlineHTML() {
   return hooks.pipe('offline', html);
 }
 const LOGO =
-  '<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="14" fill="url(#lg)"/><path d="M14 13 L24 35 L34 13" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="13" r="3" fill="#fff"/></svg>';
+  '<svg viewBox="0 0 48 48"><path d="M34.5 9.5 24 38.5" fill="none" stroke="url(#lg)" stroke-opacity=".7" stroke-width="8" stroke-linecap="round"/><path d="M13.5 9.5 24 38.5" fill="none" stroke="url(#lg)" stroke-width="8" stroke-linecap="round"/></svg>';
 const topbar = (title, solid = true, home = false) =>
   `<div class="topbar ${solid ? 'solid' : ''}">${home ? `<a class="mbrand" href="#home">${LOGO}Vinovim</a>` : ''}${title ? `<h1>${title}</h1>` : ''}<div class="tsp"></div>${home ? '<nav class="seg"><a href="#movies">Filmes</a><a href="#series">Séries</a></nav>' : ''}<button class="qbtn" data-surprise>${I.dice}<span>Surpreende-me</span></button><a class="qbtn" href="#search">${I.search}<span>Pesquisar</span></a></div>`;
