@@ -1,3 +1,4 @@
+/* abertura: o V desenha-se sobre preto, aproxima-se e desfaz-se em riscas de luz */
 #vvIntro {
   position: fixed;
   inset: 0;
@@ -5,17 +6,18 @@
   background: #000;
   display: grid;
   place-items: center;
-  transition: opacity 0.5s;
+  overflow: hidden;
+  transition: opacity 0.45s;
 }
 #vvIntro.out {
   opacity: 0;
   pointer-events: none;
 }
 #vvIntro .lg {
-  width: min(34vw, 220px);
+  width: min(30vw, 190px);
   aspect-ratio: 1;
-  position: relative;
-  animation: vin 2.1s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+  transform-origin: 38% 62%;
+  animation: vvzoom 2.9s cubic-bezier(0.7, 0, 0.3, 1) forwards;
 }
 #vvIntro svg {
   width: 100%;
@@ -23,93 +25,70 @@
   overflow: visible;
 }
 #vvIntro .v {
-  stroke-dasharray: 90;
-  stroke-dashoffset: 90;
-  animation: vdraw 0.9s 0.25s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: vvdraw 0.55s cubic-bezier(0.6, 0, 0.2, 1) forwards;
 }
-#vvIntro .dot {
-  transform-origin: 24px 13px;
-  transform: scale(0);
-  animation: vdot 0.35s 1s cubic-bezier(0.2, 1.8, 0.4, 1) forwards;
+#vvIntro .v.front {
+  animation-delay: 0.15s;
 }
-#vvIntro .rays {
-  position: absolute;
-  inset: -60% -200%;
-  background: repeating-linear-gradient(90deg, transparent 0 9px, rgba(224, 49, 91, 0) 9px 10px);
-  opacity: 0;
+#vvIntro .v.back {
+  animation-delay: 0.5s;
 }
-#vvIntro .name {
-  position: absolute;
-  left: 50%;
-  top: calc(50% + min(19vw, 125px));
-  transform: translateX(-50%);
-  font-family: var(--fd);
-  font-weight: 800;
-  font-size: clamp(22px, 4vw, 34px);
-  letter-spacing: 0.3em;
-  color: #fff;
-  opacity: 0;
-  animation: vname 0.6s 1.15s forwards;
-}
-#vvIntro .burst {
+#vvIntro .streaks {
   position: absolute;
   inset: 0;
-  margin: auto;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  box-shadow:
-    0 0 120px 60px rgba(224, 49, 91, 0.55),
-    0 0 260px 140px rgba(124, 92, 255, 0.35);
   opacity: 0;
-  animation: vburst 1.2s 0.95s ease-out forwards;
+  transform-origin: 46% 50%;
+  animation: vvstreaks 1.5s 1.35s cubic-bezier(0.5, 0, 0.3, 1) forwards;
 }
-@keyframes vin {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  25% {
-    opacity: 1;
-  }
-  70% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.04);
-  }
-}
-@keyframes vdraw {
+@keyframes vvdraw {
   to {
     stroke-dashoffset: 0;
   }
 }
-@keyframes vdot {
-  to {
+@keyframes vvzoom {
+  0% {
+    transform: scale(0.82);
+  }
+  42% {
     transform: scale(1);
+    opacity: 1;
   }
-}
-@keyframes vname {
-  from {
+  78% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(22);
     opacity: 0;
-    letter-spacing: 0.8em;
-  }
-  to {
-    opacity: 0.95;
-    letter-spacing: 0.3em;
   }
 }
-@keyframes vburst {
+@keyframes vvstreaks {
   0% {
     opacity: 0;
-    transform: scale(0.3);
+    transform: scaleX(0.35);
   }
-  30% {
+  35% {
+    opacity: 1;
+  }
+  70% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: scale(2.4);
+    transform: scaleX(2.6);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #vvIntro .lg {
+    animation: none;
+  }
+  #vvIntro .v {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  #vvIntro .streaks {
+    display: none;
   }
 }
 .htrailer {
