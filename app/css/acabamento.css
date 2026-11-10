@@ -232,3 +232,70 @@
     bottom: 76px;
   }
 }
+
+/* botão de encolher o menu à esquerda (ficam só os ícones) */
+.vvfold {
+  display: none;
+}
+@media (min-width: 821px) {
+  html.vvside:not(.tv) .vvfold {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 24px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    color: var(--mu2);
+    transition: 0.15s;
+  }
+  html.vvside:not(.tv) .vvfold:hover,
+  html.vvside:not(.tv) .vvfold:focus-visible {
+    color: #fff;
+    background: var(--card);
+    outline: none;
+  }
+  html.vvside:not(.tv) .vvfold svg {
+    width: 19px;
+    height: 19px;
+  }
+  html.vvside:not(.tv) #nav,
+  html.vvside:not(.tv) main {
+    transition:
+      width 0.2s ease,
+      margin-left 0.2s ease;
+  }
+  html.vvmini:not(.tv) {
+    --side: 76px;
+  }
+  html.vvmini:not(.tv) #nav {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  html.vvmini:not(.tv) #nav .brand {
+    margin: 0 0 10px;
+    justify-content: center;
+  }
+  html.vvmini:not(.tv) #nav .brand span {
+    display: none;
+  }
+  html.vvmini:not(.tv) .vvfold {
+    position: static;
+    align-self: center;
+    margin-bottom: 14px;
+  }
+  html.vvmini:not(.tv) #nav .nv,
+  html.vvmini:not(.tv) #nav .nv[data-v='search'] {
+    justify-content: center;
+    padding: 0;
+    gap: 0;
+    font-size: 0;
+  }
+  html.vvmini:not(.tv) #nav .nv > span:not(.pav) {
+    display: none !important;
+  }
+  html.vvmini:not(.tv) #v6menu {
+    bottom: 70px;
+  }
+}
