@@ -93,16 +93,17 @@
       };
       const sp = nav.querySelector('.nvsp');
       nav.insertBefore(b, nav.querySelector('#profBtn') || null);
-      if (sp && matchMedia('(min-width:821px)').matches) b.innerHTML = `<span>Mais</span>${XI.down}`;
     }
     // ordem no telemóvel: Início, Pesquisar, Novidades, A minha lista, Mais
     const mob = matchMedia('(max-width:820px)').matches,
+      side = document.documentElement.classList.contains('vvside'),
       b = nav.querySelector('.v6more');
-    if (b) b.innerHTML = mob ? `${XI.grid}<span>Mais</span>` : `<span>Mais</span>${XI.down}`;
+    if (b) b.innerHTML = mob || side ? `${XI.grid}<span>Mais</span>` : `<span>Mais</span>${XI.down}`;
     const lib = nav.querySelector('.nv[data-v="library"]'),
       nov = nav.querySelector('.nv[data-v="novidades"]');
     if (mob && lib && nov && nov.nextElementSibling !== lib) nov.after(lib);
   }
+  hooks.on('theme', arrangeNav);
   addEventListener('resize', () => {
     clearTimeout(arrangeNav._t);
     arrangeNav._t = setTimeout(arrangeNav, 150);
