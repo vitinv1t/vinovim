@@ -144,7 +144,8 @@ const VIEWS = {
         <div class="inrow"><button class="btn gho" data-prof-manage>Gerir perfis</button></div></div>
       <div class="panel"><h3>Aparência</h3><p class="m">Dá ao Vinovim a tua cara.</p><div class="swatches" style="margin-bottom:14px">${ACCENTS.map((c, i) => `<button class="sw ${i == S.accent ? 'on' : ''}" data-acc="${i}" style="background:linear-gradient(135deg,${c[0]},${c[1]})"></button>`).join('')}</div>
         <div class="srow"><div class="tx"><b>Modo TV</b><small>Interface maior e navegação pelo comando (liga-se sozinho nas TVs)</small></div><button class="tg ${(S.prefs.tv ?? IS_TV) ? 'on' : ''}" data-pref="tv"></button></div>
-        <div class="srow"><div class="tx"><b>Preto AMOLED</b><small>Fundo totalmente preto, ideal para ecrãs OLED</small></div><button class="tg ${S.prefs.amoled ? 'on' : ''}" data-pref="amoled"></button></div></div>
+        <div class="srow"><div class="tx"><b>Preto AMOLED</b><small>Fundo totalmente preto, ideal para ecrãs OLED</small></div><button class="tg ${S.prefs.amoled ? 'on' : ''}" data-pref="amoled"></button></div>
+        <div class="srow"><div class="tx"><b>Menu à esquerda</b><small>No computador, o menu passa do topo para uma barra lateral com ícones e nomes</small></div><button class="tg ${S.prefs.sideNav ? 'on' : ''}" data-pref="sideNav"></button></div></div>
       <div class="panel"><h3>Reprodução</h3>
         <div class="srow"><div class="tx"><b>Ordenar fontes por qualidade</b><small>4K e 1080p primeiro</small></div><button class="tg ${S.prefs.sortQ ? 'on' : ''}" data-pref="sortQ"></button></div>
         <div class="srow"><div class="tx"><b>Reproduzir automaticamente</b><small>Começa logo com a primeira fonte disponível</small></div><button class="tg ${S.prefs.autoplay ? 'on' : ''}" data-pref="autoplay"></button></div>

@@ -245,6 +245,7 @@ function applyAccent() {
   r.setProperty('--ac2', b);
   r.setProperty('--acs', a + '29');
   document.documentElement.classList.toggle('amoled', !!S.prefs.amoled);
+  document.documentElement.classList.toggle('vvside', !!S.prefs.sideNav);
   if (typeof applyTV === 'function') applyTV();
   hooks.emit('theme');
 }
