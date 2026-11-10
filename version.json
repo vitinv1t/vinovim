@@ -9,9 +9,10 @@
     "Protetor de ecrã com imagens do título que estás a ver"
   ],
   "native": {
-    "min": "1.0.0",
+    "min": "1.0.1",
     "notes": [
-      "Vinovim 1.0: a app atualiza-se sozinha a partir de agora",
+      "Ícone novo no Windows e no Android",
+      "Abertura nova ao estilo do cinema",
       "Instala por cima da versão que tens: não perdes nada"
     ],
     "download": "https://vinovim.vercel.app/download"
