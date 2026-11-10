@@ -94,6 +94,24 @@
       const sp = nav.querySelector('.nvsp');
       nav.insertBefore(b, nav.querySelector('#profBtn') || null);
     }
+    // menu à esquerda: botão para o encolher (só ícones) e voltar a abrir
+    if (!nav.querySelector('.vvfold')) {
+      const f = document.createElement('button');
+      f.className = 'vvfold';
+      f.type = 'button';
+      f.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg>';
+      f.onclick = () => {
+        S.prefs.sideMini = !S.prefs.sideMini;
+        save();
+        applyAccent();
+      };
+      nav.querySelector('.brand').after(f);
+    }
+    const mini = document.documentElement.classList.contains('vvmini');
+    nav.querySelector('.vvfold').title = mini ? 'Abrir o menu' : 'Encolher o menu';
+    // com o menu encolhido, o nome de cada página aparece ao passar o rato
+    nav.querySelectorAll('.nv[data-v]').forEach(a => (a.title = a.textContent.trim()));
     // ordem no telemóvel: Início, Pesquisar, Novidades, A minha lista, Mais
     const mob = matchMedia('(max-width:820px)').matches,
       side = document.documentElement.classList.contains('vvside'),
