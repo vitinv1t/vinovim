@@ -14,16 +14,21 @@
   opacity: 0;
   pointer-events: none;
 }
+/* o logótipo é desenhado 6× maior e reduzido no início: assim, quando se aproxima,
+   o browser não está a esticar uma imagem pequena e as formas ficam nítidas */
 #vvIntro .lg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: min(3.4vw, 26px);
-  transform-origin: 47% 30%;
+  gap: calc(min(3.4vw, 26px) * 6);
+  will-change: transform;
   animation: vvzoom 4s cubic-bezier(0.7, 0, 0.3, 1) forwards;
 }
 #vvIntro .mark {
-  width: min(20vw, 132px);
+  width: calc(min(20vw, 132px) * 6);
   aspect-ratio: 1;
   overflow: visible;
 }
@@ -41,7 +46,7 @@
 /* o nome é desenhado em SVG (letras altas e condensadas), por isso fica igual em todos os aparelhos */
 #vvIntro .word {
   position: relative;
-  width: min(64vw, 520px);
+  width: calc(min(64vw, 520px) * 6);
   aspect-ratio: 480 / 100;
 }
 #vvIntro .word svg {
@@ -66,7 +71,7 @@
 }
 #vvIntro .streaks {
   position: absolute;
-  inset: 0;
+  inset: 0 -80%;
   opacity: 0;
   transform-origin: 46% 50%;
   animation: vvstreaks 1.5s 2.5s cubic-bezier(0.5, 0, 0.3, 1) forwards;
@@ -89,24 +94,25 @@
 }
 @keyframes vvzoom {
   0% {
-    transform: scale(0.86);
+    transform: translate(-50%, -50%) scale(0.143);
   }
   62% {
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(0.1667);
     opacity: 1;
   }
   86% {
     opacity: 1;
   }
   100% {
-    transform: scale(24);
+    /* o desvio mantém fixo o ponto do V para onde a câmara avança */
+    transform: translate(-38.5%, 26.67%) scale(4);
     opacity: 0;
   }
 }
 @keyframes vvstreaks {
   0% {
     opacity: 0;
-    transform: scaleX(0.35);
+    transform: scaleX(0.135);
   }
   35% {
     opacity: 1;
@@ -116,7 +122,7 @@
   }
   100% {
     opacity: 0;
-    transform: scaleX(2.6);
+    transform: scaleX(1);
   }
 }
 .htrailer {
