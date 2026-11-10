@@ -121,7 +121,18 @@
     if (/^(comando|colab|lista)=/.test(h)) return;
     const el = document.createElement('div');
     el.id = 'vvIntro';
-    el.innerHTML = `<div class="burst"></div><div class="lg"><svg viewBox="0 0 48 48"><defs><linearGradient id="vvigA" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient><linearGradient id="vvigB" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#c8195f"/><stop offset="1" stop-color="#e17828"/></linearGradient></defs><rect width="48" height="48" rx="11" fill="#0c0911"/><path class="v" d="M32.6 13.6 24 34.4" fill="none" stroke="url(#vvigB)" stroke-width="6.1" stroke-linecap="round"/><path class="v" d="M15.4 13.6 24 34.4" fill="none" stroke="url(#vvigA)" stroke-width="6.1" stroke-linecap="round"/></svg></div><div class="name">VINOVIM</div>`;
+    // riscas de luz nas cores do logótipo, com larguras e intervalos ao acaso
+    const tones = ['#ff2d75', '#ff4d6d', '#ff7a55', '#ffb042', '#c8195f', '#8a1246'];
+    let x = 0;
+    const stops = [];
+    while (x < 100) {
+      const gap = 0.3 + Math.random() * 2.2,
+        w = 0.15 + Math.random() * 1.5,
+        c = tones[Math.floor(Math.random() * tones.length)];
+      stops.push(`transparent ${x}% ${x + gap}%`, `${c} ${x + gap}% ${x + gap + w}%`);
+      x += gap + w;
+    }
+    el.innerHTML = `<div class="streaks" style="background:linear-gradient(90deg,${stops.join(',')})"></div><div class="lg"><svg viewBox="0 0 48 48"><defs><linearGradient id="vvigA" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient><linearGradient id="vvigB" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#c8195f"/><stop offset="1" stop-color="#e17828"/></linearGradient></defs><path class="v back" d="M32.6 13.6 24 34.4" fill="none" stroke="url(#vvigB)" stroke-width="6.1" stroke-linecap="round"/><path class="v front" d="M15.4 13.6 24 34.4" fill="none" stroke="url(#vvigA)" stroke-width="6.1" stroke-linecap="round"/></svg></div>`;
     document.body.appendChild(el);
     const end = () => {
       el.classList.add('out');
@@ -129,7 +140,7 @@
     };
     el.addEventListener('click', end);
     tadum();
-    setTimeout(end, 2600);
+    setTimeout(end, 2850);
   })();
 
   /* =================== trailer no destaque =================== */
