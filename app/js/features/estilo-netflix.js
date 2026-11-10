@@ -132,7 +132,7 @@
       stops.push(`transparent ${x}% ${x + gap}%`, `${c} ${x + gap}% ${x + gap + w}%`);
       x += gap + w;
     }
-    el.innerHTML = `<div class="streaks" style="background:linear-gradient(90deg,${stops.join(',')})"></div><div class="lg"><svg viewBox="0 0 48 48"><defs><linearGradient id="vvigA" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient><linearGradient id="vvigB" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#c8195f"/><stop offset="1" stop-color="#e17828"/></linearGradient></defs><path class="v back" d="M32.6 13.6 24 34.4" fill="none" stroke="url(#vvigB)" stroke-width="6.1" stroke-linecap="round"/><path class="v front" d="M15.4 13.6 24 34.4" fill="none" stroke="url(#vvigA)" stroke-width="6.1" stroke-linecap="round"/></svg></div>`;
+    el.innerHTML = `<div class="streaks" style="background:linear-gradient(90deg,${stops.join(',')})"></div><div class="lg"><svg viewBox="0 0 48 48"><defs><linearGradient id="vvigA" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient><linearGradient id="vvigB" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#c8195f"/><stop offset="1" stop-color="#e17828"/></linearGradient></defs><path class="v back" d="M32.6 13.6 24 34.4" fill="none" stroke="url(#vvigB)" stroke-width="6.1" stroke-linecap="round"/><path class="v front" d="M15.4 13.6 24 34.4" fill="none" stroke="url(#vvigA)" stroke-width="6.1" stroke-linecap="round"/></svg><div class="name">${[...'VINOVIM'].map((c, i) => `<span style="--i:${i}">${c}</span>`).join('')}</div></div>`;
     document.body.appendChild(el);
     const end = () => {
       el.classList.add('out');
@@ -140,7 +140,7 @@
     };
     el.addEventListener('click', end);
     tadum();
-    setTimeout(end, 2850);
+    setTimeout(end, 3350);
   })();
 
   /* =================== trailer no destaque =================== */
