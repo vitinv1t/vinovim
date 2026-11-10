@@ -146,3 +146,89 @@
     color: var(--ac);
   }
 }
+
+/* ---------- menu à esquerda (opção em Definições → Aparência) ---------- */
+@media (min-width: 821px) {
+  html.vvside:not(.tv) {
+    --side: 232px;
+  }
+  html.vvside:not(.tv) #nav {
+    inset: 0 auto 0 0;
+    width: var(--side);
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 22px 14px 16px;
+    gap: 4px;
+    background: var(--bg2);
+    border-right: 1px solid var(--line);
+    box-shadow: none;
+  }
+  html.vvside:not(.tv) #nav .brand {
+    margin: 0 0 26px 12px;
+    justify-content: flex-start;
+  }
+  html.vvside:not(.tv) #nav .nv {
+    order: 0;
+    width: auto;
+    height: 46px;
+    padding: 0 14px;
+    gap: 14px;
+    justify-content: flex-start;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--mu);
+  }
+  html.vvside:not(.tv) #nav .nv svg {
+    display: block;
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    color: inherit;
+  }
+  html.vvside:not(.tv) #nav .nv:hover {
+    color: #fff;
+    background: var(--card);
+  }
+  html.vvside:not(.tv) #nav .nv.on {
+    color: #fff;
+    font-weight: 700;
+    background: var(--card2);
+  }
+  html.vvside:not(.tv) #nav .nv.on::before {
+    display: none;
+  }
+  html.vvside:not(.tv) #nav .nv.on svg {
+    color: var(--ac);
+  }
+  html.vvside:not(.tv) #nav .nv[data-v='search'] {
+    font-size: 15px;
+  }
+  html.vvside:not(.tv) #nav .nvsp {
+    order: 0;
+  }
+  html.vvside:not(.tv) #nav #profBtn {
+    height: 52px;
+    padding: 0 10px;
+    margin-top: 6px;
+    border-top: 1px solid var(--line);
+    border-radius: 0 0 12px 12px;
+  }
+  html.vvside:not(.tv) #nav #profBtn span:last-child {
+    display: block;
+    max-width: 140px;
+  }
+  html.vvside:not(.tv) main {
+    margin-left: var(--side);
+  }
+  html.vvside:not(.tv) .topbar {
+    padding-top: 34px;
+  }
+  html.vvside:not(.tv) #v6menu {
+    left: calc(var(--side) + 8px) !important;
+    top: auto !important;
+    bottom: 76px;
+  }
+}
