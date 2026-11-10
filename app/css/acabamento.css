@@ -1,0 +1,148 @@
+/* Vinovim — acabamento visual
+   Carregado no fim: menos ruído nos cartões, filas mais arejadas,
+   filtros numa só linha e estados (hover, foco, ativo) iguais em toda a app. */
+
+/* ---------- cartões ---------- */
+.card:hover .pimg img {
+  transform: none;
+}
+.card .pimg {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.card:hover .pimg {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.85),
+    0 16px 34px rgba(0, 0, 0, 0.55);
+}
+.card:focus-visible .pimg {
+  box-shadow: 0 0 0 3px #fff;
+}
+/* nas filas o cartaz fala por si; o nome fica para quando não há imagem e para as grelhas */
+.track .card:not(.wide) .cinfo {
+  display: none;
+}
+.card .badge {
+  opacity: 0;
+  transition: opacity 0.15s;
+  color: #fff;
+}
+.card:hover .badge,
+.card:focus-visible .badge,
+.grid .card .badge {
+  opacity: 1;
+}
+
+/* ---------- filas ---------- */
+.row {
+  margin-bottom: 40px;
+}
+.rowh {
+  margin-bottom: 14px;
+  align-items: center;
+}
+.rowh h2 {
+  font-size: 22px;
+}
+.track {
+  gap: 12px;
+}
+.rowh .arr {
+  opacity: 0;
+}
+.row:hover .arr,
+.arr:focus-visible {
+  opacity: 1;
+}
+@media (hover: none) {
+  .rowh .arr {
+    display: none;
+  }
+  .card .badge {
+    opacity: 1;
+  }
+}
+
+/* ---------- filtros e géneros numa só linha ---------- */
+.chips {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent);
+}
+.chips::-webkit-scrollbar {
+  display: none;
+}
+.chip {
+  flex: none;
+  background: transparent;
+}
+.chip:hover {
+  background: var(--card);
+}
+.chips::after {
+  content: '';
+  flex: 0 0 40px;
+}
+#freset[hidden] {
+  display: none;
+}
+@media (max-width: 820px) {
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+  .filters > * {
+    flex: none;
+  }
+}
+
+/* ---------- pesquisa ---------- */
+.sbox input {
+  height: 56px;
+  border-radius: 16px;
+  font-size: 17px;
+}
+.sbox input:focus {
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: none;
+}
+
+/* ---------- foco do teclado igual em todo o lado ---------- */
+.btn:focus-visible,
+.chip:focus-visible,
+.arr:focus-visible,
+.sel:focus-visible,
+.seg2 button:focus-visible,
+.v6tabs button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ---------- menu inferior no telemóvel ---------- */
+@media (max-width: 820px) {
+  html:not(.tv) #nav .nv,
+  html:not(.tv) #nav .nv.on {
+    background: none;
+  }
+  html:not(.tv) #nav .nv.on::before {
+    display: none;
+  }
+  html:not(.tv) #nav .nv {
+    color: var(--mu2);
+  }
+  html:not(.tv) #nav .nv.on {
+    color: #fff;
+  }
+  html:not(.tv) #nav .nv.on svg {
+    color: var(--ac);
+  }
+}
