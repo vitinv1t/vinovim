@@ -437,6 +437,8 @@ async function browse(type, title) {
     [...$('#gch').children].forEach(x => x.classList.toggle('on', x.dataset.g === st.genre));
     $('#fyear').value = st.year;
     $('#fmin').value = String(st.min);
+    // “Limpar filtros” só aparece quando há algum filtro ligado
+    $('#freset').hidden = !(st.genre || st.year || st.min || st.sort !== 'top');
     VIEWS._bf = Object.assign(VIEWS._bf || {}, {
       [type]: { genre: st.genre, year: st.year, sort: st.sort, min: st.min }
     });
