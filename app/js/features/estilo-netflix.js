@@ -111,6 +111,36 @@
       setTimeout(() => ac.close().catch(() => {}), 4000);
     } catch (e) {}
   }
+  /* “VINOVIM” em letras próprias: altas, condensadas e com a base em arco.
+     Cada letra é uma forma numa caixa de 100 de altura; --d é a distância ao centro,
+     para o nome se abrir do meio para fora. */
+  function wordmark() {
+    const V = 'M0 0h21l14 66 14-66h21L46 100H24z',
+      I = 'M0 0h20v100H0z',
+      N = 'M0 0h21l25 58V0h20v100H45L20 42v58H0z',
+      O =
+        'M33 0a33 33 0 0 1 33 33v34a33 33 0 0 1-66 0V33A33 33 0 0 1 33 0zm0 20a13 13 0 0 0-13 13v34a13 13 0 0 0 26 0V33a13 13 0 0 0-13-13z',
+      M = 'M0 0h23l19 54 19-54h23v100H64V42L50 84H34L20 42v58H0z';
+    const letters = [
+      [V, 0, 3],
+      [I, 84, 2],
+      [N, 118, 1],
+      [O, 198, 0],
+      [V, 278, 1],
+      [I, 362, 2],
+      [M, 396, 3]
+    ];
+    const shapes = cls =>
+      letters
+        .map(([d, x, dist]) => `<g transform="translate(${x})"><path class="${cls}" style="--d:${dist}" d="${d}"/></g>`)
+        .join('');
+    const arc =
+      '<mask id="vvarc"><rect width="480" height="100" fill="#fff"/><circle cx="240" cy="2976" r="2885"/></mask>';
+    return `<div class="word">
+      <svg viewBox="0 0 480 100"><defs><linearGradient id="vvwg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="100"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient>${arc}</defs><g mask="url(#vvarc)" fill="url(#vvwg)" fill-rule="evenodd">${shapes('l')}</g></svg>
+      <svg class="shine" viewBox="0 0 480 100"><g mask="url(#vvarc)" fill="#fff" fill-rule="evenodd">${shapes('')}</g></svg>
+    </div>`;
+  }
   (function intro() {
     if (!P5('intro')) return;
     try {
@@ -132,7 +162,7 @@
       stops.push(`transparent ${x}% ${x + gap}%`, `${c} ${x + gap}% ${x + gap + w}%`);
       x += gap + w;
     }
-    el.innerHTML = `<div class="streaks" style="background:linear-gradient(90deg,${stops.join(',')})"></div><div class="lg"><svg viewBox="0 0 48 48"><defs><linearGradient id="vvigA" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient><linearGradient id="vvigB" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#c8195f"/><stop offset="1" stop-color="#e17828"/></linearGradient></defs><path class="v back" d="M32.6 13.6 24 34.4" fill="none" stroke="url(#vvigB)" stroke-width="6.1" stroke-linecap="round"/><path class="v front" d="M15.4 13.6 24 34.4" fill="none" stroke="url(#vvigA)" stroke-width="6.1" stroke-linecap="round"/></svg><div class="name">${[...'VINOVIM'].map((c, i) => `<span style="--i:${i}">${c}</span>`).join('')}</div></div>`;
+    el.innerHTML = `<div class="streaks" style="background:linear-gradient(90deg,${stops.join(',')})"></div><div class="lg"><svg class="mark" viewBox="0 0 48 48"><defs><linearGradient id="vvigA" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient><linearGradient id="vvigB" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#c8195f"/><stop offset="1" stop-color="#e17828"/></linearGradient></defs><path class="v back" d="M32.6 13.6 24 34.4" fill="none" stroke="url(#vvigB)" stroke-width="6.1" stroke-linecap="round"/><path class="v front" d="M15.4 13.6 24 34.4" fill="none" stroke="url(#vvigA)" stroke-width="6.1" stroke-linecap="round"/></svg>${wordmark()}</div>`;
     document.body.appendChild(el);
     const end = () => {
       el.classList.add('out');
@@ -140,7 +170,7 @@
     };
     el.addEventListener('click', end);
     tadum();
-    setTimeout(end, 3350);
+    setTimeout(end, 3950);
   })();
 
   /* =================== trailer no destaque =================== */
