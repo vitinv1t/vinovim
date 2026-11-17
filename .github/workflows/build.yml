@@ -4,14 +4,48 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      nativo:
+        description: 'Compilar também o .exe e o .apk'
+        type: boolean
+        default: true
 
 concurrency:
   group: vinovim-build
   cancel-in-progress: true
 
 jobs:
+  # o .exe e o .apk só se compilam quando muda alguma coisa deles;
+  # o resto da app chega às apps instaladas pelo site, que se atualiza sempre
+  changes:
+    name: O que mudou
+    runs-on: ubuntu-latest
+    outputs:
+      native: ${{ steps.c.outputs.native }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: c
+        name: Ver se é preciso compilar as apps
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "native=${{ inputs.nativo }}" >> "$GITHUB_OUTPUT"
+          elif ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            echo "native=true" >> "$GITHUB_OUTPUT"
+          elif git diff --name-only "$BEFORE" "$GITHUB_SHA" | grep -qE '^(desktop/|mobile/|assets/|config/|scripts/|package\.json$|capacitor\.config\.json$)'; then
+            echo "native=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "native=false" >> "$GITHUB_OUTPUT"
+          fi
+          cat "$GITHUB_OUTPUT"
+
   windows:
     name: Windows (.exe)
+    needs: changes
+    if: needs.changes.outputs.native == 'true'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,9 +70,12 @@ jobs:
         with:
           name: vinovim-windows
           path: dist/*.exe
+          retention-days: 1
 
   android:
     name: Android (.apk)
+    needs: changes
+    if: needs.changes.outputs.native == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -97,10 +134,12 @@ jobs:
         with:
           name: vinovim-android
           path: vinovim.apk
+          retention-days: 1
 
   publish:
     name: Publicar no site (vinovim.vercel.app)
-    needs: [windows, android]
+    needs: [changes, windows, android]
+    if: ${{ !cancelled() && needs.changes.result == 'success' && needs.windows.result != 'failure' && needs.android.result != 'failure' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -110,8 +149,16 @@ jobs:
         with:
           python-version: '3.12'
       - uses: actions/download-artifact@v4
+        if: needs.changes.outputs.native == 'true'
         with:
           path: artifacts
+      - name: Usar o .exe e o .apk que já estão no site
+        if: needs.changes.outputs.native != 'true'
+        run: |
+          git fetch -q --depth 1 origin site
+          mkdir -p artifacts/vinovim-windows artifacts/vinovim-android
+          git show FETCH_HEAD:public/downloads/vinovim-setup.exe > artifacts/vinovim-windows/vinovim-setup.exe
+          git show FETCH_HEAD:public/downloads/vinovim.apk > artifacts/vinovim-android/vinovim.apk
       - name: Montar o site com os downloads
         run: |
           pip install pillow
