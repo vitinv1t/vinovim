@@ -14,8 +14,15 @@ export const GOOGLE_REDIRECT = process.env.GOOGLE_REDIRECT_URI || 'https://vinov
 /* falha do armazenamento (servidor sem resposta, limite gasto…), diferente de "não existe" */
 export class StoreError extends Error {}
 
-const R_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const R_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+// o Vercel cria KV_REST_API_URL/TOKEN (às vezes com um prefixo à frente); a Upstash usa UPSTASH_REDIS_REST_*
+function upstashEnv() {
+  const e = process.env;
+  if (e.UPSTASH_REDIS_REST_URL && e.UPSTASH_REDIS_REST_TOKEN)
+    return [e.UPSTASH_REDIS_REST_URL, e.UPSTASH_REDIS_REST_TOKEN];
+  const k = Object.keys(e).find(n => n.endsWith('KV_REST_API_URL'));
+  return k ? [e[k], e[k.slice(0, -'URL'.length) + 'TOKEN']] : [];
+}
+const [R_URL, R_TOKEN] = upstashEnv();
 export const STORE = R_URL && R_TOKEN ? 'redis' : 'blob';
 const KEY = 'vv:';
 
