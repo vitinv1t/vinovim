@@ -393,16 +393,32 @@
     S.tomb = tomb;
     hooks.emit('sync:merged');
   }
+  /* A sincronização gasta o mínimo de escritas no servidor:
+     - espera um pouco depois de cada alteração e nunca envia mais do que uma vez a cada 45 s;
+     - com um vídeo a dar não envia nada (o progresso muda a cada 5 s): envia ao fechar o leitor;
+     - não volta a enviar o que o servidor já tem. */
   let syncT = null,
-    syncing = false;
+    syncing = false,
+    dirty = false,
+    lastSync = 0;
+  const watching = () => P.classList.contains('open');
+  const fnv = s => {
+    let h = 2166136261;
+    for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
+    return (h >>> 0).toString(36) + '.' + s.length.toString(36);
+  };
   function scheduleSync() {
     if (!auth.token) return;
+    dirty = true;
+    if (watching()) return;
     clearTimeout(syncT);
-    syncT = setTimeout(() => syncNow(false), 4000);
+    syncT = setTimeout(() => syncNow(false), Math.max(10000, 45000 - (Date.now() - lastSync)));
   }
   async function syncNow(manual) {
     if (!auth.token || syncing) return;
     syncing = true;
+    clearTimeout(syncT);
+    dirty = false;
     try {
       const r = await api('?a=data');
       if (r && r.data) mergeState(r.data);
@@ -410,18 +426,31 @@
       SYNC_KEYS.forEach(k => (data[k] = S[k]));
       data.tomb = S.tomb || {};
       save({ quiet: true });
-      await api('?a=data', { method: 'PUT', body: JSON.stringify({ data }) });
-      auth.last = Date.now();
+      const body = JSON.stringify({ data }),
+        h = fnv(body),
+        who = auth.token.slice(-16),
+        sent = auth.sent && auth.sent.who === who ? auth.sent : {};
+      if (manual || h !== sent.h || (r && r.updatedAt) !== sent.at) {
+        const w = await api('?a=data', { method: 'PUT', body });
+        auth.sent = { who, h, at: w.updatedAt };
+      }
+      lastSync = auth.last = Date.now();
       saveAuth();
       if (manual) toast(tr('Sincronizado'));
       updateProfBtn();
       const st = document.getElementById('syncState');
       if (st) st.textContent = syncLabel();
     } catch (e) {
+      dirty = true;
       if (manual) toast(e.message);
     }
     syncing = false;
+    if (dirty) scheduleSync();
   }
+  hooks.on('player:closed', () => dirty && syncNow(false));
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && dirty && !watching()) syncNow(false);
+  });
   const syncLabel = () =>
     auth.last
       ? 'Última sincronização: ' +
@@ -1370,7 +1399,7 @@
     setTimeout(() => checkNewEpisodes().catch(() => {}), 7000);
     setInterval(
       () => {
-        if (auth.token && !document.hidden) syncNow(false);
+        if (auth.token && !document.hidden && !watching()) syncNow(false);
       },
       5 * 60 * 1000
     );

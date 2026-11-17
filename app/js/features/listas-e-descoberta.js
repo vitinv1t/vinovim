@@ -332,7 +332,7 @@
     colabPoll = setInterval(() => {
       if (location.hash === '#colab' && !document.hidden) poll();
       else if (location.hash !== '#colab') clearInterval(colabPoll);
-    }, 6000);
+    }, 15000);
   });
   function addToColabDialog(m) {
     const l = colabs();

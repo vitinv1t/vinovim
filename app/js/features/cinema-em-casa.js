@@ -165,11 +165,12 @@
     });
     return r.ok ? r.json() : null;
   }
+  // diz à conta onde vais: ao começar, ao pausar, ao fechar e, durante o vídeo, de 10 em 10 minutos
   let lastPush = 0;
   function pushNow(force) {
     if (!ON('handoff') || !PC || !PC.meta || PC.stream.ytId || PC.stream._local || !V.duration || !isFinite(V.duration))
       return;
-    if (!force && Date.now() - lastPush < 20000) return;
+    if (Date.now() - lastPush < (force ? 15000 : 10 * 60 * 1000)) return;
     lastPush = Date.now();
     const m = PC.meta,
       v = PC.video;
@@ -194,6 +195,8 @@
   }
   V.addEventListener('timeupdate', () => pushNow(false));
   V.addEventListener('pause', () => pushNow(true));
+  hooks.on('play:started', () => (lastPush = 0));
+  hooks.on('player:closing', () => pushNow(true));
   let handShown = false;
   async function checkHandoff() {
     if (handShown || !ON('handoff') || kids() || P.classList.contains('open')) return;
