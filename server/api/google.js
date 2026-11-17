@@ -1,7 +1,7 @@
 // Vinovim — login com Google
 // ?a=config      → diz à app se o login com Google está ativo
 // ?a=poll&code=… → a app pergunta se o login feito no browser já terminou
-import { readJSON, writeJSON, sha, GOOGLE_REDIRECT, validCode } from './_lib.js';
+import { readJSON, writeJSON, sha, GOOGLE_REDIRECT, validCode, fail } from './_lib.js';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -17,11 +17,11 @@ export default async function handler(req, res) {
       const p = await readJSON(path);
       if (!p || p.used || !p.token) return res.json({ pending: true });
       if (p.exp < Date.now()) return res.status(410).json({ error: 'O login expirou. Tenta outra vez.' });
-      await writeJSON(path, { used: true, at: Date.now() });
+      await writeJSON(path, { used: true, at: Date.now() }, 900);
       return res.json({ token: p.token, email: p.email, name: p.name || '' });
     }
     return res.status(404).json({ error: 'Pedido desconhecido' });
   } catch (e) {
-    return res.status(500).json({ error: 'Erro no servidor' });
+    return fail(res, e);
   }
 }

@@ -1,24 +1,7 @@
 // Vinovim — listas partilhadas (qualquer pessoa com o link de convite pode ver e editar)
-import { put, get } from '@vercel/blob';
 import crypto from 'node:crypto';
+import { readJSON, writeJSON, sha, body as readBody, fail } from './_lib.js';
 
-const sha = s => crypto.createHash('sha256').update(String(s)).digest('hex');
-async function readJSON(path) {
-  try {
-    const r = await get(path, { access: 'private', useCache: false });
-    if (!r || r.statusCode !== 200) return null;
-    return JSON.parse(await new Response(r.stream).text());
-  } catch (e) {
-    return null;
-  }
-}
-const writeJSON = (path, obj) =>
-  put(path, JSON.stringify(obj), {
-    access: 'private',
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: 'application/json'
-  });
 const clean = (s, n) =>
   String(s || '')
     .replace(/[\u0000-\u001f]/g, '')
@@ -29,14 +12,7 @@ const pub = l => ({ id: l.id, name: l.name, items: l.items, updated: l.updated, 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   try {
-    let body = req.body || {};
-    if (typeof body === 'string') {
-      try {
-        body = JSON.parse(body);
-      } catch (e) {
-        body = {};
-      }
-    }
+    const body = readBody(req);
     const a = req.query.a || '';
     if (a === 'create') {
       if (req.method !== 'POST') return res.status(405).end();
@@ -79,6 +55,6 @@ export default async function handler(req, res) {
     await writeJSON(path, l);
     return res.json({ list: pub(l) });
   } catch (e) {
-    return res.status(500).json({ error: 'Erro no servidor' });
+    return fail(res, e);
   }
 }

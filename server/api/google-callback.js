@@ -3,7 +3,7 @@
 //   GET  → página que lê o token que o Google pôs no endereço (#id_token=…) e envia-o para aqui
 //   POST → confirma o token junto do Google, cria/encontra a conta e deixa a sessão pronta para a app
 import crypto from 'node:crypto';
-import { readJSON, writeJSON, sha, sign, validCode } from './_lib.js';
+import { readJSON, writeJSON, sha, sign, validCode, body as readBody, fail } from './_lib.js';
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const PAGE = `<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vinovim</title>
@@ -35,14 +35,7 @@ export default async function handler(req, res) {
   }
   if (req.method !== 'POST') return res.status(405).end();
   try {
-    let body = req.body || {};
-    if (typeof body === 'string') {
-      try {
-        body = JSON.parse(body);
-      } catch (e) {
-        body = {};
-      }
-    }
+    const body = readBody(req);
     const idToken = String(body.id_token || ''),
       state = String(body.state || '');
     const id = process.env.GOOGLE_CLIENT_ID;
@@ -74,9 +67,10 @@ export default async function handler(req, res) {
     const pend = 'pending/' + sha(state) + '.json';
     const old = await readJSON(pend);
     if (old && old.used) return res.status(409).json({ error: 'Este login já foi usado. Tenta outra vez.' });
-    await writeJSON(pend, { token: await sign(uid), email, name: c.name || '', exp: Date.now() + 10 * 60 * 1000 });
+    // a app vai buscar isto em /api/google?a=poll; no Redis apaga-se sozinho ao fim de 15 minutos
+    await writeJSON(pend, { token: await sign(uid), email, name: c.name || '', exp: Date.now() + 10 * 60 * 1000 }, 900);
     return res.json({ ok: true });
   } catch (e) {
-    return res.status(500).json({ error: 'Erro no servidor. Tenta outra vez daqui a pouco.' });
+    return fail(res, e);
   }
 }

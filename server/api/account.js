@@ -1,72 +1,37 @@
-// Vinovim — contas e sincronização (Vercel Function + Vercel Blob privado)
-import { put, get } from '@vercel/blob';
+// Vinovim — contas e sincronização
+//   ?a=register | ?a=login  → conta com email e palavra-passe
+//   ?a=data                 → estado sincronizado (perfis, listas, progresso…)
+//   ?a=backup               → cópia de segurança das definições
+//   ?a=now                  → o que estás a ver agora, para continuar noutro dispositivo
 import crypto from 'node:crypto';
+import { readJSON, writeJSON, sha, sign, verify, body as readBody, fail } from './_lib.js';
 
-const sha = s => crypto.createHash('sha256').update(s).digest('hex');
-async function readJSON(path) {
-  try {
-    const r = await get(path, { access: 'private', useCache: false });
-    if (!r || r.statusCode !== 200) return null;
-    return JSON.parse(await new Response(r.stream).text());
-  } catch (e) {
-    return null;
-  }
-}
-const writeJSON = (path, obj) =>
-  put(path, JSON.stringify(obj), {
-    access: 'private',
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: 'application/json'
-  });
-
-let SECRET = process.env.SESSION_SECRET || null;
-async function secret() {
-  if (SECRET) return SECRET;
-  const c = await readJSON('config/secret.json');
-  if (c && c.s) return (SECRET = c.s);
-  const s = crypto.randomBytes(32).toString('hex');
-  await writeJSON('config/secret.json', { s });
-  return (SECRET = s);
-}
-const hmac = (k, p) => crypto.createHmac('sha256', k).update(p).digest('base64url');
-async function sign(uid) {
-  const p = Buffer.from(JSON.stringify({ uid, exp: Date.now() + 180 * 864e5 })).toString('base64url');
-  return p + '.' + hmac(await secret(), p);
-}
-async function verify(tok) {
-  const [p, sig] = String(tok || '').split('.');
-  if (!p || !sig) return null;
-  const a = Buffer.from(sig),
-    b = Buffer.from(hmac(await secret(), p));
-  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
-  try {
-    const d = JSON.parse(Buffer.from(p, 'base64url').toString());
-    return d.exp > Date.now() ? d.uid : null;
-  } catch (e) {
-    return null;
-  }
-}
 const hashPw = (pw, salt) => crypto.pbkdf2Sync(pw, salt, 120000, 32, 'sha256').toString('hex');
+const bearer = req => (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+const EXPIRED = { error: 'A sessão expirou. Entra outra vez.' };
+
+/* guarda e devolve um registo do utilizador (data, backup, now) */
+async function userDoc(req, res, path, key, max) {
+  if (req.method === 'GET') return res.json((await readJSON(path)) || { [key]: null, updatedAt: 0 });
+  if (req.method !== 'PUT' && req.method !== 'POST') return res.status(405).end();
+  const b = readBody(req);
+  if (JSON.stringify(b[key] || null).length > max) return res.status(413).json({ error: 'Dados demasiado grandes' });
+  const updatedAt = Date.now();
+  await writeJSON(path, { [key]: b[key], updatedAt });
+  return res.json({ updatedAt });
+}
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   try {
-    let body = req.body || {};
-    if (typeof body === 'string') {
-      try {
-        body = JSON.parse(body);
-      } catch (e) {
-        body = {};
-      }
-    }
     const a = req.query.a;
     if (a === 'register' || a === 'login') {
       if (req.method !== 'POST') return res.status(405).end();
-      const email = String(body.email || '')
+      const b = readBody(req);
+      const email = String(b.email || '')
           .trim()
           .toLowerCase(),
-        pw = String(body.password || '');
+        pw = String(b.password || '');
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 120)
         return res.status(400).json({ error: 'Email inválido' });
       if (pw.length < 6 || pw.length > 200)
@@ -87,50 +52,23 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: 'Email ou palavra-passe errados' });
       return res.json({ token: await sign(ex.uid), email });
     }
-    if (a === 'data') {
-      const uid = await verify((req.headers.authorization || '').replace(/^Bearer\s+/i, ''));
-      if (!uid) return res.status(401).json({ error: 'A sessão expirou. Entra outra vez.' });
-      const path = 'data/' + uid + '.json';
-      if (req.method === 'GET') return res.json((await readJSON(path)) || { data: null, updatedAt: 0 });
-      if (req.method === 'PUT' || req.method === 'POST') {
-        const raw = JSON.stringify(body.data || null);
-        if (raw.length > 3000000) return res.status(413).json({ error: 'Dados demasiado grandes' });
-        const updatedAt = Date.now();
-        await writeJSON(path, { data: body.data, updatedAt });
-        return res.json({ updatedAt });
-      }
-      return res.status(405).end();
-    }
-    if (a === 'backup') {
-      const uid = await verify((req.headers.authorization || '').replace(/^Bearer\s+/i, ''));
-      if (!uid) return res.status(401).json({ error: 'A sessão expirou. Entra outra vez.' });
-      const path = 'backup/' + uid + '.json';
-      if (req.method === 'GET') return res.json((await readJSON(path)) || { backup: null, updatedAt: 0 });
-      if (req.method === 'PUT' || req.method === 'POST') {
-        const raw = JSON.stringify(body.backup || null);
-        if (raw.length > 2000000) return res.status(413).json({ error: 'Cópia demasiado grande' });
-        const updatedAt = Date.now();
-        await writeJSON(path, { backup: body.backup, updatedAt });
-        return res.json({ updatedAt });
-      }
-      return res.status(405).end();
-    }
-    if (a === 'now') {
-      // o que estás a ver agora, para continuar noutro dispositivo
-      const uid = await verify((req.headers.authorization || '').replace(/^Bearer\s+/i, ''));
-      if (!uid) return res.status(401).json({ error: 'A sessão expirou. Entra outra vez.' });
+
+    if (a === 'data' || a === 'backup' || a === 'now') {
+      const uid = await verify(bearer(req));
+      if (!uid) return res.status(401).json(EXPIRED);
+      if (a === 'data') return userDoc(req, res, 'data/' + uid + '.json', 'data', 3000000);
+      if (a === 'backup') return userDoc(req, res, 'backup/' + uid + '.json', 'backup', 2000000);
+      // "now" guarda o próprio pedido (dispositivo, título, posição…) e apaga-se sozinho ao fim de 3 dias
       const path = 'now/' + uid + '.json';
       if (req.method === 'GET') return res.json((await readJSON(path)) || {});
-      if (req.method === 'PUT' || req.method === 'POST') {
-        const raw = JSON.stringify(body || {});
-        if (raw.length > 20000) return res.status(413).json({ error: 'Demasiado grande' });
-        await writeJSON(path, Object.assign({}, body, { at: Date.now() }));
-        return res.json({ ok: true });
-      }
-      return res.status(405).end();
+      if (req.method !== 'PUT' && req.method !== 'POST') return res.status(405).end();
+      const b = readBody(req);
+      if (JSON.stringify(b).length > 20000) return res.status(413).json({ error: 'Demasiado grande' });
+      await writeJSON(path, Object.assign({}, b, { at: Date.now() }), 3 * 86400);
+      return res.json({ ok: true });
     }
     return res.status(404).json({ error: 'Pedido desconhecido' });
   } catch (e) {
-    return res.status(500).json({ error: 'Erro no servidor' });
+    return fail(res, e);
   }
 }
