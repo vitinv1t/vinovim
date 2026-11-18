@@ -1,20 +1,23 @@
-/* ---------- Discord Rich Presence (app de PC) ---------- */
+/* ---------- Discord Rich Presence (app de PC) ----------
+   Ao estilo do PreMiD: aparece "A ver" (não "A jogar"), a capa do título como imagem grande,
+   um ícone pequeno de play/pausa, a barra de progresso e, na lista de membros, o nome do que estás a ver. */
 let CUR_VIEW = 'home',
   lastPres = '';
 const SESSION_START = Date.now();
 const VIEW_TXT = {
-  home: 'Início',
-  movies: 'Filmes',
-  series: 'Séries',
-  search: 'Pesquisa',
-  library: 'A minha lista',
-  novidades: 'Novidades',
-  calendar: 'Calendário',
-  stats: 'Estatísticas',
-  downloads: 'Transferências',
-  addons: 'Definições',
-  settings: 'Definições'
+  home: '🏠 No início',
+  movies: '🎬 A explorar filmes',
+  series: '📺 A explorar séries',
+  search: '🔎 À procura do que ver',
+  library: '📚 Na minha lista',
+  novidades: '✨ A ver as novidades',
+  calendar: '🗓️ No calendário de estreias',
+  stats: '📊 Nas estatísticas',
+  downloads: '⬇️ Nas transferências',
+  addons: '🧩 Nos addons',
+  settings: '⚙️ Nas definições'
 };
+const SITE_BTN = { label: 'Experimentar o Vinovim', url: 'https://vinovim.vercel.app/download' };
 function presence(p) {
   if (!NATIVE || !NATIVE.rpc) return;
   if (!S.prefs.rpc) {
@@ -29,23 +32,33 @@ function presence(p) {
   lastPres = k;
   NATIVE.rpc(p);
 }
-const imdbBtn = m =>
+const presYear = m => (m && m.releaseInfo ? String(m.releaseInfo).slice(0, 4) : '');
+const presRating = m => (m && parseFloat(m.imdbRating) ? '⭐ ' + parseFloat(m.imdbRating).toFixed(1) : '');
+const presButtons = m =>
   m && /^tt\d+$/.test(m.id) && !S.prefs.rpcPrivate
-    ? [{ label: 'Ver no IMDb', url: 'https://www.imdb.com/title/' + m.id + '/' }]
-    : undefined;
+    ? [{ label: 'Ver no IMDb', url: 'https://www.imdb.com/title/' + m.id + '/' }, SITE_BTN]
+    : [SITE_BTN];
 function presenceView(name) {
-  presence({ details: 'A navegar', state: VIEW_TXT[name] || VIEW_TXT.home, start: SESSION_START });
+  presence({
+    details: VIEW_TXT[name] || VIEW_TXT.home,
+    state: 'A escolher o que ver 🍿',
+    small: 'browse',
+    smallText: 'A navegar',
+    start: SESSION_START,
+    buttons: [SITE_BTN]
+  });
 }
 function presenceDetail(m) {
-  if (S.prefs.rpcPrivate)
-    return presence({ details: 'A navegar', state: 'A escolher o que ver', start: SESSION_START });
+  if (S.prefs.rpcPrivate) return presenceView(CUR_VIEW);
   presence({
-    details: m.type === 'series' ? 'A ver detalhes da série' : 'A ver detalhes do filme',
-    state: m.name,
+    details: '👀 ' + m.name,
+    state: [m.type === 'series' ? '📺 Série' : '🎬 Filme', presYear(m), presRating(m)].filter(Boolean).join(' · '),
     image: m.poster,
     imageText: m.name,
+    small: 'browse',
+    smallText: 'A ver os detalhes',
     start: SESSION_START,
-    buttons: imdbBtn(m)
+    buttons: presButtons(m)
   });
 }
 function presencePlay() {
@@ -53,19 +66,27 @@ function presencePlay() {
   const m = PC.meta,
     v = PC.video,
     paused = V.paused,
-    priv = S.prefs.rpcPrivate;
-  const ep = v
-    ? `T${v.season}:E${v.episode}${v.name || v.title ? ' “' + (v.name || v.title) + '”' : ''}`
-    : 'Filme' + (m.releaseInfo ? ' · ' + String(m.releaseInfo).slice(0, 4) : '');
+    priv = S.prefs.rpcPrivate,
+    title = v && (v.name || v.title);
+  const what = v
+    ? `T${v.season} · E${v.episode}${title ? ' · ' + title : ''}`
+    : ['🎬 Filme', presYear(m), presRating(m)].filter(Boolean).join(' · ');
   const dur = V.duration && isFinite(V.duration) ? V.duration : 0;
   presence({
-    details: priv ? (m.type === 'series' ? 'A ver uma série' : 'A ver um filme') : m.name,
-    state: priv ? (paused ? 'Em pausa' : 'A ver') : paused ? '⏸ Em pausa · ' + ep : ep,
+    details: priv ? (m.type === 'series' ? 'Uma série 📺' : 'Um filme 🎬') : m.name,
+    state: priv ? (paused ? '⏸️ Em pausa' : '▶️ A ver') : (paused ? '⏸️ Em pausa · ' : '') + what,
     image: priv ? undefined : m.poster,
-    imageText: priv ? undefined : paused ? 'Em pausa' : 'A ver ' + m.name,
+    imageText: priv
+      ? 'Vinovim'
+      : v
+        ? `${m.name} — T${v.season} E${v.episode}`
+        : m.name + (presYear(m) ? ` (${presYear(m)})` : ''),
+    small: paused ? 'pause' : 'play',
+    smallText: paused ? 'Em pausa' : 'A ver',
+    show: priv ? undefined : 'details',
     start: paused ? undefined : Date.now() - Math.floor(V.currentTime * 1000),
     end: paused || !dur ? undefined : Date.now() + Math.floor((dur - V.currentTime) * 1000),
-    buttons: imdbBtn(m)
+    buttons: presButtons(m)
   });
 }
 function restorePresence() {

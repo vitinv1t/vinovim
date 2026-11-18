@@ -70,8 +70,10 @@ const GENRES = [
   ['Western', 'Western']
 ];
 const GPT = Object.fromEntries(GENRES);
+// tipos de conteúdo dos addons, como aparecem na lista de addons
+const ADDON_TYPES = { movie: 'filmes', series: 'séries', channel: 'canais', tv: 'TV', anime: 'anime', other: 'outros' };
 const ACCENTS = [
-  ['#e0315b', '#f5c26b'],
+  ['#ff4d94', '#ffc93c'],
   ['#7c5cff', '#5ce1e6'],
   ['#16c784', '#d4f55c'],
   ['#ff7a1a', '#ffd25c'],
@@ -178,7 +180,7 @@ function save({ quiet = false } = {}) {
   if (!quiet) hooks.emit('save');
 }
 /* cada perfil tem a sua lista, progresso, vistos e histórico */
-const PCOLORS = ['#e0315b', '#7c5cff', '#16c784', '#ff7a1a', '#2f8cff', '#ff4fd8', '#f5c26b', '#5ce1e6'];
+const PCOLORS = ['#ff4d94', '#7c5cff', '#16c784', '#ff7a1a', '#2f8cff', '#ff4fd8', '#ffc93c', '#5ce1e6'];
 const PKEYS = ['library', 'progress', 'watched', 'searchHistory'];
 const emptyPData = () => ({ library: {}, progress: {}, watched: {}, searchHistory: [] });
 (function migrateProfiles() {
@@ -420,6 +422,6 @@ function offlineHTML() {
   return hooks.pipe('offline', html);
 }
 const LOGO =
-  '<svg viewBox="0 0 48 48"><path d="M34.5 9.5 24 38.5" fill="none" stroke="url(#lg)" stroke-opacity=".7" stroke-width="8" stroke-linecap="round"/><path d="M13.5 9.5 24 38.5" fill="none" stroke="url(#lg)" stroke-width="8" stroke-linecap="round"/></svg>';
+  '<svg viewBox="0 0 48 48"><path d="M34.5 9.5 24 38.5" fill="none" stroke="url(#lgB)" stroke-width="8" stroke-linecap="round"/><path d="M13.5 9.5 24 38.5" fill="none" stroke="url(#lgA)" stroke-width="8" stroke-linecap="round"/></svg>';
 const topbar = (title, solid = true, home = false) =>
-  `<div class="topbar ${solid ? 'solid' : ''}">${home ? `<a class="mbrand" href="#home">${LOGO}Vinovim</a>` : ''}${title ? `<h1>${title}</h1>` : ''}<div class="tsp"></div>${home ? '<nav class="seg"><a href="#movies">Filmes</a><a href="#series">Séries</a></nav>' : ''}<button class="qbtn" data-surprise>${I.dice}<span>Surpreende-me</span></button><a class="qbtn" href="#search">${I.search}<span>Pesquisar</span></a></div>`;
+  `<div class="topbar ${solid ? 'solid' : ''}">${home ? `<a class="mbrand" href="#home">${LOGO}<span class="vvbrand">vinovim</span></a>` : ''}${title ? `<h1>${title}</h1>` : ''}<div class="tsp"></div>${home ? '<nav class="seg"><a href="#movies">Filmes</a><a href="#series">Séries</a></nav>' : ''}<button class="qbtn" data-surprise>${I.dice}<span>Surpreende-me</span></button><a class="qbtn" href="#search">${I.search}<span>Pesquisar</span></a></div>`;

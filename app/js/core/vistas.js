@@ -178,7 +178,7 @@ const VIEWS = {
       <div class="panel"><h3>Os teus dados</h3><p class="m">A lista, o progresso e os addons ficam guardados neste browser. ${Object.keys(S.library).length} na lista · ${Object.keys(S.progress).length} em curso · ${S.addons.length} addons extra.</p>
         <div class="inrow"><button class="btn gho" id="exp">Exportar cópia</button><button class="btn gho" id="imp">Importar cópia</button><button class="btn gho" id="clrP">Limpar progresso</button><button class="btn gho" id="clrA" style="color:#ff8fa8">Apagar tudo</button></div></div>
       <div class="panel"><h3>Atalhos no leitor</h3><p class="m" style="margin:0">Espaço/K reproduzir · ←/→ 10 s · ↑/↓ volume · F ecrã inteiro · M som · N próximo episódio · Esc sair</p></div>
-      <p class="legal">Vinovim · inspirado no Nuvio · metadados de Cinemeta (IMDb). Esta app não aloja nenhum conteúdo.</p>
+      <p class="legal">Vinovim · informação dos títulos do Cinemeta (IMDb). Esta app não aloja nenhum conteúdo.</p>
     </div></div>`;
     app.querySelectorAll('[data-acc]').forEach(
       b =>
@@ -364,7 +364,7 @@ function addonRow(a) {
     res = (m.resources || []).map(r => (typeof r === 'string' ? r : r.name));
   const lbl = { catalog: 'Catálogos', meta: 'Metadados', stream: 'Fontes', subtitles: 'Legendas' };
   return `<div class="adn"><div class="lg">${m.logo ? `<img src="${esc(m.logo)}" alt="" onerror="this.remove()">` : ''}${esc((m.name || '?')[0])}</div>
-    <div class="tx"><b>${esc(m.name || m.id)}</b><small>v${esc(m.version || '?')} · ${esc((m.types || []).join(', '))}</small><p>${esc(m.description || '')}</p>
+    <div class="tx"><b>${esc(m.name || m.id)}</b><small>v${esc(m.version || '?')} · ${esc((m.types || []).map(t => ADDON_TYPES[t] || t).join(', '))}</small><p>${esc(m.description || '')}</p>
     <div class="tags">${res.map(r => `<span class="tag ${r === 'stream' ? 's' : ''}">${esc(lbl[r] || r)}</span>`).join('')}</div></div>
     ${a.url === CINEMETA ? '<span class="tag">Base</span>' : `<button class="btn ico gho" data-unaddon="${esc(a.url)}" title="Remover">${I.trash}</button>`}</div>`;
 }
