@@ -165,8 +165,8 @@ html.tv .track {
   max-width: 640px;
   padding: 12px 14px;
   border-radius: 14px;
-  background: rgba(245, 194, 107, 0.1);
-  border: 1px solid rgba(245, 194, 107, 0.3);
+  background: rgba(255, 201, 60, 0.1);
+  border: 1px solid rgba(255, 201, 60, 0.3);
   color: #f5d9a6;
   font-size: 14px;
   white-space: pre-wrap;
@@ -176,7 +176,7 @@ html.tv .track {
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #f5c26b;
+  color: #ffc93c;
   margin-bottom: 4px;
 }
 .btn.on.vvrem {

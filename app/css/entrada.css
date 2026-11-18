@@ -7,7 +7,7 @@
   padding: 24px;
   overflow: auto;
   background:
-    radial-gradient(900px 520px at 50% -10%, rgba(224, 49, 91, 0.22), transparent 60%),
+    radial-gradient(900px 520px at 50% -10%, rgba(255, 77, 148, 0.22), transparent 60%),
     radial-gradient(700px 500px at 100% 110%, rgba(124, 92, 255, 0.14), transparent 60%), var(--bg, #09080d);
   animation: fade 0.35s;
 }
@@ -19,7 +19,7 @@
   width: 64px;
   height: 64px;
   margin: 0 auto 18px;
-  filter: drop-shadow(0 12px 30px rgba(224, 49, 91, 0.45));
+  filter: drop-shadow(0 12px 30px rgba(255, 77, 148, 0.45));
 }
 #vvLogin h1 {
   font-family: var(--fd);
@@ -103,7 +103,7 @@
 #vvLogin .skip {
   background: none;
   border: 0;
-  color: var(--ac, #e0315b);
+  color: var(--ac, #ff4d94);
   font: inherit;
   font-weight: 700;
   cursor: pointer;

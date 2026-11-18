@@ -1,18 +1,21 @@
 :root {
-  --bg: #0a0a0d;
-  --bg2: #101014;
-  --card: #17171c;
-  --card2: #1f1f26;
-  --line: #27272f;
-  --tx: #f5f5f7;
-  --mu: #a3a3ad;
-  --mu2: #6d6d78;
-  --ac: #e0315b;
-  --ac2: #f5c26b;
-  --acs: rgba(224, 49, 91, 0.16);
+  /* identidade de 2026: escuro com um toque de violeta e cores alegres (violeta, rosa e coral na marca) */
+  --bg: #0c0a12;
+  --bg2: #121019;
+  --card: #1a1724;
+  --card2: #221e2e;
+  --line: #2d2839;
+  --tx: #f8f6fc;
+  --mu: #aaa3bb;
+  --mu2: #716a82;
+  --ac: #ff4d94;
+  --ac2: #ffc93c;
+  --ac3: #8b5cff;
+  --acs: rgba(255, 77, 148, 0.16);
+  --marca: linear-gradient(110deg, #8b5cff, #ff4d94 60%, #ff6a6a);
   --r: 14px;
   --side: 84px;
-  --fd: 'Bricolage Grotesque', system-ui, sans-serif;
+  --fd: 'Poppins', system-ui, sans-serif;
   --fb: 'Inter', system-ui, sans-serif;
 }
 * {
@@ -94,10 +97,16 @@ a {
 }
 .brand span {
   font-family: var(--fd);
-  font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  color: var(--mu);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+/* o nome “vinovim” com as cores da marca */
+.vvbrand {
+  background: var(--marca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .nv {
   width: 62px;
@@ -1223,7 +1232,7 @@ main {
   margin-left: -7px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(224, 49, 91, 0.4);
+  box-shadow: 0 0 0 4px rgba(255, 77, 148, 0.4);
   transform: scale(0);
   transition: transform 0.15s;
 }
@@ -1253,6 +1262,17 @@ main {
   color: #ddd;
   font-variant-numeric: tabular-nums;
   margin-left: 8px;
+  white-space: nowrap;
+}
+/* em ecrãs estreitos o volume dá lugar ao tempo (o volume do telemóvel controla-se nos botões) */
+@media (max-width: 520px) {
+  .pctl .vol {
+    display: none;
+  }
+  .ptime {
+    font-size: 12.5px;
+    margin-left: 4px;
+  }
 }
 .pctl .tsp {
   flex: 1;
@@ -1656,7 +1676,7 @@ html.amoled {
 .uhead svg {
   width: 72px;
   height: 72px;
-  filter: drop-shadow(0 12px 30px rgba(224, 49, 91, 0.45));
+  filter: drop-shadow(0 12px 30px rgba(255, 77, 148, 0.45));
   animation: float 3s ease-in-out infinite;
 }
 @keyframes float {
@@ -1867,7 +1887,7 @@ html.amoled {
   position: fixed;
   inset: 0;
   z-index: 110;
-  background: radial-gradient(800px 500px at 50% 0, rgba(224, 49, 91, 0.18), transparent 60%), var(--bg);
+  background: radial-gradient(800px 500px at 50% 0, rgba(255, 77, 148, 0.18), transparent 60%), var(--bg);
   display: none;
   place-items: center;
   padding: 24px;

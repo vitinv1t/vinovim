@@ -94,7 +94,7 @@
   display: none;
   place-items: center;
   padding: 24px;
-  background: radial-gradient(800px 500px at 30% 70%, rgba(224, 49, 91, 0.18), transparent 60%), rgba(5, 4, 8, 0.94);
+  background: radial-gradient(800px 500px at 30% 70%, rgba(255, 77, 148, 0.18), transparent 60%), rgba(5, 4, 8, 0.94);
 }
 #vvRecap.show {
   display: grid;
@@ -351,7 +351,7 @@
   inset: 0;
   z-index: 250;
   background:
-    radial-gradient(900px 600px at 70% 20%, rgba(224, 49, 91, 0.25), transparent 60%),
+    radial-gradient(900px 600px at 70% 20%, rgba(255, 77, 148, 0.25), transparent 60%),
     radial-gradient(800px 600px at 10% 90%, rgba(124, 92, 255, 0.2), transparent 60%), #07060a;
   opacity: 0;
   pointer-events: none;
@@ -422,7 +422,7 @@
   color: #e7e2ee;
 }
 #vvSaver .cap .c8mt .r {
-  color: #f5c26b;
+  color: #ffc93c;
   font-weight: 700;
 }
 #vvSaver .clk {

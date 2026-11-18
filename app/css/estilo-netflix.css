@@ -1,128 +1,177 @@
-/* abertura: o V desenha-se, o nome abre-se do centro para fora, passa um brilho,
-   e tudo se aproxima até se desfazer em riscas de luz */
+/* abertura: o “V” desenha-se, as letras saltam para o lugar, os pontos dos “i” caem,
+   brilham estrelinhas e passa um brilho pelo nome, sobre fundo escuro.
+   Só se animam posição, tamanho (no máximo 12% maior) e transparência: fica nítido no PC e no telemóvel. */
 #vvIntro {
   position: fixed;
   inset: 0;
   z-index: 300;
-  background: #000;
+  background: #07060b;
   display: grid;
   place-items: center;
   overflow: hidden;
-  transition: opacity 0.45s;
+  transition: opacity 0.5s;
 }
 #vvIntro.out {
   opacity: 0;
   pointer-events: none;
 }
-/* o logótipo é desenhado 6× maior e reduzido no início: assim, quando se aproxima,
-   o browser não está a esticar uma imagem pequena e as formas ficam nítidas */
 #vvIntro .lg {
-  position: absolute;
-  left: 50%;
-  top: 50%;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: calc(min(3.4vw, 26px) * 6);
-  will-change: transform;
-  animation: vvzoom 4s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  width: min(74vw, 540px);
+  gap: calc(min(74vw, 540px) * 0.055);
+  animation: vvlg 3.4s ease-in-out forwards;
 }
-#vvIntro .mark {
-  width: calc(min(20vw, 132px) * 6);
-  aspect-ratio: 1;
+#vvIntro .marca-v {
+  width: 22%;
   overflow: visible;
 }
-#vvIntro .v {
-  stroke-dasharray: 24;
-  stroke-dashoffset: 24;
-  animation: vvdraw 0.55s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+#vvIntro .marca-v .v {
+  stroke-dasharray: 23;
+  stroke-dashoffset: 23;
+  opacity: 0;
+  animation: vvdraw 0.42s cubic-bezier(0.6, 0, 0.2, 1) forwards;
 }
-#vvIntro .v.front {
-  animation-delay: 0.15s;
+#vvIntro .marca-v .back {
+  animation-delay: 0.25s;
 }
-#vvIntro .v.back {
-  animation-delay: 0.5s;
+#vvIntro .marca-v .front {
+  animation-delay: 0.45s;
 }
-/* o nome é desenhado em SVG (letras altas e condensadas), por isso fica igual em todos os aparelhos */
-#vvIntro .word {
-  position: relative;
-  width: calc(min(64vw, 520px) * 6);
-  aspect-ratio: 480 / 100;
-}
-#vvIntro .word svg {
-  position: absolute;
-  inset: 0;
+#vvIntro .marca-nome {
+  display: block;
   width: 100%;
-  height: 100%;
   overflow: visible;
 }
-#vvIntro .word .l {
+#vvIntro .marca-nome .l,
+#vvIntro .marca-nome .pt {
   transform-box: fill-box;
   transform-origin: 50% 100%;
   opacity: 0;
-  transform: scaleY(1.9) translateY(18%);
-  animation: vvletter 0.6s cubic-bezier(0.16, 0.9, 0.2, 1) forwards;
-  animation-delay: calc(0.95s + var(--d) * 0.09s);
 }
-#vvIntro .word .shine {
-  opacity: 0.85;
-  clip-path: polygon(-26% 0, -14% 0, -20% 100%, -32% 100%);
-  animation: vvshine 0.75s 1.75s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+#vvIntro .marca-nome .l {
+  transform: translateY(55%) scale(0.85);
+  animation: vvup 0.62s cubic-bezier(0.2, 1.5, 0.35, 1) forwards;
+  animation-delay: calc(0.8s + var(--i) * 0.055s);
 }
-#vvIntro .streaks {
+#vvIntro .marca-nome .pt {
+  transform: translateY(-420%);
+  animation: vvdrop 0.55s cubic-bezier(0.3, 1.6, 0.45, 1) forwards;
+  animation-delay: calc(1.28s + var(--i) * 0.03s);
+}
+/* brilho que passa pelo nome: uma cópia branca vista por uma faixa que corre da esquerda para a direita */
+#vvIntro .shine {
   position: absolute;
-  inset: 0 -80%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
   opacity: 0;
-  transform-origin: 46% 50%;
-  animation: vvstreaks 1.5s 2.5s cubic-bezier(0.5, 0, 0.3, 1) forwards;
+  -webkit-mask-image: linear-gradient(100deg, transparent 38%, #000 50%, transparent 62%);
+  mask-image: linear-gradient(100deg, transparent 38%, #000 50%, transparent 62%);
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+  animation: vvshine 0.8s ease-in-out 1.8s forwards;
+}
+#vvIntro .shine g {
+  fill: #fff;
+}
+#vvIntro .vvstar {
+  display: block;
+  position: absolute;
+  width: 6.5%;
+  aspect-ratio: 1;
+  margin: -3.25% 0 0 -3.25%;
+  opacity: 0;
+  transform: scale(0) rotate(-30deg);
+  animation: vvstar 0.9s ease-out forwards;
+  animation-delay: calc(1.45s + var(--i) * 0.12s);
+}
+#vvIntro .vvstar svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: #fff;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
 }
 @keyframes vvdraw {
-  to {
+  0% {
+    opacity: 0;
+  }
+  1% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
     stroke-dashoffset: 0;
   }
 }
-@keyframes vvletter {
+@keyframes vvup {
   to {
     opacity: 1;
     transform: none;
   }
 }
-@keyframes vvshine {
-  to {
-    clip-path: polygon(114% 0, 126% 0, 120% 100%, 108% 100%);
-  }
-}
-@keyframes vvzoom {
+@keyframes vvdrop {
   0% {
-    transform: translate(-50%, -50%) scale(0.143);
+    opacity: 0;
   }
-  62% {
-    transform: translate(-50%, -50%) scale(0.1667);
-    opacity: 1;
-  }
-  86% {
+  30% {
     opacity: 1;
   }
   100% {
-    /* o desvio mantém fixo o ponto do V para onde a câmara avança */
-    transform: translate(-38.5%, 26.67%) scale(4);
-    opacity: 0;
+    opacity: 1;
+    transform: none;
   }
 }
-@keyframes vvstreaks {
+@keyframes vvshine {
+  0% {
+    opacity: 0.85;
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  100% {
+    opacity: 0.85;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+@keyframes vvstar {
   0% {
     opacity: 0;
-    transform: scaleX(0.135);
+    transform: scale(0) rotate(-30deg);
   }
   35% {
     opacity: 1;
-  }
-  70% {
-    opacity: 1;
+    transform: scale(1) rotate(0);
   }
   100% {
     opacity: 0;
-    transform: scaleX(1);
+    transform: scale(0.4) rotate(25deg);
+  }
+}
+/* um pequeno “salto” no “dum” e, no fim, aproxima-se um pouco enquanto desaparece */
+@keyframes vvlg {
+  0%,
+  39% {
+    transform: none;
+    opacity: 1;
+  }
+  43% {
+    transform: scale(1.035);
+  }
+  48%,
+  76% {
+    transform: none;
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.12);
+    opacity: 0;
   }
 }
 .htrailer {

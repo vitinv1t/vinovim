@@ -38,7 +38,7 @@
   html:not(.tv) #nav .brand span {
     display: block;
     font-size: 21px;
-    color: var(--tx);
+    color: transparent;
     letter-spacing: -0.02em;
   }
   html:not(.tv) #nav .nv {
