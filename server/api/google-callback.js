@@ -7,8 +7,8 @@ import { findUser, createUser, saveUser, setOwner } from './_contas.js';
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const PAGE = `<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vinovim</title>
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(700px 400px at 50% 0,rgba(224,49,91,.25),transparent 60%),#09080d;color:#fff;font-family:Inter,Segoe UI,system-ui,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
-.c{max-width:420px}.i{width:76px;height:76px;margin:0 auto 22px;border-radius:24px;display:grid;place-items:center;font-size:38px;background:#2a2433}.i.ok{background:linear-gradient(135deg,#e0315b,#f5c26b)}
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(700px 400px at 50% 0,rgba(255,77,148,.25),transparent 60%),#0c0a12;color:#fff;font-family:Inter,Segoe UI,system-ui,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
+.c{max-width:420px}.i{width:76px;height:76px;margin:0 auto 22px;border-radius:24px;display:grid;place-items:center;font-size:38px;background:#2a2433}.i.ok{background:linear-gradient(135deg,#8b5cff,#ff4d94 50%,#ff6a6a)}
 h1{font-size:26px;margin:0 0 10px}p{color:#b9b4c7;line-height:1.5;margin:0}
 .sp{width:34px;height:34px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:r 1s linear infinite}@keyframes r{to{transform:rotate(1turn)}}</style></head>
 <body><div class="c"><div class="i" id="i"><div class="sp"></div></div><h1 id="t">A entrar…</h1><p id="m">Só um momento.</p></div>
