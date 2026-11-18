@@ -20,6 +20,8 @@ jobs:
   changes:
     name: O que mudou
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     outputs:
       native: ${{ steps.c.outputs.native }}
     steps:
@@ -41,12 +43,22 @@ jobs:
             echo "native=false" >> "$GITHUB_OUTPUT"
           fi
           cat "$GITHUB_OUTPUT"
+      # o .exe e o .apk passam de um passo para o outro pela versão "apps" do GitHub
+      # (os artefactos têm uma quota de espaço que se esgota; as versões não)
+      - name: Preparar a versão "apps"
+        if: steps.c.outputs.native == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view apps >/dev/null 2>&1 || gh release create apps --title "Apps do Vinovim" --notes "O instalador para Windows e a app para Android mais recentes. Também em https://vinovim.vercel.app/download"
 
   windows:
     name: Windows (.exe)
     needs: changes
     if: needs.changes.outputs.native == 'true'
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -66,17 +78,21 @@ jobs:
           python scripts/make_icons.py
       - run: npm install
       - run: npx electron-builder --win --publish never
-      - uses: actions/upload-artifact@v4
-        with:
-          name: vinovim-windows
-          path: dist/*.exe
-          retention-days: 1
+      - name: Guardar o instalador na versão "apps"
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp "$(ls dist/*.exe | head -n 1)" vinovim-setup.exe
+          gh release upload apps vinovim-setup.exe --clobber
 
   android:
     name: Android (.apk)
     needs: changes
     if: needs.changes.outputs.native == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -107,7 +123,7 @@ jobs:
         continue-on-error: true
       - run: npx cap add android
       - name: Icone e ecra de arranque
-        run: npx --yes @capacitor/assets generate --android --iconBackgroundColor '#09080d' --splashBackgroundColor '#09080d'
+        run: npx --yes @capacitor/assets generate --android --iconBackgroundColor '#0c0a12' --splashBackgroundColor '#0c0a12'
         continue-on-error: true
       - run: npx cap sync android
       - name: Widget Continuar a ver e microfone
@@ -130,11 +146,10 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
       - run: cp android/app/build/outputs/apk/debug/app-debug.apk vinovim.apk
-      - uses: actions/upload-artifact@v4
-        with:
-          name: vinovim-android
-          path: vinovim.apk
-          retention-days: 1
+      - name: Guardar a APK na versão "apps"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload apps vinovim.apk --clobber
 
   publish:
     name: Publicar no site (vinovim.vercel.app)
@@ -148,10 +163,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - uses: actions/download-artifact@v4
+      - name: Buscar o .exe e o .apk acabados de compilar
         if: needs.changes.outputs.native == 'true'
-        with:
-          path: artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p artifacts/vinovim-windows artifacts/vinovim-android
+          gh release download apps -p vinovim-setup.exe -D artifacts/vinovim-windows --clobber
+          gh release download apps -p vinovim.apk -D artifacts/vinovim-android --clobber
       - name: Usar o .exe e o .apk que já estão no site
         if: needs.changes.outputs.native != 'true'
         run: |
