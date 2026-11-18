@@ -317,7 +317,7 @@
           tag: '🎄 Especial Natal',
           fx: ['❄', '❅', '❆'],
           n: 26,
-          glow: 'radial-gradient(900px 500px at 70% 10%,rgba(60,170,110,.28),transparent 60%),radial-gradient(700px 400px at 20% 0,rgba(224,49,91,.25),transparent 60%)',
+          glow: 'radial-gradient(900px 500px at 70% 10%,rgba(60,170,110,.28),transparent 60%),radial-gradient(700px 400px at 20% 0,rgba(255,77,148,.25),transparent 60%)',
           rows: [
             ['Especial Natal', 'movie', { search: 'christmas' }],
             ['Filmes para ver em família', 'movie', { genre: 'Family' }]

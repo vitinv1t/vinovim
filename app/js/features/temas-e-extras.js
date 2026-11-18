@@ -232,7 +232,7 @@
     });
   }
   const PART = 16 * 1024 * 1024;
-  const fmtMB = b => (b > 1e9 ? (b / 1e9).toFixed(2) + ' GB' : Math.round(b / 1e6) + ' MB');
+  const fmtMB = b => (b > 1e9 ? (b / 1e9).toFixed(2).replace('.', ',') + ' GB' : Math.round(b / 1e6) + ' MB');
   async function startDownload() {
     if (!PC || !PC.stream) return;
     const st = PC.stream,
@@ -856,7 +856,7 @@
 
   /* =================== conquistas =================== */
   const BADGES = [
-    ['first', '🎬', 'Primeiro play', 'Vê o teu primeiro título', s => s.titles >= 1],
+    ['first', '🎬', 'Primeira sessão', 'Vê o teu primeiro título', s => s.titles >= 1],
     ['t10', '🍿', 'Cinéfilo', 'Vê 10 títulos diferentes', s => s.titles >= 10],
     ['t50', '🎞️', 'Devorador', 'Vê 50 títulos diferentes', s => s.titles >= 50],
     ['m25', '🏆', 'Sala de cinema', 'Vê 25 filmes', s => s.movies >= 25],
@@ -1268,7 +1268,7 @@
       ap.querySelector('.swatches').insertAdjacentHTML(
         'afterend',
         `<div class="srow"><div class="tx"><b>${t('Tema')}</b><small>Cores de fundo da app</small></div><select class="sel" id="vvTheme">${THEMES.map(([k, n]) => `<option value="${k}" ${(S.prefs.amoled ? 'amoled' : S.prefs.theme || 'dark') === k ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
-      <div class="srow"><div class="tx"><b>Cor personalizada</b><small>Escolhe qualquer cor de destaque</small></div><div style="display:flex;gap:8px;align-items:center"><input type="color" class="vvcolor" id="vvColor" value="${S.prefs.customAc || '#e0315b'}">${S.prefs.customAc ? '<button class="btn sm gho" id="vvColorX">Repor</button>' : ''}</div></div>
+      <div class="srow"><div class="tx"><b>Cor personalizada</b><small>Escolhe qualquer cor de destaque</small></div><div style="display:flex;gap:8px;align-items:center"><input type="color" class="vvcolor" id="vvColor" value="${S.prefs.customAc || '#ff4d94'}">${S.prefs.customAc ? '<button class="btn sm gho" id="vvColorX">Repor</button>' : ''}</div></div>
       <div class="srow"><div class="tx"><b>Tamanho da interface</b><small>Útil em ecrãs grandes ou pequenos</small></div><select class="sel" id="vvScale">${[
         ['s', 'Compacta'],
         ['n', 'Normal'],

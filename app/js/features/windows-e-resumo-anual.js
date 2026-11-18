@@ -89,15 +89,15 @@
     'dezembro'
   ];
   const PALS = [
-    ['#e0315b', '#ff8a3d', '#7c1d6f'],
+    ['#ff4d94', '#ff8a3d', '#7c1d6f'],
     ['#7c5cff', '#2f8cff', '#14104a'],
     ['#16c784', '#0f8b8d', '#073b3a'],
-    ['#ff7a1a', '#f5c26b', '#7a2e0b'],
+    ['#ff7a1a', '#ffc93c', '#7a2e0b'],
     ['#ff4fd8', '#7c5cff', '#2a0f3d'],
     ['#2f8cff', '#5ce1e6', '#0b1f4a'],
-    ['#f5c26b', '#e0315b', '#3a1020'],
+    ['#ffc93c', '#ff4d94', '#3a1020'],
     ['#5ce1e6', '#16c784', '#08303a'],
-    ['#e0315b', '#7c5cff', '#16c7b4']
+    ['#ff4d94', '#7c5cff', '#16c7b4']
   ];
   function blobs(i) {
     const [a, b] = PALS[i % PALS.length];
@@ -356,7 +356,7 @@
     x.fillStyle = g;
     x.fillRect(0, 0, 1080, 1920);
     [
-      ['#e0315b', 180, 260, 520],
+      ['#ff4d94', 180, 260, 520],
       ['#7c5cff', 920, 820, 560],
       ['#16c7b4', 260, 1680, 520]
     ].forEach(([col, cx, cy, r]) => {
@@ -368,9 +368,28 @@
     });
     x.fillStyle = '#fff';
     x.textBaseline = 'alphabetic';
-    x.font = `800 40px ${F}`;
+    // o nome “vinovim” com as cores da marca, seguido do ano
+    const nh = 46,
+      ns = nh / 812;
+    x.save();
+    x.translate(80 - 8 * ns, 150);
+    x.scale(ns, ns);
+    const ng = x.createLinearGradient(8, 0, 4026, 0);
+    [
+      [0, MARCA.violeta],
+      [0.6, MARCA.rosa],
+      [1, MARCA.coral]
+    ].forEach(([o, c]) => ng.addColorStop(o, c));
+    x.fillStyle = ng;
+    NOME.forEach(([d, dot]) => {
+      x.fill(new Path2D(d));
+      if (dot) x.fill(new Path2D(dot));
+    });
+    x.restore();
+    x.fillStyle = '#fff';
+    x.font = `700 40px ${F}`;
     x.globalAlpha = 0.85;
-    x.fillText('vinovim · ' + w.year, 80, 150);
+    x.fillText('· ' + w.year, 80 + 4018 * ns + 18, 150);
     x.globalAlpha = 1;
     x.font = `800 92px ${F}`;
     x.fillText(fitText(x, 'O meu ano', 920), 80, 280);

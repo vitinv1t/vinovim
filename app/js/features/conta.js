@@ -1189,7 +1189,7 @@
     toast(msg);
     if (S.prefs.notify && 'Notification' in window && Notification.permission === 'granted') {
       try {
-        new Notification('Vinovim', { body: msg, icon: 'icon.svg' });
+        new Notification('Vinovim', { body: msg, icon: 'icons/icon-192.png' });
       } catch (e) {}
     }
     const nv = document.querySelector('.nv[data-v="calendar"]');
@@ -1235,7 +1235,7 @@
     const mn = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
     app.innerHTML = `<div class="view">${topbar(tr('Estatísticas'))}<div class="pad" style="max-width:1100px">
     <div class="wrapped"><h2>${tr('O teu ano no Vinovim')} ${year}</h2><p>${hours < 0.1 ? 'Ainda estás a começar! Vê qualquer coisa e as tuas estatísticas aparecem aqui.' : `Este ano já passaste <b>${hours.toFixed(1)} horas</b> a ver ${movies} filme(s) e ${series} série(s)${fav ? `. O teu género preferido é <b>${esc(fav)}</b>` : ''}${titles[0] ? ` e o título que mais viste foi <b>${esc(titles[0].name)}</b>` : ''}.`}</p></div>
-    <div class="stgrid"><div class="stcard"><small>Horas vistas</small><b>${hours.toFixed(1)}</b><span>h</span></div><div class="stcard"><small>Filmes</small><b>${movies}</b></div><div class="stcard"><small>Séries</small><b>${series}</b></div><div class="stcard"><small>Dias seguidos</small><b>${streak}</b><span>dia(s)</span></div></div>
+    <div class="stgrid"><div class="stcard"><small>Horas vistas</small><b>${hours.toFixed(1).replace('.', ',')}</b><span>h</span></div><div class="stcard"><small>Filmes</small><b>${movies}</b></div><div class="stcard"><small>Séries</small><b>${series}</b></div><div class="stcard"><small>Dias seguidos</small><b>${streak}</b><span>${streak === 1 ? 'dia' : 'dias'}</span></div></div>
     ${genres.length ? `<h3 class="sec">${tr('Géneros preferidos')}</h3><div class="bars">${genres.map(([g, s]) => `<div class="barrow"><span>${esc(GPT[g] || g)}</span><i style="width:${Math.max(4, (s / gmax) * 100)}%"></i><em>${(s / 3600).toFixed(1)} h</em></div>`).join('')}</div>` : ''}
     <h3 class="sec">${tr('Por mês')}</h3><div class="months">${months.map(s => `<div style="height:${Math.max(2, (s / mmax) * 100)}%" title="${(s / 3600).toFixed(1)} h"></div>`).join('')}</div><div class="mlbl">${mn.map(x => `<span>${x}</span>`).join('')}</div>
     ${

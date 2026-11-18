@@ -63,6 +63,8 @@
   };
 
   /* =================== abertura animada =================== */
+  /* “ta-dum” alegre: duas notas brilhantes quando as letras sobem e um acorde maior
+     quando os pontos dos “i” caem, com um arpejo agudo para as estrelinhas */
   function tadum() {
     if (!P5('introSound')) return;
     try {
@@ -71,76 +73,41 @@
       const ac = new C();
       if (ac.state === 'suspended') ac.resume().catch(() => {});
       const t0 = ac.currentTime + 0.05,
-        out = ac.createGain();
-      out.gain.value = 0.55;
+        out = ac.createGain(),
+        lp = ac.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 5200;
+      out.gain.value = 0.4;
+      lp.connect(out);
       out.connect(ac.destination);
-      const hit = (t, f, len, vol) => {
+      const note = (t, f, len, vol, type) => {
         const o = ac.createOscillator(),
           g = ac.createGain();
-        o.type = 'sine';
-        o.frequency.setValueAtTime(f * 2.2, t);
-        o.frequency.exponentialRampToValueAtTime(f, t + 0.08);
+        o.type = type || 'sine';
+        o.frequency.value = f;
         g.gain.setValueAtTime(0, t);
-        g.gain.linearRampToValueAtTime(vol, t + 0.01);
-        g.gain.exponentialRampToValueAtTime(0.001, t + len);
+        g.gain.linearRampToValueAtTime(vol, t + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0008, t + len);
         o.connect(g);
-        g.connect(out);
+        g.connect(lp);
         o.start(t);
         o.stop(t + len + 0.05);
       };
-      hit(t0 + 0.9, 58, 0.45, 0.9);
-      hit(t0 + 1.12, 52, 1.6, 1);
-      [130.8, 196, 261.6, 329.6].forEach((f, i) => {
-        const o = ac.createOscillator(),
-          g = ac.createGain();
-        o.type = i % 2 ? 'triangle' : 'sawtooth';
-        o.frequency.value = f;
-        const lp = ac.createBiquadFilter();
-        lp.type = 'lowpass';
-        lp.frequency.setValueAtTime(400, t0 + 1.12);
-        lp.frequency.linearRampToValueAtTime(2400, t0 + 2);
-        g.gain.setValueAtTime(0, t0 + 1.12);
-        g.gain.linearRampToValueAtTime(0.05, t0 + 1.5);
-        g.gain.exponentialRampToValueAtTime(0.001, t0 + 3.2);
-        o.connect(lp);
-        lp.connect(g);
-        g.connect(out);
-        o.start(t0 + 1.1);
-        o.stop(t0 + 3.3);
-      });
-      setTimeout(() => ac.close().catch(() => {}), 4000);
+      // “ta”: mi e si, curtos e brilhantes
+      note(t0 + 0.86, 659.3, 0.35, 0.22, 'triangle');
+      note(t0 + 0.97, 987.8, 0.4, 0.16, 'triangle');
+      // “dum”: dó maior com um grave redondo por baixo
+      const d = t0 + 1.4;
+      note(d, 65.4, 1.4, 0.55);
+      note(d, 130.8, 1.6, 0.3);
+      [261.6, 329.6, 392, 523.3].forEach((f, i) => note(d + i * 0.012, f, 2.1, 0.13, 'triangle'));
+      // estrelinhas
+      [1568, 2093, 2637, 3136].forEach((f, i) => note(d + 0.12 + i * 0.07, f, 0.5, 0.05));
+      setTimeout(() => ac.close().catch(() => {}), 3800);
     } catch (e) {}
   }
-  /* “VINOVIM” em letras próprias: altas, condensadas e com a base em arco.
-     Cada letra é uma forma numa caixa de 100 de altura; --d é a distância ao centro,
-     para o nome se abrir do meio para fora. */
-  function wordmark() {
-    const V = 'M0 0h21l14 66 14-66h21L46 100H24z',
-      I = 'M0 0h20v100H0z',
-      N = 'M0 0h21l25 58V0h20v100H45L20 42v58H0z',
-      O =
-        'M33 0a33 33 0 0 1 33 33v34a33 33 0 0 1-66 0V33A33 33 0 0 1 33 0zm0 20a13 13 0 0 0-13 13v34a13 13 0 0 0 26 0V33a13 13 0 0 0-13-13z',
-      M = 'M0 0h23l19 54 19-54h23v100H64V42L50 84H34L20 42v58H0z';
-    const letters = [
-      [V, 0, 3],
-      [I, 84, 2],
-      [N, 118, 1],
-      [O, 198, 0],
-      [V, 278, 1],
-      [I, 362, 2],
-      [M, 396, 3]
-    ];
-    const shapes = cls =>
-      letters
-        .map(([d, x, dist]) => `<g transform="translate(${x})"><path class="${cls}" style="--d:${dist}" d="${d}"/></g>`)
-        .join('');
-    const arc =
-      '<mask id="vvarc"><rect width="480" height="100" fill="#fff"/><circle cx="240" cy="2976" r="2885"/></mask>';
-    return `<div class="word">
-      <svg viewBox="0 0 480 100"><defs><linearGradient id="vvwg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="100"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient>${arc}</defs><g mask="url(#vvarc)" fill="url(#vvwg)" fill-rule="evenodd">${shapes('l')}</g></svg>
-      <svg class="shine" viewBox="0 0 480 100"><g mask="url(#vvarc)" fill="#fff" fill-rule="evenodd">${shapes('')}</g></svg>
-    </div>`;
-  }
+  const STAR =
+    '<svg viewBox="0 0 24 24"><path d="M12 0c.6 6.2 5.8 11.4 12 12-6.2.6-11.4 5.8-12 12-.6-6.2-5.8-11.4-12-12C6.2 11.4 11.4 6.2 12 0z"/></svg>';
   (function intro() {
     if (!P5('intro')) return;
     try {
@@ -151,18 +118,16 @@
     if (/^(comando|colab|lista)=/.test(h)) return;
     const el = document.createElement('div');
     el.id = 'vvIntro';
-    // riscas de luz nas cores do logótipo, com larguras e intervalos ao acaso
-    const tones = ['#ff2d75', '#ff4d6d', '#ff7a55', '#ffb042', '#c8195f', '#8a1246'];
-    let x = 0;
-    const stops = [];
-    while (x < 100) {
-      const gap = 0.3 + Math.random() * 2.2,
-        w = 0.15 + Math.random() * 1.5,
-        c = tones[Math.floor(Math.random() * tones.length)];
-      stops.push(`transparent ${x}% ${x + gap}%`, `${c} ${x + gap}% ${x + gap + w}%`);
-      x += gap + w;
-    }
-    el.innerHTML = `<div class="streaks" style="background:linear-gradient(90deg,${stops.join(',')})"></div><div class="lg"><svg class="mark" viewBox="0 0 48 48"><defs><linearGradient id="vvigA" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient><linearGradient id="vvigB" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#c8195f"/><stop offset="1" stop-color="#e17828"/></linearGradient></defs><path class="v back" d="M32.6 13.6 24 34.4" fill="none" stroke="url(#vvigB)" stroke-width="6.1" stroke-linecap="round"/><path class="v front" d="M15.4 13.6 24 34.4" fill="none" stroke="url(#vvigA)" stroke-width="6.1" stroke-linecap="round"/></svg>${wordmark()}</div>`;
+    // estrelinhas à volta do nome (posição em % da caixa do logótipo)
+    const stars = [
+      [96, 52],
+      [3, 74],
+      [70, 104],
+      [62, 6]
+    ]
+      .map(([x, y], i) => `<i class="vvstar" style="left:${x}%;top:${y}%;--i:${i}">${STAR}</i>`)
+      .join('');
+    el.innerHTML = `<div class="lg">${marcaV('vvim')}${marcaNome('vvin')}<div class="shine">${marcaNome('vvis')}</div>${stars}</div>`;
     document.body.appendChild(el);
     const end = () => {
       el.classList.add('out');
@@ -170,7 +135,7 @@
     };
     el.addEventListener('click', end);
     tadum();
-    setTimeout(end, 3950);
+    setTimeout(end, 3050);
   })();
 
   /* =================== trailer no destaque =================== */
