@@ -91,6 +91,16 @@ const clip = s => {
   while (s.length < 2) s += ' ';
   return s.slice(0, 128);
 };
+// imagens servidas pelo site (o Discord aceita endereços https em vez de imagens carregadas no portal)
+const SITE = REMOTE || 'https://vinovim.vercel.app';
+const RPC_IMG = name => SITE + '/icons/rpc-' + name + '.png';
+const httpsUrl = u => {
+  u = String(u || '');
+  return /^https:\/\//.test(u) && u.length <= 256 ? u : undefined;
+};
+/* Estilo PreMiD: "A ver" em vez de "A jogar", capa do título como imagem grande,
+   ícone pequeno de play/pausa, barra de progresso e, na lista de membros, o nome do que estás a ver.
+   Se o Discord instalado for antigo e recusar os campos novos, volta ao formato simples. */
 function rpcApply(p) {
   pending = p;
   if (!p) {
@@ -98,17 +108,41 @@ function rpcApply(p) {
     return;
   }
   if (!rpcReady) return rpcConnect();
-  const a = {
+  const assets = {
+    large_image: httpsUrl(p.image) || RPC_IMG('logo'),
+    large_text: clip(p.imageText || 'Vinovim')
+  };
+  if (p.small) {
+    assets.small_image = RPC_IMG(p.small);
+    assets.small_text = clip(p.smallText || 'Vinovim');
+  }
+  const activity = {
+    type: 3, // a ver
+    status_display_type: p.show === 'details' ? 2 : 0,
     details: clip(p.details),
     state: clip(p.state),
-    largeImageKey: p.image || 'logo',
-    largeImageText: clip(p.imageText || 'Vinovim'),
+    assets,
     instance: false
   };
-  if (p.start) a.startTimestamp = new Date(p.start);
-  if (p.end) a.endTimestamp = new Date(p.end);
-  if (p.buttons && p.buttons.length) a.buttons = p.buttons.slice(0, 2);
-  rpc.setActivity(a).catch(() => {});
+  if (p.start || p.end) activity.timestamps = {};
+  if (p.start) activity.timestamps.start = Math.round(p.start);
+  if (p.end) activity.timestamps.end = Math.round(p.end);
+  const buttons = (p.buttons || []).filter(b => b && b.label && httpsUrl(b.url)).slice(0, 2);
+  if (buttons.length) activity.buttons = buttons.map(b => ({ label: clip(b.label).slice(0, 32), url: b.url }));
+  rpc.request('SET_ACTIVITY', { pid: process.pid, activity }).catch(() => {
+    const a = {
+      details: activity.details,
+      state: activity.state,
+      largeImageKey: assets.large_image,
+      largeImageText: assets.large_text,
+      instance: false
+    };
+    if (assets.small_image) Object.assign(a, { smallImageKey: assets.small_image, smallImageText: assets.small_text });
+    if (p.start) a.startTimestamp = new Date(p.start);
+    if (p.end) a.endTimestamp = new Date(p.end);
+    if (activity.buttons) a.buttons = activity.buttons;
+    rpc.setActivity(a).catch(() => {});
+  });
 }
 ipcMain.on('vinovim:rpc', (e, p) => rpcApply(p));
 ipcMain.on('vinovim:info', e => {
@@ -275,7 +309,7 @@ function createWindow() {
     height: 880,
     minWidth: 900,
     minHeight: 600,
-    backgroundColor: '#09080d',
+    backgroundColor: '#0c0a12',
     title: 'Vinovim',
     autoHideMenuBar: true,
     icon: path.join(__dirname, '..', 'www', 'icons', 'icon-512.png'),
