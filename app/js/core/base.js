@@ -73,7 +73,7 @@ const GPT = Object.fromEntries(GENRES);
 // tipos de conteúdo dos addons, como aparecem na lista de addons
 const ADDON_TYPES = { movie: 'filmes', series: 'séries', channel: 'canais', tv: 'TV', anime: 'anime', other: 'outros' };
 const ACCENTS = [
-  ['#ff4d94', '#ffc93c'],
+  ['#ff4d94', '#ff6a6a'],
   ['#7c5cff', '#5ce1e6'],
   ['#16c784', '#d4f55c'],
   ['#ff7a1a', '#ffd25c'],
