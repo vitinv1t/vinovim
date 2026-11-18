@@ -9,10 +9,11 @@
     "Protetor de ecrã com imagens do título que estás a ver"
   ],
   "native": {
-    "min": "1.0.1",
+    "min": "1.0.2",
     "notes": [
-      "Ícone novo no Windows e no Android",
-      "Abertura nova ao estilo do cinema",
+      "Nova identidade: cores mais alegres e ícone novo",
+      "Abertura nova, nítida no PC e no telemóvel, com um “ta-dum” novo",
+      "Discord: mostra o que estás a ver com a capa, a barra de progresso e botões",
       "Instala por cima da versão que tens: não perdes nada"
     ],
     "download": "https://vinovim.vercel.app/download"

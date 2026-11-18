@@ -5,7 +5,7 @@
 <br>
 
 [![Compilação](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml/badge.svg)](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml)
-![Versão](https://img.shields.io/badge/versão-1.0.0-e0315b?style=flat-square)
+![Versão](https://img.shields.io/badge/versão-1.0.2-ff4d94?style=flat-square)
 ![Plataformas](https://img.shields.io/badge/plataformas-Windows%20·%20Android%20·%20TV%20·%20Web-7c5cff?style=flat-square)
 ![Addons](https://img.shields.io/badge/addons-protocolo%20Stremio-f5c26b?style=flat-square)
 ![Idiomas](https://img.shields.io/badge/idiomas-PT%20·%20EN%20·%20ES-2ea043?style=flat-square)

@@ -7,10 +7,10 @@
   },
   "android": {
     "allowMixedContent": true,
-    "backgroundColor": "#09080d"
+    "backgroundColor": "#0c0a12"
   },
   "ios": {
-    "backgroundColor": "#09080d",
+    "backgroundColor": "#0c0a12",
     "contentInset": "never"
   }
 }
