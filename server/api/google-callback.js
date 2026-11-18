@@ -2,8 +2,8 @@
 // Usa o fluxo "id_token" do Google: não precisa de segredo, só do ID do cliente (que é público).
 //   GET  → página que lê o token que o Google pôs no endereço (#id_token=…) e envia-o para aqui
 //   POST → confirma o token junto do Google, cria/encontra a conta e deixa a sessão pronta para a app
-import crypto from 'node:crypto';
 import { readJSON, writeJSON, sha, sign, validCode, body as readBody, fail } from './_lib.js';
+import { findUser, createUser, saveUser, setOwner } from './_contas.js';
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const PAGE = `<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vinovim</title>
@@ -54,15 +54,14 @@ export default async function handler(req, res) {
     if (Number(c.exp) * 1000 < Date.now()) return res.status(401).json({ error: 'O login expirou. Tenta outra vez.' });
 
     const email = String(c.email).toLowerCase();
-    const path = 'users/' + sha(email) + '.json';
-    const ex = await readJSON(path);
+    const { s, rec, oldOk } = await findUser(email);
     let uid;
-    if (ex && ex.uid) {
-      uid = ex.uid;
-      if (!ex.google) await writeJSON(path, Object.assign({}, ex, { google: c.sub }));
+    if (rec && rec.uid) {
+      uid = rec.uid;
+      if (!rec.google) await saveUser(s, Object.assign({}, rec, { google: c.sub }));
+      await setOwner(uid, s);
     } else {
-      uid = crypto.randomBytes(12).toString('hex');
-      await writeJSON(path, { uid, google: c.sub, created: Date.now() });
+      uid = (await createUser(s, { google: c.sub }, oldOk)).uid;
     }
     const pend = 'pending/' + sha(state) + '.json';
     const old = await readJSON(pend);

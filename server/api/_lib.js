@@ -4,7 +4,7 @@
 //  • Upstash Redis, quando o projeto o tem ligado no Vercel (variáveis KV_REST_API_URL e KV_REST_API_TOKEN);
 //  • senão, o Vercel Blob privado, como antes.
 // Com o Redis ligado, o que ainda não estiver lá é lido uma vez do Blob e copiado (se o Blob responder),
-// para as contas antigas continuarem a funcionar.
+// para as contas antigas continuarem a funcionar. O Blob está em pausa (limite do plano grátis) até OLD_BACK.
 import crypto from 'node:crypto';
 
 export const sha = s => crypto.createHash('sha256').update(String(s)).digest('hex');
@@ -13,6 +13,9 @@ export const GOOGLE_REDIRECT = process.env.GOOGLE_REDIRECT_URI || 'https://vinov
 
 /* falha do armazenamento (servidor sem resposta, limite gasto…), diferente de "não existe" */
 export class StoreError extends Error {}
+/* o armazenamento antigo (Blob) não respondeu: não dá para saber se lá existe alguma coisa */
+export class OldStoreError extends StoreError {}
+export const OLD_BACK = '11 de dezembro';
 
 // o Vercel cria KV_REST_API_URL/TOKEN (às vezes com um prefixo à frente); a Upstash usa UPSTASH_REDIS_REST_*
 function upstashEnv() {
@@ -80,19 +83,44 @@ function parse(text) {
   }
 }
 
-// o que é passageiro não vale a pena ir buscar ao armazenamento antigo
-const passageiro = path => /^(pending|now)\//.test(path);
+// o que é passageiro, ou só existe no Redis, não vale a pena ir buscar ao armazenamento antigo
+const soRedis = path => /^(pending|now|owner)\//.test(path);
 
 /* devolve null só quando não existe; se o armazenamento falhar, lança StoreError
-   (assim uma falha nunca é confundida com "esta conta não existe") */
-export async function readJSON(path) {
+   (assim uma falha nunca é confundida com "esta conta não existe").
+   Com strict, se o registo não está no Redis e o Blob não responde, lança OldStoreError em vez de null. */
+export async function readJSON(path, strict) {
   if (STORE === 'blob') return blobRead(path);
   const v = await redis(['GET', KEY + path]);
   if (v != null) return parse(v);
-  if (passageiro(path)) return null;
-  const old = await blobRead(path).catch(() => null);
+  if (soRedis(path)) return null;
+  let old;
+  try {
+    old = await blobRead(path);
+  } catch (e) {
+    if (strict) throw new OldStoreError(e.message);
+    return null;
+  }
   if (old != null) await redis(['SET', KEY + path, JSON.stringify(old), 'NX']);
   return old;
+}
+
+/* lê só do armazenamento antigo; null = não existe; lança StoreError se não responder */
+export const readOld = path => blobRead(path);
+
+/* todos os registos do Redis que começam por prefix (poucos: só se usa para as contas) */
+export async function listJSON(prefix) {
+  if (STORE !== 'redis') return [];
+  const keys = [];
+  let cur = '0';
+  do {
+    const [next, found] = await redis(['SCAN', cur, 'MATCH', KEY + prefix + '*', 'COUNT', '500']);
+    keys.push(...found);
+    cur = String(next);
+  } while (cur !== '0');
+  if (!keys.length) return [];
+  const vals = await redis(['MGET', ...keys]);
+  return keys.map((k, i) => ({ path: k.slice(KEY.length), value: vals[i] == null ? null : parse(vals[i]) }));
 }
 
 /* ttl (segundos) só se aplica no Redis: os registos passageiros apagam-se sozinhos */
@@ -154,6 +182,13 @@ export function body(req) {
 
 export function fail(res, e) {
   console.error('[vinovim]', e && e.message ? e.message : e);
+  if (e instanceof OldStoreError)
+    return res.status(503).json({
+      error:
+        'Esta conta está no armazenamento antigo, que o servidor pôs em pausa até ' +
+        OLD_BACK +
+        '. Os dados não se perderam: a partir dessa data entras normalmente.'
+    });
   if (e instanceof StoreError)
     return res.status(503).json({
       error:
