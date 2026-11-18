@@ -215,7 +215,12 @@
     'Link copiado': ['Link copiado', 'Link copied', 'Enlace copiado'],
     'Copiar link': ['Copiar link', 'Copy link', 'Copiar enlace'],
     Gosto: ['Gostei', 'Like', 'Me gusta'],
-    'Não gosto': ['Não gostei', 'Dislike', 'No me gusta']
+    'Não gosto': ['Não gostei', 'Dislike', 'No me gusta'],
+    'Os dados da tua conta antiga voltaram': [
+      'Os dados da sua conta antiga voltaram',
+      'Your old account data is back',
+      'Los datos de tu cuenta antigua han vuelto'
+    ]
   };
   const LIDX = { 'pt-BR': 0, en: 1, es: 2 };
   let LANG = 'pt-PT';
@@ -422,6 +427,12 @@
     try {
       const r = await api('?a=data');
       if (r && r.data) mergeState(r.data);
+      // dados de uma conta antiga com o mesmo email: juntam-se aos desta e o servidor fica a saber
+      const absorbed = [];
+      ((r && r.old) || []).forEach(o => {
+        mergeState(o.data);
+        absorbed.push(o.uid);
+      });
       const data = {};
       SYNC_KEYS.forEach(k => (data[k] = S[k]));
       data.tomb = S.tomb || {};
@@ -430,10 +441,14 @@
         h = fnv(body),
         who = auth.token.slice(-16),
         sent = auth.sent && auth.sent.who === who ? auth.sent : {};
-      if (manual || h !== sent.h || (r && r.updatedAt) !== sent.at) {
-        const w = await api('?a=data', { method: 'PUT', body });
+      if (manual || absorbed.length || h !== sent.h || (r && r.updatedAt) !== sent.at) {
+        const w = await api('?a=data', {
+          method: 'PUT',
+          body: absorbed.length ? JSON.stringify({ data, absorbed }) : body
+        });
         auth.sent = { who, h, at: w.updatedAt };
       }
+      if (absorbed.length) toast(tr('Os dados da tua conta antiga voltaram'));
       lastSync = auth.last = Date.now();
       saveAuth();
       if (manual) toast(tr('Sincronizado'));
