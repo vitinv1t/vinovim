@@ -34,10 +34,6 @@ function presence(p) {
 }
 const presYear = m => (m && m.releaseInfo ? String(m.releaseInfo).slice(0, 4) : '');
 const presRating = m => (m && parseFloat(m.imdbRating) ? '⭐ ' + parseFloat(m.imdbRating).toFixed(1) : '');
-const presButtons = m =>
-  m && /^tt\d+$/.test(m.id) && !S.prefs.rpcPrivate
-    ? [{ label: 'Ver no IMDb', url: 'https://www.imdb.com/title/' + m.id + '/' }, SITE_BTN]
-    : [SITE_BTN];
 function presenceView(name) {
   presence({
     details: VIEW_TXT[name] || VIEW_TXT.home,
@@ -58,7 +54,7 @@ function presenceDetail(m) {
     small: 'browse',
     smallText: 'A ver os detalhes',
     start: SESSION_START,
-    buttons: presButtons(m)
+    buttons: [SITE_BTN]
   });
 }
 function presencePlay() {
@@ -86,7 +82,7 @@ function presencePlay() {
     show: priv ? undefined : 'details',
     start: paused ? undefined : Date.now() - Math.floor(V.currentTime * 1000),
     end: paused || !dur ? undefined : Date.now() + Math.floor((dur - V.currentTime) * 1000),
-    buttons: presButtons(m)
+    buttons: [SITE_BTN]
   });
 }
 function restorePresence() {

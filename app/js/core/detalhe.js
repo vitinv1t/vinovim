@@ -122,9 +122,6 @@ function castHTML(m) {
 }
 function ratingsHTML(m) {
   const r = parseFloat(m.imdbRating);
-  const imdb =
-    (m.links || []).find(l => l.category === 'imdb') ||
-    (/^tt\d+$/.test(m.id) ? { url: 'https://www.imdb.com/title/' + m.id + '/' } : null);
   const rel = m.released ? new Date(m.released) : null;
   const facts = [
     [
@@ -146,7 +143,7 @@ function ratingsHTML(m) {
   ].filter(x => x[1]);
   if (isNaN(r) && !facts.length) return '';
   return `<div class="dsec"><div class="rowh" style="padding:0"><h2>Avaliações e informação</h2></div>
-    <div class="rinfo">${!isNaN(r) ? `<div class="rate-card"><div class="ring" style="--p:${r * 10}"><span>${r.toFixed(1)}</span></div><div><b>IMDb</b><small>${r >= 8 ? 'Excelente' : r >= 7 ? 'Muito bom' : r >= 6 ? 'Bom' : r >= 5 ? 'Razoável' : 'Fraco'} · de 10</small></div></div>` : ''}${imdb ? `<a class="rate-link" href="${esc(imdb.url)}" target="_blank" rel="noopener">Ver no IMDb ${I.right}</a>` : ''}</div>
+    <div class="rinfo">${!isNaN(r) ? `<div class="rate-card"><div class="ring" style="--p:${r * 10}"><span>${r.toFixed(1)}</span></div><div><b>Nota</b><small>${r >= 8 ? 'Excelente' : r >= 7 ? 'Muito bom' : r >= 6 ? 'Bom' : r >= 5 ? 'Razoável' : 'Fraco'} · de 10</small></div></div>` : ''}</div>
     <div class="facts">${facts.map(([k, v]) => `<div><small>${k}</small><b>${esc(v)}</b></div>`).join('')}</div></div>`;
 }
 function episodesHTML(m) {

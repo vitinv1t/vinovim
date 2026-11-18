@@ -178,7 +178,7 @@ const VIEWS = {
       <div class="panel"><h3>Os teus dados</h3><p class="m">A lista, o progresso e os addons ficam guardados neste browser. ${Object.keys(S.library).length} na lista · ${Object.keys(S.progress).length} em curso · ${S.addons.length} addons extra.</p>
         <div class="inrow"><button class="btn gho" id="exp">Exportar cópia</button><button class="btn gho" id="imp">Importar cópia</button><button class="btn gho" id="clrP">Limpar progresso</button><button class="btn gho" id="clrA" style="color:#ff8fa8">Apagar tudo</button></div></div>
       <div class="panel"><h3>Atalhos no leitor</h3><p class="m" style="margin:0">Espaço/K reproduzir · ←/→ 10 s · ↑/↓ volume · F ecrã inteiro · M som · N próximo episódio · Esc sair</p></div>
-      <p class="legal">Vinovim · informação dos títulos do Cinemeta (IMDb). Esta app não aloja nenhum conteúdo.</p>
+      <p class="legal">Vinovim · esta app não aloja nenhum conteúdo.</p>
     </div></div>`;
     app.querySelectorAll('[data-acc]').forEach(
       b =>
