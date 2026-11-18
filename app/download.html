@@ -4,23 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Descarregar o Vinovim</title>
-<meta name="theme-color" content="#09080d">
+<meta name="theme-color" content="#0c0a12">
 <meta name="description" content="Descarrega o Vinovim para Windows e Android.">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#09080d;--card:#15121c;--line:#2b2636;--tx:#f4f0f8;--mu:#a39cb1;--mu2:#6f687c;--ac:#e0315b;--ac2:#f5c26b;--fd:'Bricolage Grotesque',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif}
+:root{--bg:#0c0a12;--card:#1a1724;--line:#2d2839;--tx:#f8f6fc;--mu:#aaa3bb;--mu2:#716a82;--ac:#ff4d94;--ac2:#ffc93c;--ac3:#8b5cff;--marca:linear-gradient(110deg,#8b5cff,#ff4d94 60%,#ff6a6a);--fd:'Poppins',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--tx);font-family:var(--fb);-webkit-font-smoothing:antialiased;min-height:100%}
 a{color:inherit}
 body{overflow-x:hidden}
-.bg{position:fixed;inset:0;pointer-events:none;background:radial-gradient(900px 500px at 15% -10%,rgba(224,49,91,.28),transparent 60%),radial-gradient(700px 500px at 100% 10%,rgba(245,194,107,.14),transparent 60%)}
+.bg{position:fixed;inset:0;pointer-events:none;background:radial-gradient(900px 500px at 15% -10%,rgba(255,77,148,.28),transparent 60%),radial-gradient(700px 500px at 100% 10%,rgba(139,92,255,.22),transparent 60%),radial-gradient(600px 400px at 60% 110%,rgba(255,201,60,.1),transparent 60%)}
 .wrap{position:relative;max-width:1080px;margin:0 auto;padding:28px 24px 60px}
 nav{display:flex;align-items:center;gap:10px;margin-bottom:9vh}
 nav svg{width:38px;height:38px}
-nav b{font-family:var(--fd);font-size:22px;font-weight:800;letter-spacing:-.02em}
+nav b{font-family:var(--fd);font-size:24px;font-weight:700;letter-spacing:-.02em;background:var(--marca);-webkit-background-clip:text;background-clip:text;color:transparent}
 nav .sp{flex:1}
 nav a.web{font-size:13.5px;color:var(--mu);text-decoration:none;padding:9px 14px;border-radius:999px;border:1px solid var(--line)}
 nav a.web:hover{color:var(--tx);border-color:var(--mu2)}
@@ -28,15 +28,15 @@ nav a.web:hover{color:var(--tx);border-color:var(--mu2)}
 .kick{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ac2);margin-bottom:18px}
 .kick i{width:22px;height:2px;background:var(--ac2)}
 h1{font-family:var(--fd);font-size:clamp(40px,7vw,72px);line-height:.95;font-weight:800;letter-spacing:-.035em;margin-bottom:18px}
-h1 span{background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 span{background:var(--marca);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:#d4cedc;font-size:17px;line-height:1.6}
 .status{margin:26px auto 0;display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:14px;color:var(--mu)}
 .status .spin{width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--ac);border-radius:50%;animation:rot .8s linear infinite}
 .status.done .spin{display:none}
 @keyframes rot{to{transform:rotate(360deg)}}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.card{position:relative;padding:28px;border-radius:26px;background:linear-gradient(180deg,#17141f,#0f0d15);border:1px solid var(--line);overflow:hidden;transition:.25s}
-.card.rec{border-color:rgba(224,49,91,.6);box-shadow:0 30px 80px rgba(224,49,91,.15)}
+.card{position:relative;padding:28px;border-radius:26px;background:linear-gradient(180deg,#1c1827,#121019);border:1px solid var(--line);overflow:hidden;transition:.25s}
+.card.rec{border-color:rgba(255,77,148,.6);box-shadow:0 30px 80px rgba(255,77,148,.15)}
 .card .tag{position:absolute;top:18px;right:18px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px;background:var(--ac);color:#fff;display:none}
 .card.rec .tag{display:block}
 .os{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.06);margin-bottom:18px}
@@ -45,12 +45,12 @@ h1 span{background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-backgrou
 .meta{color:var(--mu2);font-size:13px;margin-bottom:20px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;height:54px;border-radius:999px;font-weight:700;font-size:15.5px;text-decoration:none;transition:.18s;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
 .btn:hover{background:rgba(255,255,255,.14)}
-.card.rec .btn{background:linear-gradient(135deg,var(--ac),#ff5c7f);border:0;color:#fff}
+.card.rec .btn{background:linear-gradient(110deg,var(--ac3),var(--ac) 55%,#ff8a3d);border:0;color:#fff}
 .card.rec .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
 .btn svg{width:20px;height:20px}
 .steps{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);display:grid;gap:10px}
 .steps div{display:flex;gap:12px;font-size:13.5px;line-height:1.5;color:#cfc8d8}
-.steps i{flex:0 0 22px;height:22px;border-radius:50%;background:rgba(224,49,91,.16);color:#ff8fa8;font-style:normal;font-size:12px;font-weight:800;display:grid;place-items:center}
+.steps i{flex:0 0 22px;height:22px;border-radius:50%;background:rgba(255,77,148,.16);color:#ff8fbf;font-style:normal;font-size:12px;font-weight:800;display:grid;place-items:center}
 .feats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:46px}
 .feat{padding:18px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
 .feat b{display:block;font-size:14px;margin-bottom:4px}
@@ -64,13 +64,13 @@ footer a{color:var(--mu)}
 <div class="bg"></div>
 <div class="wrap">
   <nav>
-    <svg viewBox="0 0 48 48"><defs><linearGradient id="dlA" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#ff2d75"/><stop offset="1" stop-color="#ffb042"/></linearGradient><linearGradient id="dlB" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="36"><stop offset="0" stop-color="#c8195f"/><stop offset="1" stop-color="#e17828"/></linearGradient></defs><rect width="48" height="48" rx="11" fill="#0c0911"/><path d="M32.6 13.6 24 34.4" fill="none" stroke="url(#dlB)" stroke-width="6.1" stroke-linecap="round"/><path d="M15.4 13.6 24 34.4" fill="none" stroke="url(#dlA)" stroke-width="6.1" stroke-linecap="round"/></svg>
-    <b>Vinovim</b><div class="sp"></div>
+    <svg viewBox="0 0 48 48"><defs><linearGradient id="dlG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cff"/><stop offset=".5" stop-color="#ff4d94"/><stop offset="1" stop-color="#ffb23f"/></linearGradient></defs><rect width="48" height="48" rx="11" fill="url(#dlG)"/><path d="M32.6 13.6 24 34.4" fill="none" stroke="#fff" stroke-opacity=".62" stroke-width="6.1" stroke-linecap="round"/><path d="M15.4 13.6 24 34.4" fill="none" stroke="#fff" stroke-width="6.1" stroke-linecap="round"/></svg>
+    <b>vinovim</b><div class="sp"></div>
     <a class="web" href="/?web">Usar no browser →</a>
   </nav>
 
   <section class="hero">
-    <div class="kick"><i></i>Versão <span id="ver">1.1</span></div>
+    <div class="kick"><i></i>Versão <span id="ver">1.0</span></div>
     <h1>Os teus filmes e séries, <span>num só sítio.</span></h1>
     <p class="lead">Instala o Vinovim no teu PC ou no teu telemóvel. As atualizações chegam sozinhas, dentro da própria app.</p>
     <div class="status" id="status"><span class="spin"></span><span id="stxt">A preparar o download…</span></div>
@@ -118,7 +118,7 @@ footer a{color:var(--mu)}
   var ua = navigator.userAgent, os = /Android/i.test(ua) ? 'and' : /Windows/i.test(ua) ? 'win' : null;
   var st = document.getElementById('status'), tx = document.getElementById('stxt');
   function fmt(b) { return b > 1048576 ? (b / 1048576).toFixed(0) + ' MB' : Math.round(b / 1024) + ' KB'; }
-  fetch('/version.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (v) { document.getElementById('ver').textContent = v.version; }).catch(function () {});
+  fetch('/version.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (v) { document.getElementById('ver').textContent = (v.native && v.native.min) || v.version; }).catch(function () {});
   fetch('/downloads.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
     document.querySelectorAll('[data-size]').forEach(function (el) { var s = d[el.getAttribute('data-size')]; if (s) el.textContent += ' · ' + fmt(s); });
   }).catch(function () {});
