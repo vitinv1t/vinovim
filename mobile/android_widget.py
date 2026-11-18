@@ -78,7 +78,7 @@ public class MainActivity extends BridgeActivity {{
 w(os.path.join(res, 'drawable/widget_bg.xml'), '''
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <gradient android:startColor="#F21D1424" android:endColor="#F209080D" android:angle="315" />
+    <gradient android:startColor="#F2241A33" android:endColor="#F20C0A12" android:angle="315" />
     <corners android:radius="24dp" />
     <stroke android:width="1dp" android:color="#22FFFFFF" />
 </shape>
@@ -86,7 +86,7 @@ w(os.path.join(res, 'drawable/widget_bg.xml'), '''
 w(os.path.join(res, 'drawable/widget_btn.xml'), '''
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-    <gradient android:startColor="#E0315B" android:endColor="#F5C26B" android:angle="315" />
+    <gradient android:startColor="#8B5CFF" android:centerColor="#FF4D94" android:endColor="#FF6A6A" android:angle="315" />
 </shape>
 ''')
 w(os.path.join(res, 'layout/widget_vinovim.xml'), '''
@@ -114,7 +114,7 @@ w(os.path.join(res, 'layout/widget_vinovim.xml'), '''
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CONTINUAR A VER"
-            android:textColor="#F5C26B"
+            android:textColor="#FF6A6A"
             android:textSize="11sp"
             android:textStyle="bold" />
         <TextView
