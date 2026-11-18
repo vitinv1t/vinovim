@@ -1373,7 +1373,8 @@
       R = $('#xReg'),
       Y = $('#xSync'),
       O = $('#xOut');
-    if (L) L.onclick = () => authDialog('login');
+    // o ecrã de entrada completo (com Google); se não existir, o diálogo de email
+    if (L) L.onclick = () => (window.vvShowLogin ? window.vvShowLogin() : authDialog('login'));
     if (R) R.onclick = () => authDialog('register');
     if (Y) Y.onclick = () => syncNow(true);
     if (O)
