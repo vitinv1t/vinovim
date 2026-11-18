@@ -165,7 +165,6 @@
     Nenhum: ['Nenhum', 'None', 'Ninguno'],
     Suave: ['Suave', 'Soft', 'Suave'],
     Sólido: ['Sólido', 'Solid', 'Sólido'],
-    'Ver no IMDb': ['Ver no IMDb', 'View on IMDb', 'Ver en IMDb'],
     Estreia: ['Estreia', 'Release', 'Estreno'],
     Duração: ['Duração', 'Runtime', 'Duración'],
     País: ['País', 'Country', 'País'],
