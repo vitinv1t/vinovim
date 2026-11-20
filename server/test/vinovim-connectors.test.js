@@ -73,7 +73,8 @@ test("Watchmode só devolve links HTTPS da região configurada", async () => {
       return [
         { source_id: 1, name: "Serviço PT", type: "sub", region: "PT", web_url: "https://provider.example/title/1" },
         { source_id: 2, name: "Link inseguro", type: "free", region: "PT", web_url: "javascript:alert(1)" },
-        { source_id: 3, name: "Outra região", type: "sub", region: "US", web_url: "https://provider.example/title/3" }
+        { source_id: 3, name: "Outra região", type: "sub", region: "US", web_url: "https://provider.example/title/3" },
+        { source_id: 4, name: "Serviço BR", type: "free", region: "BR", web_url: "https://provider.example/title/4" }
       ];
     }
   });
@@ -86,6 +87,15 @@ test("Watchmode só devolve links HTTPS da região configurada", async () => {
     assert.equal(streams[0].name, "Serviço PT");
     assert.equal(streams[0].region, "PT");
     assert.equal(streams[0].externalUrl, "https://provider.example/title/1");
+
+    const brazil = await watchmodeConnector.getStreams({
+      type: "movie",
+      id: "tmdb:movie:987654",
+      region: "BR"
+    });
+    assert.equal(brazil.length, 1);
+    assert.equal(brazil[0].name, "Serviço BR");
+    assert.equal(brazil[0].region, "BR");
   } finally {
     globalThis.fetch = oldFetch;
     if (oldKey === undefined) delete process.env.WATCHMODE_API_KEY;
