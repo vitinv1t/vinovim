@@ -2,5 +2,11 @@
   "name": "vinovim-site",
   "private": true,
   "type": "module",
-  "dependencies": { "@vercel/blob": "^2.6.1" }
+  "dependencies": {
+    "@vercel/blob": "^2.6.1"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "find lib api test -name '*.js' -print0 | xargs -0 -n1 node --check"
+  }
 }
