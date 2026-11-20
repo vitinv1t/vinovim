@@ -225,7 +225,10 @@ async function openStreams(m, video) {
               drawer._streams[k] = s;
               return streamBtn(s, k);
             })
-            .join('')
+            .join('') +
+          (list.some(s => s.externalUrl && s.sourceId)
+            ? '<div class="note">Disponibilidade fornecida por <a href="https://www.watchmode.com" target="_blank" rel="noopener noreferrer">Watchmode</a>. Confirma sempre a oferta no serviço.</div>'
+            : '')
         : '<div class="note">Sem fontes deste addon para este título.</div>';
     } catch (e) {
       out = '<div class="note">O addon não respondeu.</div>';
