@@ -8,7 +8,10 @@ on:
     paths:
       - "app/js/**"
       - "server/**"
+      - "api/**"
+      - "docs/VINOVIM.md"
       - ".github/workflows/vinovim-ci.yml"
+      - ".github/workflows/vinovim-addon.yml"
   pull_request:
     paths:
       - "app/js/**"
@@ -31,6 +34,6 @@ jobs:
           node-version: 20
       - name: Check JavaScript syntax
         run: |
-          find app/js server -name "*.js" -print0 | xargs -0 -n1 node --check
+          find app/js server api -name "*.js" -print0 | xargs -0 -n1 node --check
       - name: Run VINOVIM tests
         run: node --test server/test/*.test.js
