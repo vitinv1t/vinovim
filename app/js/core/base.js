@@ -274,12 +274,16 @@ function getJSON(u) {
   return cache.get(u);
 }
 const ADDONS = []; // {url, base, m}
+const VINOVIM_ADDON = window.VINOVIM_ADDON_URL || new URL('/api/addon/manifest.json', location.origin).href;
 async function loadAddons() {
-  const urls = [CINEMETA, ...S.addons.filter(u => u !== CINEMETA)];
+  // O agregador é carregado por omissão; pode apontar para outro domínio através
+  // de window.VINOVIM_ADDON_URL antes de carregar os scripts da aplicação.
+  const urls = [...new Set([CINEMETA, VINOVIM_ADDON, ...S.addons].filter(Boolean))];
   const res = await Promise.allSettled(urls.map(u => getJSON(normUrl(u))));
   ADDONS.length = 0;
   res.forEach((r, i) => {
-    if (r.status === 'fulfilled') ADDONS.push({ url: urls[i], base: baseOf(urls[i]), m: r.value });
+    if (r.status === 'fulfilled' && r.value && Array.isArray(r.value.resources))
+      ADDONS.push({ url: urls[i], base: baseOf(urls[i]), m: r.value });
   });
   if (!ADDONS.length) throw new Error('offline');
   hooks.emit('addons:loaded');
