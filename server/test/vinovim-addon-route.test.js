@@ -37,3 +37,36 @@ test("endpoint responde ao preflight CORS", async () => {
   assert.equal(res.ended, true);
   assert.equal(res.headers["access-control-allow-methods"], "GET, OPTIONS");
 });
+
+test("endpoint descodifica parâmetros de pesquisa do catálogo", async () => {
+  const oldFetch = globalThis.fetch;
+  const oldKey = process.env.TMDB_API_KEY;
+  process.env.TMDB_API_KEY = "route-test-key";
+  let requestedUrl = "";
+  globalThis.fetch = async url => {
+    requestedUrl = String(url);
+    return {
+      ok: true,
+      async json() {
+        return { results: [{ id: 321, title: "Resultado de teste" }] };
+      }
+    };
+  };
+  try {
+    const res = response();
+    await handler({
+      method: "GET",
+      headers: { host: "vinovim.test", "x-forwarded-proto": "https" },
+      query: { path: ["catalog", "movie", "tmdb.movie-search", "search=Matrix%20Reloaded.json"] }
+    }, res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.body.metas[0].id, "tmdb:movie:321");
+    const url = new URL(requestedUrl);
+    assert.equal(url.pathname, "/3/search/movie");
+    assert.equal(url.searchParams.get("query"), "Matrix Reloaded");
+  } finally {
+    globalThis.fetch = oldFetch;
+    if (oldKey === undefined) delete process.env.TMDB_API_KEY;
+    else process.env.TMDB_API_KEY = oldKey;
+  }
+});
