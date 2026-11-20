@@ -164,8 +164,8 @@
   );
 
   /* =================== perfil infantil (o PIN e o editor estão em core/perfis.js) =================== */
-  const KID_OK = ['Animation', 'Family'],
-    MATURE = ['Horror', 'Thriller', 'Crime', 'War'];
+  const KID_OK = ['Animation', 'Family', 'Kids', 'Animação', 'Família', 'Infantil', 'Animación', 'Familia', 'Infantiles'],
+    MATURE = ['Horror', 'Thriller', 'Crime', 'War', 'Terror', 'Suspense', 'Crimen', 'Guerra', 'Bélica'];
   const kidOk = m => {
     const g = (m && (m.genres || m.genre)) || [];
     if (!g.length) return null;
