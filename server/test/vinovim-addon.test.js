@@ -134,3 +134,22 @@ test("contrato não presume autorização de conectores sem classificação", as
   });
   assert.ok(!(await getStreams("movie", "unknown:1")).some(item => item.providerId === "test-undeclared-source"));
 });
+
+test("falha isolada de um fornecedor não bloqueia os restantes", async () => {
+  registerConnector({
+    id: "test-failing-provider",
+    catalogs: [],
+    async getCatalog() { return []; },
+    async getStreams() { throw new Error("provider unavailable"); }
+  });
+  registerConnector({
+    id: "test-healthy-provider",
+    sourceType: "authorized",
+    catalogs: [],
+    async getCatalog() { return []; },
+    async getStreams() { return [{ name: "Fonte funcional", url: "https://media.example/healthy.m3u8" }]; }
+  });
+  const streams = await getStreams("movie", "resilience:1");
+  assert.ok(streams.some(item => item.providerId === "test-healthy-provider"));
+  assert.ok(!streams.some(item => item.providerId === "test-failing-provider"));
+});
