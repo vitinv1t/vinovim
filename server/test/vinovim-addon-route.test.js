@@ -70,3 +70,43 @@ test("endpoint descodifica parâmetros de pesquisa do catálogo", async () => {
     else process.env.TMDB_API_KEY = oldKey;
   }
 });
+
+test("endpoint encaminha o idioma escolhido para os metadados TMDB", async () => {
+  const oldFetch = globalThis.fetch;
+  const oldKey = process.env.TMDB_API_KEY;
+  process.env.TMDB_API_KEY = "locale-test-key";
+  let requestedUrl = "";
+  globalThis.fetch = async url => {
+    requestedUrl = String(url);
+    return {
+      ok: true,
+      async json() {
+        return {
+          id: 456,
+          title: "Filme localizado",
+          release_date: "2026-01-01",
+          overview: "Descrição localizada",
+          credits: {},
+          external_ids: {},
+          videos: { results: [] },
+          genres: []
+        };
+      }
+    };
+  };
+  try {
+    const res = response();
+    await handler({
+      method: "GET",
+      headers: { host: "vinovim.test", "x-forwarded-proto": "https" },
+      query: { path: ["meta", "movie", "tmdb:movie:456.json"], language: "pt-BR" }
+    }, res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.body.meta.name, "Filme localizado");
+    assert.equal(new URL(requestedUrl).searchParams.get("language"), "pt-BR");
+  } finally {
+    globalThis.fetch = oldFetch;
+    if (oldKey === undefined) delete process.env.TMDB_API_KEY;
+    else process.env.TMDB_API_KEY = oldKey;
+  }
+});
