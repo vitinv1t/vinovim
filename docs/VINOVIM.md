@@ -4,7 +4,7 @@ O endpoint Stremio-compatible é publicado em `/api/addon/manifest.json` no proj
 
 ## Conectores integrados
 
-- **TMDB** fornece catálogos de tendências, populares e pesquisa, metadados, imagens, elenco, realizadores, trailers e episódios.
+- **TMDB** fornece catálogos de tendências, populares, pesquisa, animação, documentários, família, anime e conteúdo infantil, além de metadados, imagens, elenco, realizadores, trailers e episódios. Os catálogos e metadados seguem o idioma escolhido na app (PT-PT, PT-BR, inglês ou espanhol).
 - **Watchmode** acrescenta fontes de disponibilidade por país e links web para abrir o título no serviço correspondente. Não fornece vídeo nem streams directos.
 - A região predefinida é `PT`. Pode ser alterada através de `WATCHMODE_REGIONS`.
 
