@@ -33,7 +33,7 @@ export function manifest(baseUrl) {
     version: "0.1.0",
     name: "VINOVIM",
     description: "Agregador de catálogos e fontes configuradas no Vinovim.",
-    logo: "",
+    ...(baseUrl ? { logo: new URL("/icon.svg", baseUrl).toString() } : {}),
     resources: ["catalog", "meta", "stream"],
     types: ["movie", "series"],
     catalogs,
