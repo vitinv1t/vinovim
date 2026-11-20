@@ -1,7 +1,9 @@
 // Conector Watchmode: disponibilidade e links oficiais, nunca streams de vídeo.
 const API = "https://api.watchmode.com/v1";
 const cache = new Map();
+const pending = new Map();
 const CACHE_TTL = 30 * 60 * 1000;
+const MAX_CACHE_ENTRIES = 300;
 
 const safeHttpsUrl = value => {
   try {
@@ -69,33 +71,43 @@ async function getStreams({ type, id, region }) {
   const cacheKey = `${type}:${match[2]}:${regions.join(",")}`;
   const cached = cache.get(cacheKey);
   if (cached && cached.until > Date.now()) return cached.value;
+  if (cached) cache.delete(cacheKey);
+  if (pending.has(cacheKey)) return pending.get(cacheKey);
 
-  const wmId = `${type === "movie" ? "movie" : "tv"}-${match[2]}`;
-  const url = new URL(`${API}/title/${wmId}/sources/`);
-  url.searchParams.set("apiKey", apiKey);
-  url.searchParams.set("regions", regions.join(","));
-  const response = await fetch(url, { headers: { accept: "application/json" }, signal: AbortSignal.timeout(8000) });
-  if (!response.ok) throw new Error(`Watchmode respondeu HTTP ${response.status}`);
+  const request = (async () => {
+    const wmId = `${type === "movie" ? "movie" : "tv"}-${match[2]}`;
+    const url = new URL(`${API}/title/${wmId}/sources/`);
+    url.searchParams.set("apiKey", apiKey);
+    url.searchParams.set("regions", regions.join(","));
+    const response = await fetch(url, { headers: { accept: "application/json" }, signal: AbortSignal.timeout(8000) });
+    if (!response.ok) throw new Error(`Watchmode respondeu HTTP ${response.status}`);
 
-  const sources = await response.json();
-  const allowedRegions = new Set(regions);
-  const normalized = (Array.isArray(sources) ? sources : [])
-    .filter(source => !source.region || allowedRegions.has(String(source.region).toUpperCase()))
-    .map(source => normalizeSource(source, regions.length === 1 ? regions[0] : null))
-    .filter(Boolean);
+    const sources = await response.json();
+    const allowedRegions = new Set(regions);
+    const normalized = (Array.isArray(sources) ? sources : [])
+      .filter(source => !source.region || allowedRegions.has(String(source.region).toUpperCase()))
+      .map(source => normalizeSource(source, regions.length === 1 ? regions[0] : null))
+      .filter(Boolean);
 
-  // Evita duplicados do mesmo serviço/link, mantendo ofertas diferentes quando o URL muda.
-  const seen = new Set();
-  const result = normalized.filter(source => {
-    const key = `${source.sourceId || source.name}:${source.externalUrl}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+    // Evita duplicados do mesmo serviço/link, mantendo ofertas diferentes quando o URL muda.
+    const seen = new Set();
+    const result = normalized.filter(source => {
+      const key = `${source.sourceId || source.name}:${source.externalUrl}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
 
-  cache.set(cacheKey, { value: result, until: Date.now() + CACHE_TTL });
-  if (cache.size > 300) cache.delete(cache.keys().next().value);
-  return result;
+    cache.set(cacheKey, { value: result, until: Date.now() + CACHE_TTL });
+    while (cache.size > MAX_CACHE_ENTRIES) cache.delete(cache.keys().next().value);
+    return result;
+  })();
+  pending.set(cacheKey, request);
+  try {
+    return await request;
+  } finally {
+    if (pending.get(cacheKey) === request) pending.delete(cacheKey);
+  }
 }
 
 export const watchmodeConnector = {
