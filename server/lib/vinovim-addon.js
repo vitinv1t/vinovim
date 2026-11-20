@@ -98,14 +98,25 @@ export async function getStreams(type, id) {
   for (const batch of batches) {
     if (batch.status !== "fulfilled") continue;
     for (const stream of Array.isArray(batch.value) ? batch.value : batch.value?.streams || []) {
-      if (!stream || (!validWebUrl(stream.url) && !stream.ytId && !stream.externalUrl)) continue;
-      streams.push(stream);
+      if (!stream || typeof stream !== "object") continue;
+      const url = validWebUrl(stream.url) ? new URL(stream.url).toString() : null;
+      const externalUrl = validWebUrl(stream.externalUrl) ? new URL(stream.externalUrl).toString() : null;
+      const ytId = typeof stream.ytId === "string" && /^[a-zA-Z0-9_-]{6,20}$/.test(stream.ytId)
+        ? stream.ytId
+        : null;
+      if (!url && !externalUrl && !ytId) continue;
+      streams.push({
+        ...stream,
+        ...(url ? { url } : { url: undefined }),
+        ...(externalUrl ? { externalUrl } : { externalUrl: undefined }),
+        ...(ytId ? { ytId } : { ytId: undefined })
+      });
     }
   }
   const seen = new Set();
   return streams.filter(stream => {
     const key = stream.url || stream.ytId || stream.externalUrl;
-    if (seen.has(key)) return false;
+    if (!key || seen.has(key)) return false;
     seen.add(key);
     return true;
   });
