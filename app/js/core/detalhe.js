@@ -203,7 +203,10 @@ async function openStreams(m, video) {
   srcs.forEach(async (a, i) => {
     let out;
     try {
-      const d = await getJSON(`${a.base}/stream/${type}/${vid}.json`);
+      const regionQuery = a.m.id === 'pt.vinovim.aggregator'
+        ? `?region=${encodeURIComponent(S.prefs.region || 'PT')}`
+        : '';
+      const d = await getJSON(`${a.base}/stream/${type}/${vid}.json${regionQuery}`);
       let list = d.streams || [];
       if (S.prefs.hideTorrent) list = list.filter(s => s.url || s.ytId || s.externalUrl);
       if (S.prefs.sortQ)
