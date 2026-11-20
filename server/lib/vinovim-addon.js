@@ -106,7 +106,9 @@ function normalizeStream(raw, connector) {
   if (!url && !externalUrl && !ytId && !infoHash) return null;
   const sourceType = externalUrl && !url && !ytId && !infoHash
     ? "official"
-    : connector.sourceType === "personal" ? "personal" : "authorized";
+    : ["authorized", "personal"].includes(connector.sourceType) ? connector.sourceType : null;
+  // Não assumir que um conector desconhecido tem autorização para servir vídeo.
+  if (!sourceType) return null;
   const stream = {
     providerId: connector.id,
     sourceType,
