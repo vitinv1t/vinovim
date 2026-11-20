@@ -80,7 +80,9 @@ const DISCOVERY = {
 async function getCatalog({ type, catalog, extra = {} }) {
   const tv = tmdbType(type);
   const search = String(extra.search || "").trim().slice(0, 100);
-  let path, params = { page: Math.max(1, Math.min(50, Math.floor(Number(extra.skip || 0) / 20) + 1)) };
+  const skip = Number(extra.skip || 0);
+  const page = Number.isFinite(skip) && skip >= 0 ? Math.max(1, Math.min(50, Math.floor(skip / 20) + 1)) : 1;
+  let path, params = { page };
   if (catalog.endsWith("-search")) {
     if (!search) return [];
     path = `/search/${tv}`;
@@ -133,25 +135,24 @@ async function getMeta({ type, id }) {
   if (type === "series" && Array.isArray(data.seasons)) {
     meta.videos = [];
     const seasons = data.seasons.filter(s => s.season_number > 0).slice(0, 20);
-    // Limita a concorrência para não sobrecarregar a API nem bloquear a função serverless.
-    for (let i = 0; i < seasons.length; i += 4) {
-      const batch = await Promise.allSettled(seasons.slice(i, i + 4).map(season =>
-        tmdb(`/tv/${numericId}/season/${season.season_number}`)
-      ));
-      for (const result of batch) {
-        if (result.status !== "fulfilled") continue;
-        for (const ep of result.value.episodes || []) {
-          meta.videos.push({
-            id: `${id}:${ep.season_number}:${ep.episode_number}`,
-            title: ep.name || `Episódio ${ep.episode_number}`,
-            season: ep.season_number,
-            episode: ep.episode_number,
-            ...(ep.air_date ? { released: ep.air_date } : {}),
-            ...(ep.overview ? { overview: ep.overview } : {}),
-            ...(image(ep.still_path, "w500") ? { thumbnail: image(ep.still_path, "w500") } : {}),
-            ...(ep.runtime ? { runtime: ep.runtime * 60 } : {})
-          });
-        }
+    // Cada chamada tem timeout individual; 20 temporadas em paralelo mantêm
+    // a ficha dentro do limite normal da função serverless.
+    const results = await Promise.allSettled(seasons.map(season =>
+      tmdb(`/tv/${numericId}/season/${season.season_number}`)
+    ));
+    for (const result of results) {
+      if (result.status !== "fulfilled") continue;
+      for (const ep of result.value.episodes || []) {
+        meta.videos.push({
+          id: `${id}:${ep.season_number}:${ep.episode_number}`,
+          title: ep.name || `Episódio ${ep.episode_number}`,
+          season: ep.season_number,
+          episode: ep.episode_number,
+          ...(ep.air_date ? { released: ep.air_date } : {}),
+          ...(ep.overview ? { overview: ep.overview } : {}),
+          ...(image(ep.still_path, "w500") ? { thumbnail: image(ep.still_path, "w500") } : {}),
+          ...(ep.runtime ? { runtime: ep.runtime * 60 } : {})
+        });
       }
     }
   }
