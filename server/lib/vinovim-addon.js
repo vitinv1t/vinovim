@@ -122,6 +122,7 @@ function normalizeStream(raw, connector) {
     ...(cleanText(raw.name, 100) ? { name: cleanText(raw.name, 100) } : {}),
     ...(cleanText(raw.title, 160) ? { title: cleanText(raw.title, 160) } : {}),
     ...(cleanText(raw.description, 500) ? { description: cleanText(raw.description, 500) } : {}),
+    ...(cleanText(raw.sourceId, 80) ? { sourceId: cleanText(raw.sourceId, 80) } : {}),
     ...(url ? { url } : {}),
     ...(externalUrl ? { externalUrl } : {}),
     ...(ytId ? { ytId } : {}),
