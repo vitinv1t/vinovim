@@ -89,11 +89,11 @@ export async function getMeta(type, id, options = {}) {
   return null;
 }
 
-export async function getStreams(type, id) {
+export async function getStreams(type, id, options = {}) {
   const normalizedType = safeType(type);
   if (!normalizedType) return [];
   const batches = await Promise.allSettled(enabled().filter(c => typeof c.getStreams === "function")
-    .map(c => c.getStreams({ type: normalizedType, id })));
+    .map(c => c.getStreams({ type: normalizedType, id, ...options })));
   const streams = [];
   for (const batch of batches) {
     if (batch.status !== "fulfilled") continue;
