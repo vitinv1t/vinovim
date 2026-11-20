@@ -167,6 +167,7 @@
   const KID_OK = ['Animation', 'Family', 'Kids', 'Animação', 'Família', 'Infantil', 'Animación', 'Familia', 'Infantiles'],
     MATURE = ['Horror', 'Thriller', 'Crime', 'War', 'Terror', 'Suspense', 'Crimen', 'Guerra', 'Bélica'];
   const kidOk = m => {
+    if (m && m.isAdult) return false;
     const g = (m && (m.genres || m.genre)) || [];
     if (!g.length) return null;
     if (g.some(x => MATURE.includes(x))) return false;
