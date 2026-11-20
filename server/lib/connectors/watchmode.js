@@ -59,7 +59,8 @@ async function getStreams({ type, id }) {
     .filter(region => /^[A-Z]{2}$/.test(region));
   if (!regions.length) return [];
 
-  const cacheKey = `${id}:${regions.join(",")}`;
+  // A disponibilidade Watchmode é por título/série, não por episódio individual.
+  const cacheKey = `${type}:${match[2]}:${regions.join(",")}`;
   const cached = cache.get(cacheKey);
   if (cached && cached.until > Date.now()) return cached.value;
 
