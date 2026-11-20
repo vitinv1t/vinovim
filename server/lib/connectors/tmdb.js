@@ -57,10 +57,25 @@ const catalogs = [
   { id: "movie-trending", name: "Filmes em tendência", types: ["movie"] },
   { id: "movie-popular", name: "Filmes populares", types: ["movie"] },
   { id: "movie-search", name: "Pesquisar filmes", types: ["movie"], extra: [{ name: "search", isRequired: true }] },
+  { id: "movie-animation", name: "Animação", types: ["movie"] },
+  { id: "movie-documentary", name: "Documentários", types: ["movie"] },
+  { id: "movie-family", name: "Filmes para a família", types: ["movie"] },
   { id: "series-trending", name: "Séries em tendência", types: ["series"] },
   { id: "series-popular", name: "Séries populares", types: ["series"] },
-  { id: "series-search", name: "Pesquisar séries", types: ["series"], extra: [{ name: "search", isRequired: true }] }
+  { id: "series-search", name: "Pesquisar séries", types: ["series"], extra: [{ name: "search", isRequired: true }] },
+  { id: "series-anime", name: "Anime", types: ["series"] },
+  { id: "series-documentary", name: "Documentários", types: ["series"] },
+  { id: "series-kids", name: "Conteúdo infantil", types: ["series"] }
 ];
+
+const DISCOVERY = {
+  "movie-animation": { with_genres: 16 },
+  "movie-documentary": { with_genres: 99 },
+  "movie-family": { with_genres: 10751 },
+  "series-anime": { with_genres: 16, with_original_language: "ja" },
+  "series-documentary": { with_genres: 99 },
+  "series-kids": { with_genres: 10762 }
+};
 
 async function getCatalog({ type, catalog, extra = {} }) {
   const tv = tmdbType(type);
@@ -72,6 +87,15 @@ async function getCatalog({ type, catalog, extra = {} }) {
     params = { ...params, query: search, include_adult: false, region: "PT" };
   } else if (catalog.endsWith("-trending")) {
     path = `/trending/${tv}/week`;
+  } else if (DISCOVERY[catalog]) {
+    path = `/discover/${tv}`;
+    params = {
+      ...params,
+      ...DISCOVERY[catalog],
+      sort_by: "popularity.desc",
+      include_adult: false,
+      region: "PT"
+    };
   } else {
     path = `/${tv}/popular`;
     params.region = "PT";
