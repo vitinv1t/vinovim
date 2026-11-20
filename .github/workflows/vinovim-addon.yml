@@ -28,4 +28,4 @@ jobs:
         with:
           node-version: 20
       - name: Run VINOVIM addon tests
-        run: node --test test/*.test.js
+        run: npm test
