@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createJellyfinConnector, verifyJellyfinPlaybackToken } from "../lib/connectors/jellyfin.js";
 
-const envKeys = ["JELLYFIN_URL", "JELLYFIN_API_KEY", "JELLYFIN_USER_ID", "JELLYFIN_PROXY_SECRET", "VINOVIM_PUBLIC_URL"];
+const envKeys = ["JELLYFIN_URL", "JELLYFIN_API_KEY", "JELLYFIN_USER_ID", "JELLYFIN_PROXY_SECRET", "VINOVIM_PUBLIC_URL", "JELLYFIN_PRIVATE_DEPLOYMENT"];
 function withEnv(values, fn) {
   const previous = Object.fromEntries(envKeys.map(key => [key, process.env[key]]));
   for (const key of envKeys) {
@@ -19,6 +19,7 @@ function withEnv(values, fn) {
 const configured = {
   JELLYFIN_URL: "https://media.example/jellyfin",
   JELLYFIN_API_KEY: "server-secret-api-key",
+  JELLYFIN_PRIVATE_DEPLOYMENT: "true",
   JELLYFIN_USER_ID: "user-guid",
   JELLYFIN_PROXY_SECRET: "a".repeat(48),
   VINOVIM_PUBLIC_URL: "https://vinovim.example"
