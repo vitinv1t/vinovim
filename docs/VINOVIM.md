@@ -51,6 +51,18 @@ O deployment principal do Vinovim expõe o endpoint através de `api/addon/[...p
 
 O URL é público; as chaves TMDB e Watchmode permanecem exclusivamente nas variáveis de ambiente do servidor. O agregador aparece como addon base e os catálogos não exigem instalação manual.
 
+## Testes locais
+
+Com Node.js 20 ou superior, executar na raiz do repositório:
+
+```bash
+cd server
+npm test
+npm run check
+```
+
+Os testes usam respostas simuladas para não consumir créditos TMDB/Watchmode. A validação com credenciais reais deve ser feita separadamente num deployment de preview.
+
 ## Requisitos antes de produção
 
 - Confirmar que o deployment principal publica `/api/addon/manifest.json`; se for usado um projecto de servidor separado, configurar `window.VINOVIM_ADDON_URL` com o domínio real desse deployment.
