@@ -52,3 +52,22 @@ test("agregador obtém metadados e streams válidos", async () => {
 test("agregador rejeita IDs de conectores repetidos", () => {
   assert.throws(() => registerConnector({ id: "test-catalog", catalogs: [], getCatalog() {} }));
 });
+test("metadados rejeitam imagens HTTP e preservam apenas URLs HTTPS", async () => {
+  registerConnector({
+    id: "test-metadata-urls",
+    catalogs: [],
+    async getCatalog() { return []; },
+    async getMeta() {
+      return {
+        id: "tt003",
+        name: "Imagem segura",
+        type: "movie",
+        poster: "http://unsafe.example/poster.jpg",
+        background: "https://cdn.example/background.jpg"
+      };
+    }
+  });
+  const meta = await getMeta("movie", "tt003");
+  assert.equal(meta.poster, undefined);
+  assert.equal(meta.background, "https://cdn.example/background.jpg");
+});
