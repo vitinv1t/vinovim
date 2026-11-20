@@ -5,10 +5,13 @@ const VIEWS = {
   async home() {
     app.className = 'home';
     app.innerHTML = `<div class="view">${topbar('', false, true)}<div class="hero" id="hero"><div class="hbg sk"></div></div><div class="rows" id="rows">${skRow()}${skRow()}</div></div>`;
-    const cm = cinemeta();
+    const cm = ADDONS.find(a => a.url === CINEMETA);
+    const aggregator = ADDONS.find(a => a.m.id === 'pt.vinovim.aggregator');
+    const movieCatalog = aggregator && (aggregator.m.catalogs || []).find(c => c.type === 'movie' && c.id.endsWith('movie-trending'));
+    const seriesCatalog = aggregator && (aggregator.m.catalogs || []).find(c => c.type === 'series' && c.id.endsWith('series-trending'));
     const [mov, ser] = await Promise.all([
-      catalog(cm, 'movie', 'top').catch(() => []),
-      catalog(cm, 'series', 'top').catch(() => [])
+      cm ? catalog(cm, 'movie', 'top').catch(() => []) : movieCatalog ? catalog(aggregator, 'movie', movieCatalog.id).catch(() => []) : [],
+      cm ? catalog(cm, 'series', 'top').catch(() => []) : seriesCatalog ? catalog(aggregator, 'series', seriesCatalog.id).catch(() => []) : []
     ]);
     if (!$('#rows')) return;
     if (!mov.length && !ser.length) {
