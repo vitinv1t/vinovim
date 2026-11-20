@@ -23,7 +23,7 @@ function normalizeSource(source, region) {
     free: "Gratuito",
     rent: "Aluguer",
     buy: "Compra",
-    tv: "Operador de TV"
+    tve: "Operador de TV"
   })[kind] || source.type || "Disponibilidade";
   const details = [
     kindLabel,
