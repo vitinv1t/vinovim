@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "server/**"
+      - "api/**"
       - ".github/workflows/vinovim-addon.yml"
   push:
     branches:
