@@ -308,6 +308,8 @@ const extraStr = ex => {
 };
 async function catalog(a, type, id, extra) {
   extra = hooks.pipe('catalog:extra', extra, a);
+  if (a.m.id === 'pt.vinovim.aggregator')
+    extra = Object.assign({}, extra || {}, { language: S.prefs.lang || 'pt-PT' });
   const d = await getJSON(`${a.base}/catalog/${type}/${id}${extraStr(extra)}.json`);
   const items = (d.metas || []).map(x => remember({ ...x, type: x.type || type }));
   return hooks.pipe('catalog:items', items, extra);
@@ -318,7 +320,11 @@ async function getMeta(type, id) {
   list.sort((a, b) => (a.url === CINEMETA) - (b.url === CINEMETA)); // addons específicos primeiro
   for (const a of list.length ? list : [cinemeta()]) {
     try {
-      const d = await getJSON(`${a.base}/meta/${type}/${encodeURIComponent(id)}.json`);
+      const language = S.prefs.lang || 'pt-PT';
+      const languageQuery = a.m.id === 'pt.vinovim.aggregator'
+        ? `?language=${encodeURIComponent(language)}`
+        : '';
+      const d = await getJSON(`${a.base}/meta/${type}/${encodeURIComponent(id)}.json${languageQuery}`);
       if (d.meta) return remember({ ...d.meta, type: d.meta.type || type });
     } catch (e) {}
   }
