@@ -20,6 +20,8 @@ const validWebUrl = value => {
 };
 
 export function manifest(baseUrl) {
+  let logo;
+  try { if (baseUrl) logo = new URL("/icon.svg", baseUrl).toString(); } catch {}
   const catalogs = enabled().flatMap(c =>
     (c.catalogs || []).flatMap(cat =>
       (cat.types || ["movie", "series"]).map(type => ({
@@ -33,7 +35,7 @@ export function manifest(baseUrl) {
     version: "0.1.0",
     name: "VINOVIM",
     description: "Agregador de catálogos e fontes configuradas no Vinovim.",
-    ...(baseUrl ? { logo: new URL("/icon.svg", baseUrl).toString() } : {}),
+    ...(logo ? { logo } : {}),
     resources: ["catalog", "meta", "stream"],
     types: ["movie", "series"],
     catalogs,
