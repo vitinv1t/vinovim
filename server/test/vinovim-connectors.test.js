@@ -7,7 +7,10 @@ test("TMDB devolve metadados normalizados para catálogos", async () => {
   const oldFetch = globalThis.fetch;
   const oldKey = process.env.TMDB_API_KEY;
   process.env.TMDB_API_KEY = "test-key";
-  globalThis.fetch = async (url, options) => ({
+  let requestedUrl;
+  globalThis.fetch = async (url, options) => {
+    requestedUrl = String(url);
+    return {
     ok: true,
     async json() {
       return {
@@ -22,7 +25,7 @@ test("TMDB devolve metadados normalizados para catálogos", async () => {
         }]
       };
     }
-  });
+  };
   try {
     const items = await tmdbConnector.getCatalog({
       type: "movie",
@@ -34,6 +37,9 @@ test("TMDB devolve metadados normalizados para catálogos", async () => {
     assert.equal(items[0].name, "Filme de teste");
     assert.equal(items[0].imdbRating, "7.8");
     assert.match(items[0].poster, /^https:\/\/image\.tmdb\.org\//);
+    await tmdbConnector.getCatalog({ type: "movie", catalog: "movie-animation", extra: {} });
+    assert.match(requestedUrl, /with_genres=16/);
+    assert.match(requestedUrl, /discover\/movie/);
   } finally {
     globalThis.fetch = oldFetch;
     if (oldKey === undefined) delete process.env.TMDB_API_KEY;
