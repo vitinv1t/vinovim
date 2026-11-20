@@ -23,7 +23,17 @@ Não colocar estas chaves no frontend, no repositório ou em ficheiros públicos
 
 ## Contrato de fontes
 
-O Watchmode é apresentado ao Vinovim através de `externalUrl`, que abre o destino oficial no serviço. Não se converte disponibilidade em URLs de vídeo nem se simula reprodução. Streams de vídeo só podem ser fornecidos por conectores com autorização para os disponibilizar.
+Todos os conectores de reprodução passam por uma normalização central em `server/lib/vinovim-addon.js`. Cada resultado aceite recebe `providerId` e `sourceType`:
+
+- `official`: apenas `externalUrl`; abre a página oficial do serviço e nunca é tratado como vídeo reproduzível. O Watchmode está nesta categoria.
+- `authorized`: URL HTTPS de reprodução, YouTube, ou identificador compatível fornecido por um conector cuja integração esteja autorizada.
+- `personal`: conteúdo de biblioteca pessoal, identificado pelo conector e sem pressupor upload para o Vinovim.
+
+O contrato normalizado admite `url`, `externalUrl`, `ytId`, `infoHash`, `fileIdx`, `name`, `title`, `description`, `quality`, `language`, `region`, `format` e legendas HTTPS. Os campos desconhecidos são descartados; URLs HTTP, protocolos inseguros, hashes inválidos e duplicados são rejeitados. As legendas são limitadas e validadas individualmente.
+
+Um conector deve declarar `sourceType` (`official`, `authorized` ou `personal`) e implementar `getStreams()` para fornecer resultados. O tipo `official` é inferido também quando o resultado contém apenas `externalUrl`. Não registar fontes desconhecidas ou endpoints enviados pelo cliente: os conectores são código auditável do servidor.
+
+Este contrato não cria fontes de vídeo por si só. Streams só podem ser fornecidos por integrações autorizadas; a biblioteca pessoal exige uma integração local própria e não implica que os ficheiros sejam enviados para o servidor.
 
 ## Limites e atribuição
 
