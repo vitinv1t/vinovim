@@ -73,13 +73,13 @@ export async function getCatalog(type, catalogId, extra = {}) {
   return [...unique.values()];
 }
 
-export async function getMeta(type, id) {
+export async function getMeta(type, id, options = {}) {
   const normalizedType = safeType(type);
   if (!normalizedType) return null;
   for (const connector of enabled()) {
     if (typeof connector.getMeta !== "function") continue;
     try {
-      const result = await connector.getMeta({ type: normalizedType, id });
+      const result = await connector.getMeta({ type: normalizedType, id, ...options });
       const meta = normalizeMeta(result?.meta || result, normalizedType);
       if (meta) return meta;
     } catch (error) {
