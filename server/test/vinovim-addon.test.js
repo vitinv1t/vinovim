@@ -23,6 +23,7 @@ test("agregador obtém metadados e streams válidos", async () => {
   registerConnector({
     id: "test-playback",
     catalogs: [],
+    async getCatalog() { return []; },
     async getMeta() { return { id: "tt002", name: "Série", type: "series" }; },
     async getStreams() {
       return [
