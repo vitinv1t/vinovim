@@ -79,7 +79,7 @@ export async function getMeta(type, id, options = {}) {
   for (const connector of enabled()) {
     if (typeof connector.getMeta !== "function") continue;
     try {
-      const result = await connector.getMeta({ type: normalizedType, id, ...options });
+      const result = await connector.getMeta({ ...options, type: normalizedType, id });
       const meta = normalizeMeta(result?.meta || result, normalizedType);
       // Nunca devolver metadados de outro título por engano ou por um conector
       // que não reconheça o identificador solicitado.
@@ -140,7 +140,7 @@ export async function getStreams(type, id, options = {}) {
   if (!normalizedType) return [];
   const sources = enabled().filter(c => typeof c.getStreams === "function");
   const batches = await Promise.allSettled(sources.map(c =>
-    Promise.resolve().then(() => c.getStreams({ type: normalizedType, id, ...options }))
+    Promise.resolve().then(() => c.getStreams({ ...options, type: normalizedType, id }))
   ));
   const streams = [];
   for (let index = 0; index < batches.length; index++) {
