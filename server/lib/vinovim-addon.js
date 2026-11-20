@@ -44,12 +44,17 @@ export function manifest(baseUrl) {
 }
 
 function normalizeMeta(item, fallbackType) {
-  if (!item || !item.id || !item.name) return null;
+  if (!item || typeof item !== "object" || Array.isArray(item)) return null;
+  if (!(typeof item.id === "string" || typeof item.id === "number") || !String(item.id).trim()) return null;
+  if (typeof item.name !== "string" || !item.name.trim()) return null;
+  const itemType = safeType(item.type);
+  if (item.type && !itemType) return null;
+  if (itemType && itemType !== fallbackType) return null;
   return {
     ...item,
-    id: String(item.id),
-    type: safeType(item.type) || fallbackType,
-    name: String(item.name),
+    id: String(item.id).trim().slice(0, 200),
+    type: itemType || fallbackType,
+    name: item.name.trim().slice(0, 300),
     poster: item.poster && validWebUrl(item.poster) ? new URL(item.poster).toString() : undefined,
     background: item.background && validWebUrl(item.background) ? new URL(item.background).toString() : undefined
   };
