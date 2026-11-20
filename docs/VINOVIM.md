@@ -4,9 +4,9 @@ O endpoint Stremio-compatible é publicado em `/api/addon/manifest.json` no proj
 
 ## Conectores integrados
 
-- **TMDB** fornece catálogos de tendências, populares, pesquisa, animação, documentários, família, anime e conteúdo infantil, além de metadados, imagens, elenco, realizadores, trailers e episódios. Os catálogos e metadados seguem o idioma escolhido na app (PT-PT, PT-BR, inglês ou espanhol).
+- **TMDB** fornece catálogos de tendências, populares, pesquisa, animação, documentários, família, anime e conteúdo infantil, além de metadados, imagens, elenco, realizadores, trailers e episódios. Os catálogos e metadados seguem o idioma escolhido na app (PT-PT, PT-BR, inglês ou espanhol). A preferência é guardada localmente e enviada ao conector VINOVIM.
 - **Watchmode** acrescenta fontes de disponibilidade por país e links web para abrir o título no serviço correspondente. Não fornece vídeo nem streams directos.
-- A região predefinida é `PT`. Pode ser alterada através de `WATCHMODE_REGIONS`.
+- A região predefinida na aplicação é `PT`; o utilizador pode escolher o país nas definições. A API aceita `region` por pedido, validado como código ISO de duas letras. `WATCHMODE_REGIONS` continua a definir a região de fallback do servidor.
 
 Os conectores são registados em `server/lib/vinovim-connectors.js` e implementados em `server/lib/connectors/`. As chaves são lidas apenas no servidor.
 
@@ -53,5 +53,7 @@ O URL é público; as chaves TMDB e Watchmode permanecem exclusivamente nas vari
 A utilização comercial do Vinovim, publicidade, subscrições ou qualquer outro modelo de receita deve ser avaliada com TMDB e Watchmode antes do lançamento. A licença de cada fonte de reprodução é independente das licenças de metadados e disponibilidade.
 
 ## Estado
+
+A interface usa agora os catálogos VINOVIM como fonte principal do início, com Cinemeta como fallback. A pesquisa consulta catálogos que declaram suporte a `search`. As definições permitem escolher idioma de conteúdo e país para disponibilidade; a preferência de país é encaminhada apenas para o conector VINOVIM.
 
 Os conectores estão implementados no backend, o frontend carrega o agregador por omissão e o endpoint está exposto no deployment principal através de `api/addon/[...path].js`. O CI valida sintaxe, catálogo, metadados, pesquisa, CORS e conectores com mocks. Antes da produção real faltam configurar as chaves na Vercel, testar o endpoint publicado com credenciais reais, empacotar localmente o logótipo oficial do TMDB e confirmar as licenças adequadas. Sem chave TMDB, os catálogos ficam indisponíveis; sem Watchmode, os catálogos e metadados continuam a funcionar, mas não aparecem opções de disponibilidade.
