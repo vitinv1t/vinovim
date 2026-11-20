@@ -67,7 +67,13 @@ export default async function handler(req, res) {
       }
       const requestedRegion = typeof req.query.region === "string" ? req.query.region.toUpperCase() : "";
       const region = /^[A-Z]{2}$/.test(requestedRegion) ? requestedRegion : undefined;
-      return json(res, 200, { streams: await getStreams(type, id, { region }) }, "public, max-age=300, s-maxage=1800, stale-while-revalidate=300");
+      const streams = await getStreams(type, id, { region });
+      // Respostas vazias podem resultar de falhas temporárias ou ausência de credenciais;
+      // mantê-las em cache por pouco tempo evita esconder fontes após recuperação do fornecedor.
+      const cache = streams.length
+        ? "public, max-age=120, s-maxage=300, stale-while-revalidate=60"
+        : "public, max-age=15, s-maxage=30";
+      return json(res, 200, { streams }, cache);
     }
 
     return json(res, 404, { error: "Rota VINOVIM não encontrada" });
