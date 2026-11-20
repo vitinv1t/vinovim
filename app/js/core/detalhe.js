@@ -248,10 +248,16 @@ function streamBtn(s, k, override) {
   const playable = s.url || s.ytId || s.externalUrl;
   const ic = s.ytId ? I.yt : s.infoHash ? I.magnet : s.externalUrl ? I.link : I.play;
   const title = override || (s.name || 'Fonte').split('\n')[0];
-  const desc =
-    s.description ||
-    s.title ||
-    (s.infoHash ? 'Torrent — não suportado no browser' : s.externalUrl ? 'Abre fora do Vinovim' : '');
+  const details = [
+    s.description || s.title || (s.infoHash ? 'Torrent — não suportado no browser' : s.externalUrl ? 'Abre fora do Vinovim' : ''),
+    s.quality,
+    s.language,
+    s.region ? `Região ${String(s.region).toUpperCase()}` : '',
+    Array.isArray(s.subtitles) && s.subtitles.length ? `${s.subtitles.length} legenda(s)` : '',
+    s.sourceType === 'official' ? 'Disponibilidade oficial' : s.sourceType === 'personal' ? 'Biblioteca pessoal' : s.sourceType === 'authorized' ? 'Fonte autorizada' : '',
+    s.providerId ? `Fornecedor: ${s.providerId}` : ''
+  ].filter(Boolean);
+  const desc = [...new Set(details)].join(' · ');
   return `<button class="st" data-stream="${k}" ${playable ? '' : 'disabled'}><span class="si">${ic}</span><div style="min-width:0"><b>${esc(title)}</b><span>${esc(desc)}</span></div></button>`;
 }
 function closeDrawer() {
