@@ -19,7 +19,7 @@ async function getStreams({ type, id }) {
   const sources = await response.json();
   return (Array.isArray(sources) ? sources : []).filter(s => URL_OK(s.web_url)).map(s => ({
     name: s.name || "Serviço de streaming",
-    title: s.source_type || "Disponibilidade",
+    title: s.type || "Disponibilidade",
     description: [s.type, s.price ? `${s.price} ${s.price_currency || ""}`.trim() : ""].filter(Boolean).join(" · ") || "Abrir no serviço oficial",
     externalUrl: s.web_url
   }));
