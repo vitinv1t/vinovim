@@ -3,28 +3,29 @@ import assert from "node:assert/strict";
 import { tmdbConnector } from "../lib/connectors/tmdb.js";
 import { watchmodeConnector } from "../lib/connectors/watchmode.js";
 
-test("TMDB devolve metadados normalizados para catálogos", async () => {
+test("TMDB devolve metadados normalizados e aplica filtros de descoberta", async () => {
   const oldFetch = globalThis.fetch;
   const oldKey = process.env.TMDB_API_KEY;
   process.env.TMDB_API_KEY = "test-key";
-  let requestedUrl;
-  globalThis.fetch = async (url, options) => {
+  let requestedUrl = "";
+  globalThis.fetch = async url => {
     requestedUrl = String(url);
     return {
-    ok: true,
-    async json() {
-      return {
-        results: [{
-          id: 987654,
-          title: "Filme de teste",
-          release_date: "2026-01-02",
-          poster_path: "/poster.jpg",
-          backdrop_path: "/backdrop.jpg",
-          overview: "Sinopse de teste",
-          vote_average: 7.8
-        }]
-      };
-    }
+      ok: true,
+      async json() {
+        return {
+          results: [{
+            id: 987654,
+            title: "Filme de teste",
+            release_date: "2026-01-02",
+            poster_path: "/poster.jpg",
+            backdrop_path: "/backdrop.jpg",
+            overview: "Sinopse de teste",
+            vote_average: 7.8
+          }]
+        };
+      }
+    };
   };
   try {
     const items = await tmdbConnector.getCatalog({
@@ -37,6 +38,7 @@ test("TMDB devolve metadados normalizados para catálogos", async () => {
     assert.equal(items[0].name, "Filme de teste");
     assert.equal(items[0].imdbRating, "7.8");
     assert.match(items[0].poster, /^https:\/\/image\.tmdb\.org\//);
+
     await tmdbConnector.getCatalog({ type: "movie", catalog: "movie-animation", extra: {} });
     assert.match(requestedUrl, /with_genres=16/);
     assert.match(requestedUrl, /discover\/movie/);
@@ -53,7 +55,7 @@ test("Watchmode só devolve links HTTPS da região configurada", async () => {
   const oldRegions = process.env.WATCHMODE_REGIONS;
   process.env.WATCHMODE_API_KEY = "test-key";
   process.env.WATCHMODE_REGIONS = "PT";
-  globalThis.fetch = async (url, options) => ({
+  globalThis.fetch = async () => ({
     ok: true,
     async json() {
       return [
