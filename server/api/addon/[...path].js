@@ -6,6 +6,9 @@ import { manifest, getCatalog, getMeta, getStreams } from "../../lib/vinovim-add
 const json = (res, status, value, cache = "no-store") => {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   res.setHeader("Cache-Control", cache);
   return res.status(status).json(value);
 };
@@ -30,6 +33,10 @@ function catalogRequest(parts) {
 }
 
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "GET") return res.status(405).end();
   try {
     const parts = Array.isArray(req.query.path) ? req.query.path : [req.query.path].filter(Boolean);
