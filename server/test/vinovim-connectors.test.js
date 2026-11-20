@@ -31,7 +31,7 @@ test("TMDB devolve metadados normalizados e aplica filtros de descoberta", async
     const items = await tmdbConnector.getCatalog({
       type: "movie",
       catalog: "movie-trending",
-      extra: {}
+      extra: { language: "pt-BR" }
     });
     assert.equal(items.length, 1);
     assert.equal(items[0].id, "tmdb:movie:987654");
@@ -39,9 +39,11 @@ test("TMDB devolve metadados normalizados e aplica filtros de descoberta", async
     assert.equal(items[0].imdbRating, "7.8");
     assert.match(items[0].poster, /^https:\/\/image\.tmdb\.org\//);
 
-    await tmdbConnector.getCatalog({ type: "movie", catalog: "movie-animation", extra: {} });
+    assert.equal(new URL(requestedUrl).searchParams.get("language"), "pt-BR");
+    await tmdbConnector.getCatalog({ type: "movie", catalog: "movie-animation", extra: { language: "en" } });
     assert.match(requestedUrl, /with_genres=16/);
     assert.match(requestedUrl, /discover\/movie/);
+    assert.equal(new URL(requestedUrl).searchParams.get("language"), "en-US");
   } finally {
     globalThis.fetch = oldFetch;
     if (oldKey === undefined) delete process.env.TMDB_API_KEY;
