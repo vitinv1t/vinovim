@@ -91,33 +91,68 @@ export async function getMeta(type, id, options = {}) {
   return null;
 }
 
+const cleanText = (value, max = 300) =>
+  typeof value === "string" ? value.trim().slice(0, max) : "";
+
+function normalizeStream(raw, connector) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const url = validWebUrl(raw.url) ? new URL(raw.url).toString() : null;
+  const externalUrl = validWebUrl(raw.externalUrl) ? new URL(raw.externalUrl).toString() : null;
+  const ytId = typeof raw.ytId === "string" && /^[a-zA-Z0-9_-]{6,20}$/.test(raw.ytId)
+    ? raw.ytId : null;
+  const infoHash = typeof raw.infoHash === "string" && /^[a-f0-9]{40}$/i.test(raw.infoHash)
+    ? raw.infoHash.toLowerCase() : null;
+  // Um link externo é uma página oficial, não um ficheiro de vídeo reproduzível.
+  if (!url && !externalUrl && !ytId && !infoHash) return null;
+  const sourceType = externalUrl && !url && !ytId && !infoHash
+    ? "official"
+    : connector.sourceType === "personal" ? "personal" : "authorized";
+  const stream = {
+    providerId: connector.id,
+    sourceType,
+    ...(cleanText(raw.name, 100) ? { name: cleanText(raw.name, 100) } : {}),
+    ...(cleanText(raw.title, 160) ? { title: cleanText(raw.title, 160) } : {}),
+    ...(cleanText(raw.description, 500) ? { description: cleanText(raw.description, 500) } : {}),
+    ...(url ? { url } : {}),
+    ...(externalUrl ? { externalUrl } : {}),
+    ...(ytId ? { ytId } : {}),
+    ...(infoHash ? { infoHash } : {}),
+    ...(Number.isInteger(raw.fileIdx) && raw.fileIdx >= 0 ? { fileIdx: raw.fileIdx } : {}),
+    ...(cleanText(raw.quality, 32) ? { quality: cleanText(raw.quality, 32) } : {}),
+    ...(cleanText(raw.language, 32) ? { language: cleanText(raw.language, 32) } : {}),
+    ...(cleanText(raw.region, 2) ? { region: cleanText(raw.region, 2).toUpperCase() } : {}),
+    ...(cleanText(raw.format, 32) ? { format: cleanText(raw.format, 32) } : {})
+  };
+  if (Array.isArray(raw.subtitles)) {
+    stream.subtitles = raw.subtitles.slice(0, 20).flatMap(sub => {
+      if (!sub || typeof sub !== "object" || !validWebUrl(sub.url)) return [];
+      const lang = cleanText(sub.lang || sub.language, 12);
+      return [{ url: new URL(sub.url).toString(), ...(lang ? { lang } : {}) }];
+    });
+  }
+  return stream;
+}
+
 export async function getStreams(type, id, options = {}) {
   const normalizedType = safeType(type);
   if (!normalizedType) return [];
-  const batches = await Promise.allSettled(enabled().filter(c => typeof c.getStreams === "function")
-    .map(c => c.getStreams({ type: normalizedType, id, ...options })));
+  const sources = enabled().filter(c => typeof c.getStreams === "function");
+  const batches = await Promise.allSettled(sources.map(c =>
+    Promise.resolve().then(() => c.getStreams({ type: normalizedType, id, ...options }))
+  ));
   const streams = [];
-  for (const batch of batches) {
+  for (let index = 0; index < batches.length; index++) {
+    const batch = batches[index];
     if (batch.status !== "fulfilled") continue;
-    for (const stream of Array.isArray(batch.value) ? batch.value : batch.value?.streams || []) {
-      if (!stream || typeof stream !== "object") continue;
-      const url = validWebUrl(stream.url) ? new URL(stream.url).toString() : null;
-      const externalUrl = validWebUrl(stream.externalUrl) ? new URL(stream.externalUrl).toString() : null;
-      const ytId = typeof stream.ytId === "string" && /^[a-zA-Z0-9_-]{6,20}$/.test(stream.ytId)
-        ? stream.ytId
-        : null;
-      if (!url && !externalUrl && !ytId) continue;
-      streams.push({
-        ...stream,
-        ...(url ? { url } : { url: undefined }),
-        ...(externalUrl ? { externalUrl } : { externalUrl: undefined }),
-        ...(ytId ? { ytId } : { ytId: undefined })
-      });
+    const connector = sources[index];
+    for (const raw of Array.isArray(batch.value) ? batch.value : batch.value?.streams || []) {
+      const stream = normalizeStream(raw, connector);
+      if (stream) streams.push(stream);
     }
   }
   const seen = new Set();
   return streams.filter(stream => {
-    const key = stream.url || stream.ytId || stream.externalUrl;
+    const key = stream.url || stream.ytId || stream.infoHash || stream.externalUrl;
     if (!key || seen.has(key)) return false;
     seen.add(key);
     return true;
