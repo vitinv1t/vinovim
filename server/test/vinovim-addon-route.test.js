@@ -25,6 +25,7 @@ test("endpoint publica manifest Stremio e os catálogos VINOVIM", async () => {
   }, res);
   assert.equal(res.statusCode, 200);
   assert.equal(res.body.id, "pt.vinovim.aggregator");
+  assert.equal(res.body.logo, "https://vinovim.test/icon.svg");
   assert.ok(res.body.catalogs.some(c => c.id === "tmdb.movie-animation"));
   assert.equal(res.headers["access-control-allow-origin"], "*");
   assert.match(res.headers["cache-control"], /s-maxage=3600/);
