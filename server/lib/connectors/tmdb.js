@@ -68,6 +68,7 @@ const toMeta = (item, type) => ({
   ...(image(item.poster_path, "w500") ? { poster: image(item.poster_path, "w500") } : {}),
   ...(image(item.backdrop_path, "w1280") ? { background: image(item.backdrop_path, "w1280") } : {}),
   ...(item.overview ? { description: item.overview } : {}),
+  ...(item.adult ? { isAdult: true } : {}),
   ...(itemDate(item) ? { releaseInfo: itemDate(item).slice(0, 4) } : {}),
   ...(Array.isArray(item.genre_ids) ? { genres: item.genre_ids.map(id => GENRE_NAMES[type]?.[id] || String(id)) } : {}),
   ...(item.vote_average ? { imdbRating: Number(item.vote_average).toFixed(1) } : {})
@@ -123,7 +124,10 @@ async function getCatalog({ type, catalog, extra = {} }) {
     params.region = "PT";
   }
   const data = await tmdb(path, params);
-  return (data.results || []).map(item => toMeta(item, type)).filter(item => item.name);
+  return (data.results || [])
+    .filter(item => type !== "movie" || !item.adult)
+    .map(item => toMeta(item, type))
+    .filter(item => item.name);
 }
 
 function parseId(id, expectedType) {
@@ -148,6 +152,7 @@ async function getMeta({ type, id, language }) {
   const meta = {
     ...base,
     ...(data.imdb_id || data.external_ids?.imdb_id ? { imdb_id: data.imdb_id || data.external_ids.imdb_id } : {}),
+    ...(data.adult ? { isAdult: true } : {}),
     ...(data.genres?.length ? { genres: data.genres.map(g => g.name) } : {}),
     ...(credits.cast?.length ? { cast: credits.cast.slice(0, 12).map(p => p.name) } : {}),
     ...(credits.crew?.some(p => p.job === "Director") ? { director: credits.crew.filter(p => p.job === "Director").map(p => p.name) } : {}),
