@@ -112,6 +112,7 @@ async function getStreams({ type, id, region }) {
 
 export const watchmodeConnector = {
   id: "watchmode",
+  sourceType: "official",
   catalogs: [],
   getCatalog: async () => [],
   getStreams,
