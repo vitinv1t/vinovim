@@ -64,7 +64,7 @@ const catalogs = [
 async function getCatalog({ type, catalog, extra = {} }) {
   const tv = tmdbType(type);
   const search = String(extra.search || "").trim().slice(0, 100);
-  let path, params = { page: Math.max(1, Math.min(50, Number(extra.skip || 0) / 20 + 1)) };
+  let path, params = { page: Math.max(1, Math.min(50, Math.floor(Number(extra.skip || 0) / 20) + 1)) };
   if (catalog.endsWith("-search")) {
     if (!search) return [];
     path = `/search/${tv}`;
