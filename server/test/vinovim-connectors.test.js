@@ -83,13 +83,16 @@ test("TMDB limita pedidos simultâneos de temporadas e mantém todos os episódi
         }
       };
     }
-    const match = /^\\/3\\/tv\\/987656\\/season\\/(\\d+)$/.exec(url.pathname);
-    if (!match) return { ok: false, status: 404 };
+    const parts = url.pathname.split("/");
+    if (parts.length !== 6 || parts[1] !== "3" || parts[2] !== "tv" ||
+        parts[3] !== "987656" || parts[4] !== "season") {
+      return { ok: false, status: 404 };
+    }
     active += 1;
     maxActive = Math.max(maxActive, active);
     await new Promise(resolve => setTimeout(resolve, 5));
     active -= 1;
-    const season = Number(match[1]);
+    const season = Number(parts[5]);
     return {
       ok: true,
       async json() {
