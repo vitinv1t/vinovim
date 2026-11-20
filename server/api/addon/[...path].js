@@ -3,9 +3,10 @@
 import "../../lib/vinovim-connectors.js";
 import { manifest, getCatalog, getMeta, getStreams } from "../../lib/vinovim-addon.js";
 
-const json = (res, status, value) => {
+const json = (res, status, value, cache = "no-store") => {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
-  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Cache-Control", cache);
   return res.status(status).json(value);
 };
 
@@ -33,13 +34,13 @@ export default async function handler(req, res) {
   try {
     const parts = Array.isArray(req.query.path) ? req.query.path : [req.query.path].filter(Boolean);
     if (parts.length === 1 && parts[0] === "manifest.json")
-      return json(res, 200, manifest(`${req.headers["x-forwarded-proto"] || "https"}://${req.headers.host}`));
+      return json(res, 200, manifest(`${req.headers["x-forwarded-proto"] || "https"}://${req.headers.host}`), "public, max-age=3600, s-maxage=3600");
 
     if (parts[0] === "catalog" && parts.length >= 3) {
       const type = parts[1];
       const { catalogId, extra } = catalogRequest(parts);
       const metas = await getCatalog(type, catalogId, extra);
-      return json(res, 200, { metas });
+      return json(res, 200, { metas }, "public, max-age=300, s-maxage=300, stale-while-revalidate=60");
     }
 
     if ((parts[0] === "meta" || parts[0] === "stream") && parts.length === 3) {
@@ -48,9 +49,9 @@ export default async function handler(req, res) {
       const type = parts[1], id = decodeURIComponent(parts[2].slice(0, -5));
       if (parts[0] === "meta") {
         const meta = await getMeta(type, id);
-        return json(res, meta ? 200 : 404, { meta });
+        return json(res, meta ? 200 : 404, { meta }, meta ? "public, max-age=300, s-maxage=300, stale-while-revalidate=60" : "no-store");
       }
-      return json(res, 200, { streams: await getStreams(type, id) });
+      return json(res, 200, { streams: await getStreams(type, id) }, "public, max-age=300, s-maxage=1800, stale-while-revalidate=300");
     }
 
     return json(res, 404, { error: "Rota VINOVIM não encontrada" });
