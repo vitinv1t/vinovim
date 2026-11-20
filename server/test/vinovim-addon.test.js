@@ -10,7 +10,10 @@ test("agregador normaliza catálogos e remove IDs duplicados", async () => {
       return [
         { id: "tt001", name: "Filme", type: "movie" },
         { id: "tt001", name: "Duplicado", type: "movie" },
-        { id: "", name: "Inválido" }
+        { id: "", name: "Inválido" },
+        { id: "tt999", name: "Tipo incorreto", type: "series" },
+        { id: "tt998", name: { unsafe: true }, type: "movie" },
+        { id: "tt997", name: "Tipo desconhecido", type: "channel" }
       ];
     }
   });
