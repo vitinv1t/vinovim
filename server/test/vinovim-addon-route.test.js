@@ -110,3 +110,45 @@ test("endpoint encaminha o idioma escolhido para os metadados TMDB", async () =>
     else process.env.TMDB_API_KEY = oldKey;
   }
 });
+
+test("endpoint encaminha idioma escolhido também para os catálogos", async () => {
+  const oldFetch = globalThis.fetch;
+  const oldKey = process.env.TMDB_API_KEY;
+  process.env.TMDB_API_KEY = "catalog-locale-test-key";
+  let requestedUrl = "";
+  globalThis.fetch = async url => {
+    requestedUrl = String(url);
+    return {
+      ok: true,
+      async json() { return { results: [{ id: 765, title: "Catálogo localizado" }] }; }
+    };
+  };
+  try {
+    const res = response();
+    await handler({
+      method: "GET",
+      headers: { host: "vinovim.test", "x-forwarded-proto": "https" },
+      query: {
+        path: ["catalog", "movie", "tmdb.movie-search", "search=Matrix.json"],
+        language: "pt-BR"
+      }
+    }, res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(new URL(requestedUrl).searchParams.get("language"), "pt-BR");
+  } finally {
+    globalThis.fetch = oldFetch;
+    if (oldKey === undefined) delete process.env.TMDB_API_KEY;
+    else process.env.TMDB_API_KEY = oldKey;
+  }
+});
+
+test("endpoint rejeita identificadores com encoding inválido sem erro interno", async () => {
+  const res = response();
+  await handler({
+    method: "GET",
+    headers: { host: "vinovim.test", "x-forwarded-proto": "https" },
+    query: { path: ["meta", "movie", "%E0%A4%A.json"] }
+  }, res);
+  assert.equal(res.statusCode, 400);
+  assert.deepEqual(res.body, { meta: null });
+});
