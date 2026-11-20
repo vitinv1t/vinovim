@@ -44,7 +44,7 @@ function normalizeSource(source, region) {
   };
 }
 
-async function getStreams({ type, id }) {
+async function getStreams({ type, id, region }) {
   // O formato movie-{tmdbId}/tv-{tmdbId} é aceite oficialmente pelo Watchmode.
   // Para episódios, o identificador base continua a ser o da série; a disponibilidade
   // devolvida é a do título/série, não uma garantia de disponibilidade episódio a episódio.
@@ -53,10 +53,16 @@ async function getStreams({ type, id }) {
   const apiKey = process.env.WATCHMODE_API_KEY;
   if (!apiKey) return [];
 
-  const regions = String(process.env.WATCHMODE_REGIONS || "PT")
+  // A região escolhida na aplicação tem prioridade; a variável de ambiente
+  // continua a servir de fallback e permite configurar uma região por instalação.
+  const requestedRegion = String(region || "").trim().toUpperCase();
+  const configuredRegions = String(process.env.WATCHMODE_REGIONS || "PT")
     .split(",")
-    .map(region => region.trim().toUpperCase())
-    .filter(region => /^[A-Z]{2}$/.test(region));
+    .map(value => value.trim().toUpperCase())
+    .filter(value => /^[A-Z]{2}$/.test(value));
+  const regions = /^[A-Z]{2}$/.test(requestedRegion)
+    ? [requestedRegion]
+    : configuredRegions;
   if (!regions.length) return [];
 
   // A disponibilidade Watchmode é por título/série, não por episódio individual.
