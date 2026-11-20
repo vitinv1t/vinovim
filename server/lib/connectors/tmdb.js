@@ -2,7 +2,9 @@
 const API = "https://api.themoviedb.org/3";
 const IMG = "https://image.tmdb.org/t/p";
 const cache = new Map();
+const pending = new Map();
 const TTL = 5 * 60 * 1000;
+const MAX_CACHE_ENTRIES = 250;
 
 const cacheGet = key => {
   const hit = cache.get(key);
@@ -12,7 +14,7 @@ const cacheGet = key => {
 };
 const cacheSet = (key, value) => {
   cache.set(key, { value, until: Date.now() + TTL });
-  if (cache.size > 250) cache.delete(cache.keys().next().value);
+  while (cache.size > MAX_CACHE_ENTRIES) cache.delete(cache.keys().next().value);
   return value;
 };
 
@@ -27,13 +29,36 @@ async function tmdb(path, params = {}) {
   if (!token) url.searchParams.set("api_key", key);
   const cacheKey = url.toString();
   const cached = cacheGet(cacheKey);
-  if (cached) return cached;
-  const response = await fetch(cacheKey, {
-    headers: token ? { Authorization: `Bearer ${token}`, accept: "application/json" } : { accept: "application/json" },
-    signal: AbortSignal.timeout(4000)
+  if (cached !== null) return cached;
+  if (pending.has(cacheKey)) return pending.get(cacheKey);
+
+  const request = (async () => {
+    const response = await fetch(cacheKey, {
+      headers: token ? { Authorization: `Bearer ${token}`, accept: "application/json" } : { accept: "application/json" },
+      signal: AbortSignal.timeout(5000)
+    });
+    if (!response.ok) throw new Error(`TMDB respondeu HTTP ${response.status}`);
+    return cacheSet(cacheKey, await response.json());
+  })();
+  pending.set(cacheKey, request);
+  try {
+    return await request;
+  } finally {
+    if (pending.get(cacheKey) === request) pending.delete(cacheKey);
+  }
+}
+
+async function mapWithConcurrency(items, limit, mapper) {
+  const results = new Array(items.length);
+  let next = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (next < items.length) {
+      const index = next++;
+      results[index] = await mapper(items[index], index);
+    }
   });
-  if (!response.ok) throw new Error(`TMDB respondeu HTTP ${response.status}`);
-  return cacheSet(cacheKey, await response.json());
+  await Promise.all(workers);
+  return results;
 }
 
 const isMovie = type => type === "movie";
@@ -162,14 +187,19 @@ async function getMeta({ type, id, language }) {
   if (type === "series" && Array.isArray(data.seasons)) {
     meta.videos = [];
     const seasons = data.seasons.filter(s => s.season_number > 0).slice(0, 20);
-    // Cada chamada tem timeout individual; 20 temporadas em paralelo mantêm
-    // a ficha dentro do limite normal da função serverless.
-    const results = await Promise.allSettled(seasons.map(season =>
-      tmdb(`/tv/${numericId}/season/${season.season_number}`, { language: lang })
-    ));
-    for (const result of results) {
-      if (result.status !== "fulfilled") continue;
-      for (const ep of result.value.episodes || []) {
+    // Limita a quatro pedidos simultâneos para evitar picos e respostas 429.
+    // A ordem original é preservada, mesmo quando algumas temporadas falham.
+    const results = await mapWithConcurrency(seasons, 4, async season => {
+      try {
+        return await tmdb(`/tv/${numericId}/season/${season.season_number}`, { language: lang });
+      } catch (error) {
+        console.warn(`[VINOVIM] TMDB season ${season.season_number}:`, error?.message || error);
+        return null;
+      }
+    });
+    for (const seasonData of results) {
+      if (!seasonData) continue;
+      for (const ep of seasonData.episodes || []) {
         meta.videos.push({
           id: `${id}:${ep.season_number}:${ep.episode_number}`,
           title: ep.name || `Episódio ${ep.episode_number}`,
