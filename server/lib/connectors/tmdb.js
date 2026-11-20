@@ -30,7 +30,7 @@ async function tmdb(path, params = {}) {
   if (cached) return cached;
   const response = await fetch(cacheKey, {
     headers: token ? { Authorization: `Bearer ${token}`, accept: "application/json" } : { accept: "application/json" },
-    signal: AbortSignal.timeout(8000)
+    signal: AbortSignal.timeout(4000)
   });
   if (!response.ok) throw new Error(`TMDB respondeu HTTP ${response.status}`);
   return cacheSet(cacheKey, await response.json());
