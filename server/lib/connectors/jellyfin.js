@@ -45,15 +45,13 @@ async function jellyfin(path, params = {}) {
   if (!response.ok) throw new Error(`Jellyfin respondeu HTTP ${response.status}`);
   return response.json();
 }
-function publicBase(options = {}) {
+function publicBase() {
   const configuredBase = text(process.env.VINOVIM_PUBLIC_URL);
-  if (configuredBase) {
-    try { const u = new URL(configuredBase); return u.protocol === "https:" ? u.toString().replace(/\/$/, "") : null; }
-    catch { return null; }
-  }
-  const candidate = text(options.baseUrl);
-  try { const u = new URL(candidate); return u.protocol === "https:" ? u.toString().replace(/\/$/, "") : null; }
-  catch { return null; }
+  if (!configuredBase) return null;
+  try {
+    const u = new URL(configuredBase);
+    return u.protocol === "https:" ? u.toString().replace(/\\/$/, "") : null;
+  } catch { return null; }
 }
 function signItem(itemId, secret, expires) {
   const payload = Buffer.from(JSON.stringify({ itemId, exp: expires })).toString("base64url");
@@ -142,12 +140,12 @@ export function createJellyfinConnector() {
       }
       return meta;
     },
-    async getStreams({ type, id, baseUrl: requestBase }) {
+    async getStreams({ type, id }) {
       const parsed = parseId(id);
       if (!configured() || !parsed || !["movie", "episode"].includes(parsed.kind)) return [];
       if ((type === "movie" && parsed.kind !== "movie") || (type === "series" && parsed.kind !== "episode")) return [];
       const secret = text(process.env.JELLYFIN_PROXY_SECRET);
-      const origin = publicBase({ baseUrl: requestBase });
+      const origin = publicBase();
       if (!secret || secret.length < 32 || !origin) return [];
       const token = signItem(parsed.itemId, secret, Date.now() + 15 * 60_000);
       return [{
