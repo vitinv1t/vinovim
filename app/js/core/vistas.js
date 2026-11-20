@@ -159,6 +159,7 @@ const VIEWS = {
         <div class="srow"><div class="tx"><b>Ordenar fontes por qualidade</b><small>4K e 1080p primeiro</small></div><button class="tg ${S.prefs.sortQ ? 'on' : ''}" data-pref="sortQ"></button></div>
         <div class="srow"><div class="tx"><b>Reproduzir automaticamente</b><small>Começa logo com a primeira fonte disponível</small></div><button class="tg ${S.prefs.autoplay ? 'on' : ''}" data-pref="autoplay"></button></div>
         <div class="srow"><div class="tx"><b>Esconder torrents</b><small>Não podem ser reproduzidos nesta app</small></div><button class="tg ${S.prefs.hideTorrent ? 'on' : ''}" data-pref="hideTorrent"></button></div>
+        <div class="srow"><div class="tx"><b>País das plataformas</b><small>Mostra serviços disponíveis na região escolhida</small></div><select class="sel" id="availabilityRegion"><option value="PT" ${S.prefs.region === 'PT' ? 'selected' : ''}>Portugal</option><option value="BR" ${S.prefs.region === 'BR' ? 'selected' : ''}>Brasil</option><option value="ES" ${S.prefs.region === 'ES' ? 'selected' : ''}>Espanha</option><option value="US" ${S.prefs.region === 'US' ? 'selected' : ''}>Estados Unidos</option><option value="GB" ${S.prefs.region === 'GB' ? 'selected' : ''}>Reino Unido</option><option value="FR" ${S.prefs.region === 'FR' ? 'selected' : ''}>França</option></select></div>
         <div class="srow"><div class="tx"><b>Idioma das legendas</b><small>Ativadas automaticamente quando um addon as fornece</small></div><select class="sel" id="subLang">${Object.entries(
           SUBLANGS
         )
@@ -216,6 +217,12 @@ const VIEWS = {
           refreshPresence();
         })
     );
+    $('#availabilityRegion').onchange = e => {
+      S.prefs.region = e.target.value;
+      save();
+      // Reabre a ficha para atualizar as ofertas do país selecionado.
+      if (D.meta && $('#detail').classList.contains('open')) openStreams(D.meta, null);
+    };
     $('#subLang').onchange = e => {
       S.prefs.subLang = e.target.value;
       save();
