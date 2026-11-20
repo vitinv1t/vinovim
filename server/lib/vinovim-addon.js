@@ -15,7 +15,7 @@ export function registerConnector(connector) {
 const enabled = () => [...connectors.values()].filter(c => c.enabled !== false);
 const safeType = type => type === "series" ? "series" : type === "movie" ? "movie" : null;
 const validWebUrl = value => {
-  try { const u = new URL(value); return u.protocol === "https:" || u.protocol === "http:"; }
+  try { const u = new URL(value); return u.protocol === "https:"; }
   catch { return false; }
 };
 
