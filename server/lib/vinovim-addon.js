@@ -48,8 +48,8 @@ function normalizeMeta(item, fallbackType) {
     id: String(item.id),
     type: safeType(item.type) || fallbackType,
     name: String(item.name),
-    ...(item.poster && validWebUrl(item.poster) ? { poster: item.poster } : {}),
-    ...(item.background && validWebUrl(item.background) ? { background: item.background } : {})
+    poster: item.poster && validWebUrl(item.poster) ? new URL(item.poster).toString() : undefined,
+    background: item.background && validWebUrl(item.background) ? new URL(item.background).toString() : undefined
   };
 }
 
