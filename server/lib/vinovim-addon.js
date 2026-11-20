@@ -81,7 +81,9 @@ export async function getMeta(type, id, options = {}) {
     try {
       const result = await connector.getMeta({ type: normalizedType, id, ...options });
       const meta = normalizeMeta(result?.meta || result, normalizedType);
-      if (meta) return meta;
+      // Nunca devolver metadados de outro título por engano ou por um conector
+      // que não reconheça o identificador solicitado.
+      if (meta && meta.id === String(id) && meta.type === normalizedType) return meta;
     } catch (error) {
       console.warn(`[VINOVIM] ${connector.id} meta:`, error?.message || error);
     }
