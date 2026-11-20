@@ -68,6 +68,7 @@ test("metadados rejeitam imagens HTTP e preservam apenas URLs HTTPS", async () =
     }
   });
   const meta = await getMeta("movie", "tt003");
+  assert.equal(meta.id, "tt003");
   assert.equal(meta.poster, undefined);
   assert.equal(meta.background, "https://cdn.example/background.jpg");
 });
