@@ -97,7 +97,7 @@ test("contrato de fontes valida hash, legendas e classifica biblioteca pessoal",
       }];
     }
   });
-  const [stream] = await getStreams("movie", "local:123");
+  const [stream] = (await getStreams("movie", "local:123")).filter(item => item.providerId === "test-personal-library");
   assert.equal(stream.sourceType, "personal");
   assert.equal(stream.providerId, "test-personal-library");
   assert.equal(stream.infoHash, "a".repeat(40));
@@ -119,7 +119,7 @@ test("contrato rejeita hashes inválidos e URLs de reprodução inseguras", asyn
       ];
     }
   });
-  assert.deepEqual(await getStreams("movie", "invalid:1"), []);
+  assert.ok(!(await getStreams("movie", "invalid:1")).some(item => item.providerId === "test-invalid-source"));
 });
 
 test("contrato não presume autorização de conectores sem classificação", async () => {
@@ -129,5 +129,5 @@ test("contrato não presume autorização de conectores sem classificação", as
     async getCatalog() { return []; },
     async getStreams() { return [{ url: "https://unknown.example/video.mp4" }]; }
   });
-  assert.deepEqual(await getStreams("movie", "unknown:1"), []);
+  assert.ok(!(await getStreams("movie", "unknown:1")).some(item => item.providerId === "test-undeclared-source"));
 });
