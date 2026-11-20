@@ -55,7 +55,9 @@ export default async function handler(req, res) {
         return json(res, 400, parts[0] === "meta" ? { meta: null } : { streams: [] });
       const type = parts[1], id = decodeURIComponent(parts[2].slice(0, -5));
       if (parts[0] === "meta") {
-        const meta = await getMeta(type, id);
+        const requestedLanguage = typeof req.query.language === "string" ? req.query.language : "pt-PT";
+        const language = ["pt-PT", "pt-BR", "en", "es"].includes(requestedLanguage) ? requestedLanguage : "pt-PT";
+        const meta = await getMeta(type, id, { language });
         return json(res, meta ? 200 : 404, { meta }, meta ? "public, max-age=300, s-maxage=300, stale-while-revalidate=60" : "no-store");
       }
       return json(res, 200, { streams: await getStreams(type, id) }, "public, max-age=300, s-maxage=1800, stale-while-revalidate=300");
