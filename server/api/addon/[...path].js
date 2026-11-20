@@ -1,5 +1,6 @@
 // Endpoint Stremio-compatible do VINOVIM.
 // URL pública: /api/addon/manifest.json
+import "../../lib/vinovim-connectors.js";
 import { manifest, getCatalog, getMeta, getStreams } from "../../lib/vinovim-addon.js";
 
 const json = (res, status, value) => {
