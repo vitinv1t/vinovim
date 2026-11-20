@@ -6,6 +6,7 @@ O endpoint Stremio-compatible é publicado em `/api/addon/manifest.json` no proj
 
 - **TMDB** fornece catálogos de tendências, populares, pesquisa, animação, documentários, família, anime e conteúdo infantil, além de metadados, imagens, elenco, realizadores, trailers e episódios. Os catálogos e metadados seguem o idioma escolhido na app (PT-PT, PT-BR, inglês ou espanhol). A preferência é guardada localmente e enviada ao conector VINOVIM.
 - **Watchmode** acrescenta fontes de disponibilidade por país e links web para abrir o título no serviço correspondente. Não fornece vídeo nem streams directos.
+- **Jellyfin** integra uma biblioteca pessoal configurada pelo administrador: catálogos de filmes/séries, pesquisa, temporadas/episódios e reprodução do ficheiro original através de um proxy autenticado do VINOVIM. Só fica ativo quando todas as variáveis Jellyfin estão configuradas.
 - A região predefinida na aplicação é `PT`; o utilizador pode escolher o país nas definições. A API aceita `region` por pedido, validado como código ISO de duas letras. `WATCHMODE_REGIONS` continua a definir a região de fallback do servidor.
 
 Os conectores são registados em `server/lib/vinovim-connectors.js` e implementados em `server/lib/connectors/`. As chaves são lidas apenas no servidor.
@@ -18,6 +19,11 @@ Os conectores são registados em `server/lib/vinovim-connectors.js` e implementa
 | `TMDB_API_KEY` | Alternativa | Chave v3 do TMDB, se não usar o token de leitura |
 | `WATCHMODE_API_KEY` | Opcional | Ativa disponibilidade e links oficiais |
 | `WATCHMODE_REGIONS` | Opcional | Países Watchmode separados por vírgulas; predefinição `PT` |
+| `JELLYFIN_URL` | Opcional | URL HTTPS do servidor Jellyfin, sem barra final |
+| `JELLYFIN_API_KEY` | Opcional | Chave API Jellyfin, guardada apenas no servidor |
+| `JELLYFIN_USER_ID` | Opcional | ID do utilizador Jellyfin para consultar episódios |
+| `JELLYFIN_PROXY_SECRET` | Obrigatória com Jellyfin | Segredo aleatório com pelo menos 32 caracteres para assinar URLs temporários |
+| `VINOVIM_PUBLIC_URL` | Obrigatória com Jellyfin | URL HTTPS canónico do deployment, por exemplo `https://vinovim.example` |
 
 Não colocar estas chaves no frontend, no repositório ou em ficheiros públicos. Configurá-las nas Environment Variables do projecto Vercel e fazer novo deployment.
 
@@ -51,6 +57,21 @@ O deployment principal do Vinovim expõe o endpoint através de `api/addon/[...p
 
 O URL é público; as chaves TMDB e Watchmode permanecem exclusivamente nas variáveis de ambiente do servidor. O agregador aparece como addon base e os catálogos não exigem instalação manual.
 
+
+## Jellyfin — biblioteca pessoal
+
+A integração Jellyfin é opcional e só é ativada quando `JELLYFIN_URL` e `JELLYFIN_API_KEY` estão presentes. Configurar também `JELLYFIN_PROXY_SECRET` (mínimo 32 caracteres) e `VINOVIM_PUBLIC_URL` (URL HTTPS canónico). Para gerar um segredo forte num terminal:
+
+```bash
+openssl rand -hex 32
+```
+
+Criar no Jellyfin uma chave API dedicada ao VINOVIM e, idealmente, um utilizador de serviço com acesso apenas às bibliotecas que pretende disponibilizar. Não usar a conta de administrador principal se for possível restringir permissões. O servidor Jellyfin tem de ser alcançável pelo deployment VINOVIM através de HTTPS; um endereço localhost ou da rede doméstica não será alcançável a partir de Vercel.
+
+O conector publica catálogos separados para filmes e séries, além de pesquisa. Os IDs próprios `jellyfin:movie:<id>`, `jellyfin:series:<id>` e `jellyfin:episode:<id>` mantêm os itens da biblioteca independentes dos IDs TMDB. A reprodução usa um URL assinado, com validade de 15 minutos, e um proxy no servidor VINOVIM que mantém a chave Jellyfin fora do browser e encaminha pedidos HTTP Range para permitir procura dentro do vídeo.
+
+A integração não envia nem copia ficheiros para o VINOVIM. O tráfego de vídeo passa pelo deployment VINOVIM, pelo que pode consumir largura de banda e limites de execução do alojamento. Para bibliotecas grandes, utilização frequente ou ficheiros de alta resolução, uma ligação direta autenticada ou um gateway de streaming dedicado pode ser mais adequado. Testar reprodução, avanço/retrocesso, legendas e limites de tamanho no deployment real antes de produção.
+
 ## Testes locais
 
 Com Node.js 20 ou superior, executar na raiz do repositório:
@@ -67,6 +88,7 @@ Os testes usam respostas simuladas para não consumir créditos TMDB/Watchmode. 
 
 - Confirmar que o deployment principal publica `/api/addon/manifest.json`; se for usado um projecto de servidor separado, configurar `window.VINOVIM_ADDON_URL` com o domínio real desse deployment.
 - Configurar `TMDB_READ_ACCESS_TOKEN`; configurar `WATCHMODE_API_KEY` apenas se o plano e a utilização pretendida o permitirem.
+- Se Jellyfin estiver ativo, validar acesso ao servidor a partir do deployment, pesquisa de biblioteca, correspondência de episódios, tokens expirados, pedidos Range, procura temporal e reprodução de ficheiros reais.
 - A utilização gratuita do TMDB é para fins não comerciais e exige atribuição. O TMDB exige o logótipo oficial aprovado, sem alterações, e o aviso: "This product uses the TMDB API but is not endorsed or certified by TMDB." O aviso e o logótipo oficial aprovado já aparecem na área de créditos; o SVG é actualmente carregado do domínio oficial e deve ser empacotado localmente para a versão final offline.
 - O plano Developer gratuito do Watchmode é não comercial, requer atribuição e está limitado a 2.500 créditos mensais e até três países. A atribuição com ligação aparece junto das opções de disponibilidade. Para uso comercial é necessário um plano comercial adequado.
 - Não anunciar a integração como comercial nem ativar monetização enquanto as licenças dos fornecedores não estiverem confirmadas.
