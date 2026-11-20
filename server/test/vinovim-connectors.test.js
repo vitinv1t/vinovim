@@ -61,6 +61,65 @@ test("TMDB devolve metadados normalizados e aplica filtros de descoberta", async
   }
 });
 
+test("TMDB limita pedidos simultâneos de temporadas e mantém todos os episódios", async () => {
+  const oldFetch = globalThis.fetch;
+  const oldKey = process.env.TMDB_API_KEY;
+  process.env.TMDB_API_KEY = "test-key";
+  let active = 0;
+  let maxActive = 0;
+  globalThis.fetch = async rawUrl => {
+    const url = new URL(String(rawUrl));
+    if (url.pathname === "/3/tv/987656") {
+      return {
+        ok: true,
+        async json() {
+          return {
+            id: 987656,
+            name: "Série de teste",
+            seasons: Array.from({ length: 7 }, (_, index) => ({
+              season_number: index + 1
+            }))
+          };
+        }
+      };
+    }
+    const match = /^\\/3\\/tv\\/987656\\/season\\/(\\d+)$/.exec(url.pathname);
+    if (!match) return { ok: false, status: 404 };
+    active += 1;
+    maxActive = Math.max(maxActive, active);
+    await new Promise(resolve => setTimeout(resolve, 5));
+    active -= 1;
+    const season = Number(match[1]);
+    return {
+      ok: true,
+      async json() {
+        return {
+          episodes: [{
+            id: season * 100,
+            season_number: season,
+            episode_number: 1,
+            name: `Episódio da temporada ${season}`
+          }]
+        };
+      }
+    };
+  };
+  try {
+    const meta = await tmdbConnector.getMeta({
+      type: "series",
+      id: "tmdb:series:987656",
+      language: "pt-PT"
+    });
+    assert.equal(meta.videos.length, 7);
+    assert.ok(maxActive <= 4, `Concorrência máxima inesperada: ${maxActive}`);
+    assert.deepEqual(meta.videos.map(video => video.season), [1, 2, 3, 4, 5, 6, 7]);
+  } finally {
+    globalThis.fetch = oldFetch;
+    if (oldKey === undefined) delete process.env.TMDB_API_KEY;
+    else process.env.TMDB_API_KEY = oldKey;
+  }
+});
+
 test("Watchmode só devolve links HTTPS da região configurada", async () => {
   const oldFetch = globalThis.fetch;
   const oldKey = process.env.WATCHMODE_API_KEY;
