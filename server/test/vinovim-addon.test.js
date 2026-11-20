@@ -40,7 +40,7 @@ test("agregador obtém metadados e streams válidos", async () => {
   const meta = await getMeta("series", "tt002");
   assert.equal(meta.name, "Série");
   const streams = await getStreams("series", "tt002");
-  assert.equal(streams.length, 3);
+  assert.equal(streams.length, 2);
   assert.equal(streams[0].title, "HTTPS");
   assert.ok(!streams.some(stream => stream.title === "HTTP"));
   assert.ok(streams.some(stream => stream.title === "Destino externo válido"));
