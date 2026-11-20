@@ -2,6 +2,7 @@
 // URL pública: /api/addon/manifest.json
 import "../../lib/vinovim-connectors.js";
 import { manifest, getCatalog, getMeta, getStreams } from "../../lib/vinovim-addon.js";
+import { proxyJellyfinPlayback } from "../../lib/jellyfin-proxy.js";
 
 const json = (res, status, value, cache = "no-store") => {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -37,9 +38,13 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(204).end();
-  if (req.method !== "GET") return res.status(405).end();
   try {
     const parts = Array.isArray(req.query.path) ? req.query.path : [req.query.path].filter(Boolean);
+    if (parts[0] === "jellyfin" && parts.length === 2 && /^[a-f0-9-]{8,64}$/i.test(parts[1])) {
+      if (!["GET", "HEAD"].includes(req.method)) return res.status(405).end();
+      return proxyJellyfinPlayback(req, res, parts[1]);
+    }
+    if (req.method !== "GET") return res.status(405).end();
     if (parts.length === 1 && parts[0] === "manifest.json")
       return json(res, 200, manifest(`${req.headers["x-forwarded-proto"] || "https"}://${req.headers.host}`), "public, max-age=3600, s-maxage=3600");
 
