@@ -111,6 +111,8 @@ function normalizeStream(raw, connector) {
     ? raw.infoHash.toLowerCase() : null;
   // Um link externo é uma página oficial, não um ficheiro de vídeo reproduzível.
   if (!url && !externalUrl && !ytId && !infoHash) return null;
+  const sourceId = typeof raw.sourceId === "string" || Number.isSafeInteger(raw.sourceId)
+    ? String(raw.sourceId).trim().slice(0, 80) : "";
   const sourceType = externalUrl && !url && !ytId && !infoHash
     ? "official"
     : ["authorized", "personal"].includes(connector.sourceType) ? connector.sourceType : null;
@@ -122,7 +124,7 @@ function normalizeStream(raw, connector) {
     ...(cleanText(raw.name, 100) ? { name: cleanText(raw.name, 100) } : {}),
     ...(cleanText(raw.title, 160) ? { title: cleanText(raw.title, 160) } : {}),
     ...(cleanText(raw.description, 500) ? { description: cleanText(raw.description, 500) } : {}),
-    ...(cleanText(raw.sourceId, 80) ? { sourceId: cleanText(raw.sourceId, 80) } : {}),
+    ...(sourceId ? { sourceId } : {}),
     ...(url ? { url } : {}),
     ...(externalUrl ? { externalUrl } : {}),
     ...(ytId ? { ytId } : {}),
