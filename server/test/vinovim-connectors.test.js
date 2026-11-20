@@ -123,6 +123,45 @@ test("TMDB limita pedidos simultâneos de temporadas e mantém todos os episódi
   }
 });
 
+test("Watchmode partilha pedidos simultâneos para o mesmo título e região", async () => {
+  const oldFetch = globalThis.fetch;
+  const oldKey = process.env.WATCHMODE_API_KEY;
+  process.env.WATCHMODE_API_KEY = "test-key";
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    await new Promise(resolve => setTimeout(resolve, 10));
+    return {
+      ok: true,
+      async json() {
+        return [{
+          source_id: 7,
+          name: "Serviço de teste",
+          type: "sub",
+          region: "PT",
+          web_url: "https://provider.example/title/987658"
+        }];
+      }
+    };
+  };
+  try {
+    const args = { type: "movie", id: "tmdb:movie:987658", region: "PT" };
+    const [first, second, third] = await Promise.all([
+      watchmodeConnector.getStreams(args),
+      watchmodeConnector.getStreams(args),
+      watchmodeConnector.getStreams(args)
+    ]);
+    assert.equal(calls, 1);
+    assert.equal(first.length, 1);
+    assert.deepEqual(second, first);
+    assert.deepEqual(third, first);
+  } finally {
+    globalThis.fetch = oldFetch;
+    if (oldKey === undefined) delete process.env.WATCHMODE_API_KEY;
+    else process.env.WATCHMODE_API_KEY = oldKey;
+  }
+});
+
 test("Watchmode só devolve links HTTPS da região configurada", async () => {
   const oldFetch = globalThis.fetch;
   const oldKey = process.env.WATCHMODE_API_KEY;
