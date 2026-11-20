@@ -74,6 +74,18 @@ Os testes usam respostas simuladas para não consumir créditos TMDB/Watchmode. 
 
 A utilização comercial do Vinovim, publicidade, subscrições ou qualquer outro modelo de receita deve ser avaliada com TMDB e Watchmode antes do lançamento. A licença de cada fonte de reprodução é independente das licenças de metadados e disponibilidade.
 
+
+### Validação HTTP do deployment
+
+Depois de publicar um deployment de preview com as variáveis de ambiente configuradas, executar:
+
+```bash
+cd server
+VINOVIM_ADDON_URL="https://TEU-DOMINIO/api/addon/manifest.json" npm run validate:production
+```
+
+O smoke test confirma HTTPS, disponibilidade e estrutura do manifest, consulta um catálogo publicado e valida os metadados do primeiro resultado quando existir. Não imprime nem pede chaves API. Uma resposta vazia no catálogo deve ser investigada com as credenciais e limites do fornecedor; o teste não confirma direitos de reprodução nem substitui a validação manual no player.
+
 ## Estado
 
 A interface usa agora os catálogos VINOVIM como fonte principal do início, com Cinemeta como fallback. A pesquisa consulta catálogos que declaram suporte a `search`. As definições permitem escolher idioma de conteúdo e país para disponibilidade; a preferência de país é encaminhada apenas para o conector VINOVIM.
