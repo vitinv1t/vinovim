@@ -50,7 +50,7 @@ function publicBase() {
   if (!configuredBase) return null;
   try {
     const u = new URL(configuredBase);
-    return u.protocol === "https:" ? u.toString().replace(/\\/$/, "") : null;
+    return u.protocol === "https:" ? u.toString().replace(/\/$/, "") : null;
   } catch { return null; }
 }
 function signItem(itemId, secret, expires) {
