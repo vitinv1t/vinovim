@@ -366,7 +366,7 @@ function addonRow(a) {
   return `<div class="adn"><div class="lg">${m.logo ? `<img src="${esc(m.logo)}" alt="" onerror="this.remove()">` : ''}${esc((m.name || '?')[0])}</div>
     <div class="tx"><b>${esc(m.name || m.id)}</b><small>v${esc(m.version || '?')} · ${esc((m.types || []).map(t => ADDON_TYPES[t] || t).join(', '))}</small><p>${esc(m.description || '')}</p>
     <div class="tags">${res.map(r => `<span class="tag ${r === 'stream' ? 's' : ''}">${esc(lbl[r] || r)}</span>`).join('')}</div></div>
-    ${a.url === CINEMETA ? '<span class="tag">Base</span>' : `<button class="btn ico gho" data-unaddon="${esc(a.url)}" title="Remover">${I.trash}</button>`}</div>`;
+    ${a.url === CINEMETA || a.url === VINOVIM_ADDON ? '<span class="tag">Base</span>' : `<button class="btn ico gho" data-unaddon="${esc(a.url)}" title="Remover">${I.trash}</button>`}</div>`;
 }
 
 /* ---------- destaque ---------- */
