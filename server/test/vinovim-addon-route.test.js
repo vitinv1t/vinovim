@@ -153,3 +153,23 @@ test("endpoint rejeita identificadores com encoding inválido sem erro interno",
   assert.equal(res.statusCode, 400);
   assert.deepEqual(res.body, { meta: null });
 });
+
+test("endpoint usa cache curto quando não existem fontes de reprodução", async () => {
+  const oldKey = process.env.WATCHMODE_API_KEY;
+  delete process.env.WATCHMODE_API_KEY;
+  try {
+    const res = response();
+    await handler({
+      method: "GET",
+      headers: { host: "vinovim.test", "x-forwarded-proto": "https" },
+      query: { path: ["stream", "movie", "tmdb:movie:987654.json"], region: "PT" }
+    }, res);
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.body, { streams: [] });
+    assert.match(res.headers["cache-control"], /max-age=15/);
+    assert.match(res.headers["cache-control"], /s-maxage=30/);
+  } finally {
+    if (oldKey === undefined) delete process.env.WATCHMODE_API_KEY;
+    else process.env.WATCHMODE_API_KEY = oldKey;
+  }
+});
