@@ -160,6 +160,12 @@ const VIEWS = {
         <div class="srow"><div class="tx"><b>Reproduzir automaticamente</b><small>Começa logo com a primeira fonte disponível</small></div><button class="tg ${S.prefs.autoplay ? 'on' : ''}" data-pref="autoplay"></button></div>
         <div class="srow"><div class="tx"><b>Esconder torrents</b><small>Não podem ser reproduzidos nesta app</small></div><button class="tg ${S.prefs.hideTorrent ? 'on' : ''}" data-pref="hideTorrent"></button></div>
         <div class="srow"><div class="tx"><b>País das plataformas</b><small>Mostra serviços disponíveis na região escolhida</small></div><select class="sel" id="availabilityRegion"><option value="PT" ${S.prefs.region === 'PT' ? 'selected' : ''}>Portugal</option><option value="BR" ${S.prefs.region === 'BR' ? 'selected' : ''}>Brasil</option><option value="ES" ${S.prefs.region === 'ES' ? 'selected' : ''}>Espanha</option><option value="US" ${S.prefs.region === 'US' ? 'selected' : ''}>Estados Unidos</option><option value="GB" ${S.prefs.region === 'GB' ? 'selected' : ''}>Reino Unido</option><option value="FR" ${S.prefs.region === 'FR' ? 'selected' : ''}>França</option></select></div>
+        <div class="srow"><div class="tx"><b>Idioma dos catálogos e fichas</b><small>Define o idioma dos títulos, sinopses e informações</small></div><select class="sel" id="contentLanguage">
+          <option value="pt-PT" ${(S.prefs.lang || 'pt-PT') === 'pt-PT' ? 'selected' : ''}>Português (Portugal)</option>
+          <option value="pt-BR" ${S.prefs.lang === 'pt-BR' ? 'selected' : ''}>Português (Brasil)</option>
+          <option value="en" ${S.prefs.lang === 'en' ? 'selected' : ''}>English</option>
+          <option value="es" ${S.prefs.lang === 'es' ? 'selected' : ''}>Español</option>
+        </select></div>
         <div class="srow"><div class="tx"><b>Idioma das legendas</b><small>Ativadas automaticamente quando um addon as fornece</small></div><select class="sel" id="subLang">${Object.entries(
           SUBLANGS
         )
@@ -222,6 +228,12 @@ const VIEWS = {
       save();
       // Reabre a ficha para atualizar as ofertas do país selecionado.
       if (D.meta && $('#detail').classList.contains('open')) openStreams(D.meta, null);
+    };
+    $('#contentLanguage').onchange = e => {
+      S.prefs.lang = e.target.value;
+      save();
+      // O idioma é aplicado às próximas consultas e fichas abertas.
+      if (D.meta && $('#detail').classList.contains('open')) openDetail(D.meta.type, D.meta.id);
     };
     $('#subLang').onchange = e => {
       S.prefs.subLang = e.target.value;
