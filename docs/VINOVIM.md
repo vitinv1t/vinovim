@@ -31,6 +31,27 @@ O plano Developer do Watchmode é gratuito para utilização não comercial, tem
 
 O TMDB requer atribuição conforme as respectivas condições de utilização. A integração deve apresentar a atribuição TMDB na interface do produto.
 
+## Integração na aplicação
+
+Por omissão, a aplicação tenta carregar o manifest em `/api/addon/manifest.json` no mesmo domínio. Se o frontend e as funções serverless estiverem em projectos/domínios Vercel diferentes, definir antes dos scripts da aplicação:
+
+```html
+<script>window.VINOVIM_ADDON_URL = "https://TEU-DOMINIO-API.vercel.app/api/addon/manifest.json";</script>
+```
+
+O URL é público; as chaves TMDB e Watchmode permanecem exclusivamente nas variáveis de ambiente do servidor. O agregador aparece como addon base e os catálogos não exigem instalação manual.
+
+## Requisitos antes de produção
+
+- Confirmar que o deployment do servidor publica `/api/addon/manifest.json` e que o frontend aponta para esse domínio.
+- Configurar `TMDB_READ_ACCESS_TOKEN`; configurar `WATCHMODE_API_KEY` apenas se o plano e a utilização pretendida o permitirem.
+- A utilização gratuita do TMDB é para fins não comerciais e exige atribuição. O TMDB exige o logótipo oficial aprovado, sem alterações, e o aviso: "This product uses the TMDB API but is not endorsed or certified by TMDB." O aviso já está na área de créditos; o logótipo oficial aprovado ainda tem de ser incluído no pacote da aplicação antes do lançamento.
+- O plano Developer gratuito do Watchmode é não comercial, requer atribuição e está limitado a 2.500 créditos mensais e até três países. A atribuição com ligação aparece junto das opções de disponibilidade. Para uso comercial é necessário um plano comercial adequado.
+- Não anunciar a integração como comercial nem ativar monetização enquanto as licenças dos fornecedores não estiverem confirmadas.
+- Executar os testes automatizados e testes reais com credenciais; verificar limites, respostas 429, timeouts, falhas de rede e deployment em preview/produção.
+
+A utilização comercial do Vinovim, publicidade, subscrições ou qualquer outro modelo de receita deve ser avaliada com TMDB e Watchmode antes do lançamento. A licença de cada fonte de reprodução é independente das licenças de metadados e disponibilidade.
+
 ## Estado
 
-Os conectores estão implementados no backend. Ainda é necessário configurar as chaves na Vercel, adicionar as atribuições visíveis no frontend e executar testes de integração com credenciais reais. Sem chave TMDB, os catálogos ficam indisponíveis; sem Watchmode, os catálogos e metadados continuam a funcionar, mas não aparecem opções de disponibilidade.
+Os conectores estão implementados no backend e o frontend carrega o agregador por omissão. Ainda é necessário confirmar o domínio público do endpoint, configurar as chaves na Vercel, incluir o logótipo oficial aprovado do TMDB e executar testes de integração com credenciais reais. Sem chave TMDB, os catálogos ficam indisponíveis; sem Watchmode, os catálogos e metadados continuam a funcionar, mas não aparecem opções de disponibilidade.
