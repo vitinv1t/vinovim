@@ -180,7 +180,7 @@ const VIEWS = {
       <div class="panel"><h3>Atalhos no leitor</h3><p class="m" style="margin:0">Espaço/K reproduzir · ←/→ 10 s · ↑/↓ volume · F ecrã inteiro · M som · N próximo episódio · Esc sair</p></div>
       <div class="panel"><h3>Créditos e fontes de dados</h3>
         <p class="m">Os catálogos, imagens e metadados de filmes e séries são fornecidos pela API do <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>.</p>
-        <p class="m">Este produto utiliza a API do TMDB, mas não é endossado nem certificado pelo TMDB.</p>
+        <p class="m">This product uses the TMDB API but is not endorsed or certified by TMDB.</p><p class="m"><a href="https://www.themoviedb.org/about/logos-attribution" target="_blank" rel="noopener noreferrer">Logótipo oficial e regras de atribuição do TMDB</a>.</p>
         <p class="m">A disponibilidade de streaming pode ser fornecida pelo <a href="https://www.watchmode.com" target="_blank" rel="noopener noreferrer">Watchmode</a>. A disponibilidade e os links podem mudar e dependem do país e do serviço.</p>
         <p class="m">O Vinovim não aloja nem distribui filmes ou séries. A reprodução depende de fontes autorizadas ou de ficheiros do utilizador.</p>
       </div>
