@@ -38,6 +38,12 @@ async function tmdb(path, params = {}) {
 
 const isMovie = type => type === "movie";
 const tmdbType = type => isMovie(type) ? "movie" : "tv";
+const tmdbLanguage = language => ({
+  "pt-PT": "pt-PT",
+  "pt-BR": "pt-BR",
+  en: "en-US",
+  es: "es-ES"
+})[language] || "pt-PT";
 const itemName = item => item.title || item.name || "";
 const itemDate = item => item.release_date || item.first_air_date || "";
 const image = (path, size) => path ? `${IMG}/${size}${path}` : undefined;
@@ -82,7 +88,7 @@ async function getCatalog({ type, catalog, extra = {} }) {
   const search = String(extra.search || "").trim().slice(0, 100);
   const skip = Number(extra.skip || 0);
   const page = Number.isFinite(skip) && skip >= 0 ? Math.max(1, Math.min(50, Math.floor(skip / 20) + 1)) : 1;
-  let path, params = { page };
+  let path, params = { page, language: tmdbLanguage(extra.language) };
   if (catalog.endsWith("-search")) {
     if (!search) return [];
     path = `/search/${tv}`;
@@ -112,11 +118,13 @@ function parseId(id, expectedType) {
   return match[2];
 }
 
-async function getMeta({ type, id }) {
+async function getMeta({ type, id, language }) {
   const numericId = parseId(id, type);
   if (!numericId) return null;
   const tv = tmdbType(type);
+  const lang = tmdbLanguage(language);
   const data = await tmdb(`/${tv}/${numericId}`, {
+    language: lang,
     append_to_response: "credits,external_ids,videos",
     region: "PT"
   });
@@ -138,7 +146,7 @@ async function getMeta({ type, id }) {
     // Cada chamada tem timeout individual; 20 temporadas em paralelo mantêm
     // a ficha dentro do limite normal da função serverless.
     const results = await Promise.allSettled(seasons.map(season =>
-      tmdb(`/tv/${numericId}/season/${season.season_number}`)
+      tmdb(`/tv/${numericId}/season/${season.season_number}`, { language: lang })
     ));
     for (const result of results) {
       if (result.status !== "fulfilled") continue;
