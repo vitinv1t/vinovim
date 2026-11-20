@@ -121,3 +121,13 @@ test("contrato rejeita hashes inválidos e URLs de reprodução inseguras", asyn
   });
   assert.deepEqual(await getStreams("movie", "invalid:1"), []);
 });
+
+test("contrato não presume autorização de conectores sem classificação", async () => {
+  registerConnector({
+    id: "test-undeclared-source",
+    catalogs: [],
+    async getCatalog() { return []; },
+    async getStreams() { return [{ url: "https://unknown.example/video.mp4" }]; }
+  });
+  assert.deepEqual(await getStreams("movie", "unknown:1"), []);
+});
