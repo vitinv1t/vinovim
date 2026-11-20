@@ -6,7 +6,7 @@ const URL_OK = value => {
 };
 
 async function getStreams({ type, id }) {
-  const match = /^tmdb:(movie|series):(\d+)$/.exec(String(id || ""));
+  const match = /^tmdb:(movie|series):(\d+)(?::\d+:\d+)?$/.exec(String(id || ""));
   if (!match || match[1] !== type) return [];
   const apiKey = process.env.WATCHMODE_API_KEY;
   if (!apiKey) return [];
