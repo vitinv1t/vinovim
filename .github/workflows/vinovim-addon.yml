@@ -1,0 +1,30 @@
+name: VINOVIM addon tests
+
+on:
+  pull_request:
+    paths:
+      - "server/**"
+      - ".github/workflows/vinovim-addon.yml"
+  push:
+    branches:
+      - main
+      - feature/vinovim-aggregator-core
+    paths:
+      - "server/**"
+      - ".github/workflows/vinovim-addon.yml"
+
+jobs:
+  addon-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run VINOVIM addon tests
+        run: node --test test/*.test.js
