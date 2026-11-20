@@ -9,9 +9,15 @@ const VIEWS = {
     const aggregator = ADDONS.find(a => a.m.id === 'pt.vinovim.aggregator');
     const movieCatalog = aggregator && (aggregator.m.catalogs || []).find(c => c.type === 'movie' && c.id.endsWith('movie-trending'));
     const seriesCatalog = aggregator && (aggregator.m.catalogs || []).find(c => c.type === 'series' && c.id.endsWith('series-trending'));
+    // O catálogo VINOVIM é a fonte principal do ecrã inicial; Cinemeta funciona
+    // como fallback para manter a aplicação utilizável se a API estiver indisponível.
+    const [vinMovies, vinSeries] = await Promise.all([
+      movieCatalog ? catalog(aggregator, 'movie', movieCatalog.id).catch(() => []) : [],
+      seriesCatalog ? catalog(aggregator, 'series', seriesCatalog.id).catch(() => []) : []
+    ]);
     const [mov, ser] = await Promise.all([
-      cm ? catalog(cm, 'movie', 'top').catch(() => []) : movieCatalog ? catalog(aggregator, 'movie', movieCatalog.id).catch(() => []) : [],
-      cm ? catalog(cm, 'series', 'top').catch(() => []) : seriesCatalog ? catalog(aggregator, 'series', seriesCatalog.id).catch(() => []) : []
+      vinMovies.length ? vinMovies : cm ? catalog(cm, 'movie', 'top').catch(() => []) : [],
+      vinSeries.length ? vinSeries : cm ? catalog(cm, 'series', 'top').catch(() => []) : []
     ]);
     if (!$('#rows')) return;
     if (!mov.length && !ser.length) {
