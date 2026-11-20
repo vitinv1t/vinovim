@@ -67,7 +67,7 @@ async function getStreams({ type, id }) {
   const url = new URL(`${API}/title/${wmId}/sources/`);
   url.searchParams.set("apiKey", apiKey);
   url.searchParams.set("regions", regions.join(","));
-  const response = await fetch(url, { headers: { accept: "application/json" } });
+  const response = await fetch(url, { headers: { accept: "application/json" }, signal: AbortSignal.timeout(8000) });
   if (!response.ok) throw new Error(`Watchmode respondeu HTTP ${response.status}`);
 
   const sources = await response.json();
