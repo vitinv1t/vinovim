@@ -29,7 +29,8 @@ async function tmdb(path, params = {}) {
   const cached = cacheGet(cacheKey);
   if (cached) return cached;
   const response = await fetch(cacheKey, {
-    headers: token ? { Authorization: `Bearer ${token}`, accept: "application/json" } : { accept: "application/json" }
+    headers: token ? { Authorization: `Bearer ${token}`, accept: "application/json" } : { accept: "application/json" },
+    signal: AbortSignal.timeout(8000)
   });
   if (!response.ok) throw new Error(`TMDB respondeu HTTP ${response.status}`);
   return cacheSet(cacheKey, await response.json());
@@ -107,19 +108,26 @@ async function getMeta({ type, id }) {
   };
   if (type === "series" && Array.isArray(data.seasons)) {
     meta.videos = [];
-    for (const season of data.seasons.filter(s => s.season_number > 0).slice(0, 20)) {
-      const seasonData = await tmdb(`/tv/${numericId}/season/${season.season_number}`);
-      for (const ep of seasonData.episodes || []) {
-        meta.videos.push({
-          id: `${id}:${ep.season_number}:${ep.episode_number}`,
-          title: ep.name || `Episódio ${ep.episode_number}`,
-          season: ep.season_number,
-          episode: ep.episode_number,
-          ...(ep.air_date ? { released: ep.air_date } : {}),
-          ...(ep.overview ? { overview: ep.overview } : {}),
-          ...(image(ep.still_path, "w500") ? { thumbnail: image(ep.still_path, "w500") } : {}),
-          ...(ep.runtime ? { runtime: ep.runtime * 60 } : {})
-        });
+    const seasons = data.seasons.filter(s => s.season_number > 0).slice(0, 20);
+    // Limita a concorrência para não sobrecarregar a API nem bloquear a função serverless.
+    for (let i = 0; i < seasons.length; i += 4) {
+      const batch = await Promise.allSettled(seasons.slice(i, i + 4).map(season =>
+        tmdb(`/tv/${numericId}/season/${season.season_number}`)
+      ));
+      for (const result of batch) {
+        if (result.status !== "fulfilled") continue;
+        for (const ep of result.value.episodes || []) {
+          meta.videos.push({
+            id: `${id}:${ep.season_number}:${ep.episode_number}`,
+            title: ep.name || `Episódio ${ep.episode_number}`,
+            season: ep.season_number,
+            episode: ep.episode_number,
+            ...(ep.air_date ? { released: ep.air_date } : {}),
+            ...(ep.overview ? { overview: ep.overview } : {}),
+            ...(image(ep.still_path, "w500") ? { thumbnail: image(ep.still_path, "w500") } : {}),
+            ...(ep.runtime ? { runtime: ep.runtime * 60 } : {})
+          });
+        }
       }
     }
   }
