@@ -29,6 +29,8 @@ test("agregador obtém metadados e streams válidos", async () => {
         { title: "HTTPS", url: "https://media.example/video.m3u8" },
         { title: "HTTP", url: "http://media.example/video.m3u8" },
         { title: "Duplicado", url: "https://media.example/video.m3u8" },
+        { title: "Destino externo inválido", externalUrl: "javascript:alert(1)" },
+        { title: "Destino externo válido", externalUrl: "https://provider.example/title/2" },
         { title: "Sem destino" }
       ];
     },
@@ -37,8 +39,10 @@ test("agregador obtém metadados e streams válidos", async () => {
   const meta = await getMeta("series", "tt002");
   assert.equal(meta.name, "Série");
   const streams = await getStreams("series", "tt002");
-  assert.equal(streams.length, 2);
+  assert.equal(streams.length, 3);
   assert.equal(streams[0].title, "HTTPS");
+  assert.ok(streams.some(stream => stream.title === "Destino externo válido"));
+  assert.ok(!streams.some(stream => stream.title === "Destino externo inválido"));
   const health = await connectorHealth();
   assert.ok(health.some(item => item.id === "test-playback" && item.status === "ok"));
 });
