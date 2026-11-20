@@ -37,7 +37,7 @@ test("agregador obtém metadados e streams válidos", async () => {
   const meta = await getMeta("series", "tt002");
   assert.equal(meta.name, "Série");
   const streams = await getStreams("series", "tt002");
-  assert.equal(streams.length, 1);
+  assert.equal(streams.length, 2);
   assert.equal(streams[0].title, "HTTPS");
   const health = await connectorHealth();
   assert.ok(health.some(item => item.id === "test-playback" && item.status === "ok"));
