@@ -21,7 +21,8 @@ test("TMDB devolve metadados normalizados e aplica filtros de descoberta", async
             poster_path: "/poster.jpg",
             backdrop_path: "/backdrop.jpg",
             overview: "Sinopse de teste",
-            vote_average: 7.8
+            vote_average: 7.8,
+            genre_ids: [16, 10751, 10762]
           }]
         };
       }
@@ -37,6 +38,8 @@ test("TMDB devolve metadados normalizados e aplica filtros de descoberta", async
     assert.equal(items[0].id, "tmdb:movie:987654");
     assert.equal(items[0].name, "Filme de teste");
     assert.equal(items[0].imdbRating, "7.8");
+    assert.ok(items[0].genres.includes("Animation"));
+    assert.ok(items[0].genres.includes("Family"));
     assert.match(items[0].poster, /^https:\/\/image\.tmdb\.org\//);
 
     assert.equal(new URL(requestedUrl).searchParams.get("language"), "pt-BR");
@@ -44,6 +47,8 @@ test("TMDB devolve metadados normalizados e aplica filtros de descoberta", async
     assert.match(requestedUrl, /with_genres=16/);
     assert.match(requestedUrl, /discover\/movie/);
     assert.equal(new URL(requestedUrl).searchParams.get("language"), "en-US");
+    const kids = await tmdbConnector.getCatalog({ type: "series", catalog: "series-kids", extra: {} });
+    assert.ok(kids[0].genres.includes("Kids"));
   } finally {
     globalThis.fetch = oldFetch;
     if (oldKey === undefined) delete process.env.TMDB_API_KEY;
