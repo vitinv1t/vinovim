@@ -54,4 +54,4 @@ A utilização comercial do Vinovim, publicidade, subscrições ou qualquer outr
 
 ## Estado
 
-Os conectores estão implementados no backend e o frontend carrega o agregador por omissão. Ainda é necessário confirmar o domínio público do endpoint, configurar as chaves na Vercel, empacotar localmente o logótipo oficial do TMDB e executar testes de integração com credenciais reais. Sem chave TMDB, os catálogos ficam indisponíveis; sem Watchmode, os catálogos e metadados continuam a funcionar, mas não aparecem opções de disponibilidade.
+Os conectores estão implementados no backend, o frontend carrega o agregador por omissão e o endpoint está exposto no deployment principal através de `api/addon/[...path].js`. O CI valida sintaxe, catálogo, metadados, pesquisa, CORS e conectores com mocks. Antes da produção real faltam configurar as chaves na Vercel, testar o endpoint publicado com credenciais reais, empacotar localmente o logótipo oficial do TMDB e confirmar as licenças adequadas. Sem chave TMDB, os catálogos ficam indisponíveis; sem Watchmode, os catálogos e metadados continuam a funcionar, mas não aparecem opções de disponibilidade.
