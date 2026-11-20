@@ -22,6 +22,7 @@ Os conectores são registados em `server/lib/vinovim-connectors.js` e implementa
 | `JELLYFIN_URL` | Opcional | URL HTTPS do servidor Jellyfin, sem barra final |
 | `JELLYFIN_API_KEY` | Opcional | Chave API Jellyfin, guardada apenas no servidor |
 | `JELLYFIN_USER_ID` | Opcional | ID do utilizador Jellyfin para consultar episódios |
+| `JELLYFIN_PRIVATE_DEPLOYMENT` | Obrigatória com Jellyfin | Tem de ser `true`; confirmação explícita de que o deployment VINOVIM está protegido por autenticação privada |
 | `JELLYFIN_PROXY_SECRET` | Obrigatória com Jellyfin | Segredo aleatório com pelo menos 32 caracteres para assinar URLs temporários |
 | `VINOVIM_PUBLIC_URL` | Obrigatória com Jellyfin | URL HTTPS canónico do deployment, por exemplo `https://vinovim.example` |
 
@@ -60,7 +61,7 @@ O URL é público; as chaves TMDB e Watchmode permanecem exclusivamente nas vari
 
 ## Jellyfin — biblioteca pessoal
 
-A integração Jellyfin é opcional e só é ativada quando `JELLYFIN_URL` e `JELLYFIN_API_KEY` estão presentes. Configurar também `JELLYFIN_PROXY_SECRET` (mínimo 32 caracteres) e `VINOVIM_PUBLIC_URL` (URL HTTPS canónico). Para gerar um segredo forte num terminal:
+A integração Jellyfin é opcional e só é ativada quando `JELLYFIN_URL`, `JELLYFIN_API_KEY` e `JELLYFIN_PRIVATE_DEPLOYMENT=true` estão presentes. **Não ativar num deployment público sem autenticação:** a biblioteca pessoal seria exposta a qualquer pessoa que conseguisse consultar o addon. Proteger o deployment completo com autenticação (por exemplo, Vercel Deployment Protection ou uma camada de login equivalente) antes de ativar o conector. Configurar também `JELLYFIN_PROXY_SECRET` (mínimo 32 caracteres) e `VINOVIM_PUBLIC_URL` (URL HTTPS canónico). Para gerar um segredo forte num terminal:
 
 ```bash
 openssl rand -hex 32
