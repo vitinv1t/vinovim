@@ -178,6 +178,12 @@ const VIEWS = {
       <div class="panel"><h3>Os teus dados</h3><p class="m">A lista, o progresso e os addons ficam guardados neste browser. ${Object.keys(S.library).length} na lista · ${Object.keys(S.progress).length} em curso · ${S.addons.length} addons extra.</p>
         <div class="inrow"><button class="btn gho" id="exp">Exportar cópia</button><button class="btn gho" id="imp">Importar cópia</button><button class="btn gho" id="clrP">Limpar progresso</button><button class="btn gho" id="clrA" style="color:#ff8fa8">Apagar tudo</button></div></div>
       <div class="panel"><h3>Atalhos no leitor</h3><p class="m" style="margin:0">Espaço/K reproduzir · ←/→ 10 s · ↑/↓ volume · F ecrã inteiro · M som · N próximo episódio · Esc sair</p></div>
+      <div class="panel"><h3>Créditos e fontes de dados</h3>
+        <p class="m">Os catálogos, imagens e metadados de filmes e séries são fornecidos pela API do <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>.</p>
+        <p class="m">Este produto utiliza a API do TMDB, mas não é endossado nem certificado pelo TMDB.</p>
+        <p class="m">A disponibilidade de streaming pode ser fornecida pelo <a href="https://www.watchmode.com" target="_blank" rel="noopener noreferrer">Watchmode</a>. A disponibilidade e os links podem mudar e dependem do país e do serviço.</p>
+        <p class="m">O Vinovim não aloja nem distribui filmes ou séries. A reprodução depende de fontes autorizadas ou de ficheiros do utilizador.</p>
+      </div>
       <p class="legal">Vinovim · esta app não aloja nenhum conteúdo.</p>
     </div></div>`;
     app.querySelectorAll('[data-acc]').forEach(
