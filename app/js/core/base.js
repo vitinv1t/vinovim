@@ -153,6 +153,7 @@ const S = (() => {
       autoplay: false,
       hideTorrent: true,
       subLang: 'pt',
+      region: 'PT',
       amoled: false,
       rpc: true,
       rpcPrivate: false,
