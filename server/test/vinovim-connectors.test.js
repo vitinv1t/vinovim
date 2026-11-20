@@ -23,6 +23,11 @@ test("TMDB devolve metadados normalizados e aplica filtros de descoberta", async
             overview: "Sinopse de teste",
             vote_average: 7.8,
             genre_ids: [16, 10751, 10762]
+          }, {
+            id: 987655,
+            title: "Conteúdo adulto",
+            adult: true,
+            genre_ids: [27]
           }]
         };
       }
