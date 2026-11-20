@@ -17,7 +17,11 @@ const parseId = id => {
   const match = /^jellyfin:(movie|series|episode):([a-f0-9-]{8,64})$/i.exec(String(id || ""));
   return match ? { kind: match[1].toLowerCase(), itemId: match[2] } : null;
 };
-const configured = () => Boolean(text(process.env.JELLYFIN_URL) && text(process.env.JELLYFIN_API_KEY));
+const configured = () => Boolean(
+  text(process.env.JELLYFIN_URL) &&
+  text(process.env.JELLYFIN_API_KEY) &&
+  text(process.env.JELLYFIN_PRIVATE_DEPLOYMENT) === "true"
+);
 const baseUrl = () => {
   const raw = text(process.env.JELLYFIN_URL);
   if (!raw) return null;
