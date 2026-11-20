@@ -60,7 +60,9 @@ export default async function handler(req, res) {
         const meta = await getMeta(type, id, { language });
         return json(res, meta ? 200 : 404, { meta }, meta ? "public, max-age=300, s-maxage=300, stale-while-revalidate=60" : "no-store");
       }
-      return json(res, 200, { streams: await getStreams(type, id) }, "public, max-age=300, s-maxage=1800, stale-while-revalidate=300");
+      const requestedRegion = typeof req.query.region === "string" ? req.query.region.toUpperCase() : "";
+      const region = /^[A-Z]{2}$/.test(requestedRegion) ? requestedRegion : undefined;
+      return json(res, 200, { streams: await getStreams(type, id, { region }) }, "public, max-age=300, s-maxage=1800, stale-while-revalidate=300");
     }
 
     return json(res, 404, { error: "Rota VINOVIM não encontrada" });
