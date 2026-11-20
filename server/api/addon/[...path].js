@@ -46,14 +46,19 @@ export default async function handler(req, res) {
     if (parts[0] === "catalog" && parts.length >= 3) {
       const type = parts[1];
       const { catalogId, extra } = catalogRequest(parts);
-      const metas = await getCatalog(type, catalogId, extra);
+      const requestedLanguage = typeof req.query.language === "string" ? req.query.language : "pt-PT";
+      const language = ["pt-PT", "pt-BR", "en", "es"].includes(requestedLanguage) ? requestedLanguage : "pt-PT";
+      const metas = await getCatalog(type, catalogId, { ...extra, language });
       return json(res, 200, { metas }, "public, max-age=300, s-maxage=300, stale-while-revalidate=60");
     }
 
     if ((parts[0] === "meta" || parts[0] === "stream") && parts.length === 3) {
       if (!parts[2].endsWith(".json"))
         return json(res, 400, parts[0] === "meta" ? { meta: null } : { streams: [] });
-      const type = parts[1], id = decodeURIComponent(parts[2].slice(0, -5));
+      const type = parts[1];
+      let id;
+      try { id = decodeURIComponent(parts[2].slice(0, -5)); }
+      catch { return json(res, 400, parts[0] === "meta" ? { meta: null } : { streams: [] }); }
       if (parts[0] === "meta") {
         const requestedLanguage = typeof req.query.language === "string" ? req.query.language : "pt-PT";
         const language = ["pt-PT", "pt-BR", "en", "es"].includes(requestedLanguage) ? requestedLanguage : "pt-PT";
