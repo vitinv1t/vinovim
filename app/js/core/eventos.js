@@ -30,7 +30,7 @@ document.addEventListener('click', async e => {
     route();
     return;
   }
-  if (t.closest('#profBtn')) return showProfiles(false);
+  if (t.closest('#profBtn')) return window.vvMenu ? vvMenu($('#profBtn')) : showProfiles(false);
   const ps = t.closest('[data-person]');
   if (ps) {
     VIEWS._pendingQ = ps.dataset.person;

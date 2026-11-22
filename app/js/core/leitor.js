@@ -503,6 +503,7 @@ const seekPct = e => {
 };
 let dragging = false;
 seekEl.addEventListener('pointerdown', e => {
+  if (e.button !== 0) return;
   dragging = true;
   seekEl.setPointerCapture(e.pointerId);
   V.currentTime = seekPct(e) * (V.duration || 0);
@@ -511,9 +512,13 @@ seekEl.addEventListener('pointermove', e => {
   const p = seekPct(e);
   $('#pTip').style.left = p * 100 + '%';
   $('#pTip').textContent = fmt(p * (V.duration || 0));
-  if (dragging) V.currentTime = p * (V.duration || 0);
+  // só muda o tempo enquanto o botão está mesmo carregado (passar o rato por cima nunca avança o vídeo)
+  if (dragging && (e.buttons & 1 || e.pointerType === 'touch')) V.currentTime = p * (V.duration || 0);
+  else dragging = false;
 });
-seekEl.addEventListener('pointerup', () => (dragging = false));
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev =>
+  seekEl.addEventListener(ev, () => (dragging = false))
+);
 function poke() {
   P.classList.remove('idle');
   clearTimeout(idleT);
