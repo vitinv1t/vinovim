@@ -1,4 +1,4 @@
-/* Vinovim — Windows e resumo anual
+/* Vinovim: Windows e resumo anual
    Windows: “Continuar a ver” no menu Iniciar e na barra de tarefas · botões na miniatura · progresso no ícone
    O teu ano no Vinovim (Wrapped) com cartões animados para partilhar */
 (() => {

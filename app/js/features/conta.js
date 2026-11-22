@@ -1,4 +1,4 @@
-/* Vinovim — conta e sincronização
+/* Vinovim: conta e sincronização
    Conta e sincronização · Calendário · Saltar introdução · Estatísticas ·
    Ver em conjunto · Listas · Recomendações · Chromecast · Idiomas */
 (() => {

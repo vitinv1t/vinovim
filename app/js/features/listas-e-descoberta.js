@@ -1,4 +1,4 @@
-/* Vinovim — listas e descoberta
+/* Vinovim: listas e descoberta
    Barra lateral compacta · Próximo episódio automático · Listas partilhadas ·
    Avisa-me · Início por perfil · “Não sei o que ver” · Atalhos e comandos de jogos ·
    Cópia de segurança automática · Página de ator · Notas privadas */

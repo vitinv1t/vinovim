@@ -1,4 +1,4 @@
-/* Vinovim — temas e extras
+/* Vinovim: temas e extras
    Capas que faltavam · Catálogo do perfil infantil · Transferências offline · Widget Android ·
    Comando no telemóvel · Pesquisa por voz · Temas · Mini-player · Conquistas ·
    Importar Trakt/Letterboxd · Gestor de addons */

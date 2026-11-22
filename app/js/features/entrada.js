@@ -1,4 +1,4 @@
-/* Vinovim — ecrã de entrada
+/* Vinovim: ecrã de entrada
    Depois da abertura, quem não tem sessão iniciada vê este ecrã:
    continuar com Google, entrar ou criar conta com email, ou continuar sem conta.
    Também abre a partir das Definições (window.vvShowLogin), para entrar mais tarde. */

@@ -1,4 +1,4 @@
-/* Vinovim — experiência estilo Netflix
+/* Vinovim: experiência
    Abertura animada · Trailer no destaque · Pré-visualização nos cartões · “% para ti” · “Porque viste…” ·
    Top 10 · Continuar a ver com a cena · Fim do filme com sugestões · Novidades · Filas do momento */
 (() => {

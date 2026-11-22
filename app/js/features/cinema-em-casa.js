@@ -1,4 +1,4 @@
-/* Vinovim — cinema em casa
+/* Vinovim: cinema em casa
    Ecrã de pausa · Continuar noutro dispositivo · Início da época · Contagem para estreias ·
    “Da última vez…” · Protetor de ecrã com o título que estás a ver */
 (() => {
