@@ -180,8 +180,6 @@ async function openStreams(m, video) {
   const resume = progressFor(vid);
   if (resume && resume.stream)
     h += `<div class="sgrp"><h4>Retomar</h4>${streamBtn(resume.stream, 'r', `Continuar em ${fmt(resume.t)}`)}</div>`;
-  if (!video && (m.trailerStreams || []).length)
-    h += `<div class="sgrp"><h4>${I.yt.replace('<svg', '<svg width="16" height="16"')} Trailers</h4>${m.trailerStreams.map((t, i) => streamBtn({ ytId: t.ytId, name: 'YouTube', title: t.title || 'Trailer' }, 't' + i)).join('')}</div>`;
   if (!srcs.length)
     h += `<div class="note"><b style="color:var(--tx)">Nenhum addon de fontes instalado.</b><br>O Vinovim não traz conteúdo próprio. Instala um addon que forneça fontes (“streams”) para este tipo de título, ou reproduz um ficheiro teu.</div><div class="inrow"><a class="btn sm acc" href="#addons">${I.puzzle}Gerir addons</a><button class="btn sm gho" data-localfile>${I.folder}Ficheiro local</button></div>`;
   srcs.forEach(
@@ -192,9 +190,6 @@ async function openStreams(m, video) {
   drawer._ctx = ctx;
   drawer._streams = {};
   if (resume && resume.stream) drawer._streams.r = resume.stream;
-  (m.trailerStreams || []).forEach(
-    (t, i) => (drawer._streams['t' + i] = { ytId: t.ytId, name: 'YouTube', title: t.title || 'Trailer' })
-  );
   if (S.prefs.autoplay && resume && resume.stream) {
     ctx._auto = true;
     return play(resume.stream, ctx);
