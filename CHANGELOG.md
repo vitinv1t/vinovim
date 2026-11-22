@@ -1,8 +1,8 @@
 # 📝 Histórico de versões
 
-## 🎉 1.0.0 — Lançamento · 9 de novembro de 2026
+## 🎉 1.0.0 · Lançamento · 9 de novembro de 2026
 
-A primeira versão pública do **Vinovim**: um hub de filmes e séries pessoal, ao estilo Netflix, compatível com addons do Stremio, para **Windows**, **Android**, **Android TV** e **browser**.
+A primeira versão pública do **Vinovim**: o teu hub de filmes e séries, bonito, rápido e pessoal, com addons à tua escolha, para **Windows**, **Android**, **Android TV** e **browser**.
 
 ### 🎬 Ver
 - ▶️ Leitor próprio com legendas, saltar introdução, Chromecast e retomar onde paraste.
