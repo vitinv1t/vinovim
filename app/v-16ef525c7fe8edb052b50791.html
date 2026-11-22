@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Vinovim</title>
+<meta name="theme-color" content="#07060b">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#07060b;color:#f6f3fb;font-family:system-ui,-apple-system,"Segoe UI",Inter,sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;display:grid;place-items:center;padding:24px;overflow:hidden;position:relative}
+.luz{position:fixed;inset:-20%;z-index:0;pointer-events:none;background:radial-gradient(520px 360px at 30% 20%,rgba(139,92,255,.30),transparent 70%),radial-gradient(520px 360px at 75% 85%,rgba(255,77,148,.20),transparent 70%);animation:flu 14s ease-in-out infinite alternate}
+@keyframes flu{to{transform:translate3d(3%,-2%,0) scale(1.08)}}
+.gr{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+main{position:relative;z-index:1;width:min(392px,100%);animation:ent .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes ent{from{opacity:0;transform:translateY(14px) scale(.985)}}
+.marca{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:26px}
+.marca svg{width:40px;height:40px;filter:drop-shadow(0 6px 22px rgba(139,92,255,.55))}
+.marca b{font-size:26px;font-weight:700;letter-spacing:-.03em}
+form{padding:28px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.09);box-shadow:0 30px 80px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px)}
+.cp{position:relative}
+.cp+.cp{margin-top:14px}
+input{width:100%;height:52px;padding:18px 14px 0;border-radius:13px;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.38);color:#fff;font:inherit;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
+label{position:absolute;left:15px;top:16px;font-size:15px;color:#9a92ad;pointer-events:none;transition:all .18s ease;transform-origin:left}
+input:focus+label,input:not(:placeholder-shown)+label{top:8px;font-size:11.5px;color:#c9b8ff}
+input:focus-visible{border-color:#a885ff;box-shadow:0 0 0 3px rgba(139,92,255,.25)}
+#p{padding-right:48px}
+.ol{position:absolute;right:6px;top:6px;width:40px;height:40px;border:0;border-radius:10px;background:transparent;color:#9a92ad;cursor:pointer;display:grid;place-items:center}
+.ol:hover{color:#fff;background:rgba(255,255,255,.06)}
+.ol:focus-visible{outline:2px solid #a885ff}
+.ol svg{width:20px;height:20px}
+#b{margin-top:20px;width:100%;height:50px;border:0;border-radius:13px;font:600 15px system-ui,sans-serif;color:#fff;cursor:pointer;background:linear-gradient(110deg,#8b5cff,#ff4d94 62%,#ff6a6a);box-shadow:0 10px 30px -10px rgba(255,77,148,.6);transition:transform .15s,box-shadow .15s,opacity .2s}
+#b:hover{transform:translateY(-1px);box-shadow:0 14px 34px -10px rgba(255,77,148,.75)}
+#b:active{transform:translateY(0)}
+#b:disabled{opacity:.65;cursor:wait;transform:none}
+#b:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.er{min-height:20px;margin-top:14px;font-size:13px;line-height:1.4;color:#ff8fa8;text-align:center}
+.er.t{animation:tr .4s}
+@keyframes tr{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="luz"></div><div class="gr"></div>
+<main>
+  <div class="marca">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cff"/><stop offset=".65" stop-color="#ff4d94"/><stop offset="1" stop-color="#ff6a6a"/></linearGradient></defs><rect width="48" height="48" rx="13" fill="url(#g)"/><path d="M13 14l11 21 11-21" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>Vinovim</b>
+  </div>
+  <form id="f" autocomplete="on">
+    <div class="cp"><input id="e" name="email" type="email" placeholder=" " autocomplete="username" required maxlength="254"><label for="e">Email</label></div>
+    <div class="cp"><input id="p" name="password" type="password" placeholder=" " autocomplete="current-password" required minlength="8" maxlength="200"><label for="p">Palavra-passe</label>
+      <button type="button" class="ol" id="v" aria-label="Mostrar palavra-passe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+    <button id="b" type="submit">Entrar</button>
+    <div class="er" id="er" role="alert"></div>
+  </form>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)};
+$('v').addEventListener('click',function(){var p=$('p'),m=p.type==='password';p.type=m?'text':'password';this.setAttribute('aria-label',m?'Esconder palavra-passe':'Mostrar palavra-passe')});
+$('f').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var b=$('b'),er=$('er');
+  b.disabled=true;b.textContent='A entrar...';er.textContent='';er.className='er';
+  fetch('/api/entrar',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',
+    body:JSON.stringify({email:$('e').value.trim(),password:$('p').value})})
+  .then(function(r){return r.json().then(function(d){return{s:r.status,d:d}})})
+  .then(function(x){
+    if(x.s===200){b.textContent='Pronto';return(location.href='/')}
+    er.textContent=x.s===429?'Demasiadas tentativas. Tenta daqui a 10 minutos.':'Dados incorretos.';
+    void er.offsetWidth;er.className='er t';b.disabled=false;b.textContent='Entrar';
+  })
+  .catch(function(){er.textContent='Sem ligação. Tenta outra vez.';b.disabled=false;b.textContent='Entrar'});
+});
+</script>
+</body>
+</html>

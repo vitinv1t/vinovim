@@ -1,7 +1,7 @@
 // Vinovim: service worker com atualização automática
-const CACHE = 'vinovim-v4';
+const CACHE = 'vinovim-v5';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icon.svg'];
-const NUNCA = /^\/(api\/|_vercel\/|version\.json|downloads|manutencao|entrar|admin\.js)/;
+const NUNCA = /^\/(api\/|_vercel\/|version\.json|downloads|manutencao|entrar|v-[0-9a-f]{24}|admin\.js)/;
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(() => {}));
