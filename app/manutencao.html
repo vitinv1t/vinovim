@@ -220,7 +220,7 @@
   var toques = 0, t0 = 0;
   document.getElementById('marca').addEventListener('click', function () {
     var agora = Date.now(); toques = agora - t0 < 900 ? toques + 1 : 1; t0 = agora;
-    if (toques >= 5) { try { localStorage.setItem('vinovim.dev', '1'); } catch (e) {} abrir(); }
+    if (toques >= 5) { try { localStorage.setItem('vinovim.obras', '1'); } catch (e) {} abrir(); }
   });
   setInterval(function () {
     fetch('/version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); })
