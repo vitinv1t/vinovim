@@ -245,7 +245,7 @@ function editProfile(id) {
       pin = $('#pPin').value.trim();
     if (!name) return toast('Escreve um nome para o perfil');
     if (pin && !/^\d{4}$/.test(pin)) return toast('O PIN tem de ter 4 números');
-    const prof = { ...draft, name, kids: !!draft.kids };
+    const prof = { ...draft, name, kids: !!draft.kids, upd: Date.now() };
     if (pin) prof.pin = await hashPin(pin);
     else if (removePin) delete prof.pin;
     if (old) {
