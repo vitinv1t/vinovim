@@ -402,3 +402,62 @@ html.tv .v6tabs {
 .v6grp .panel {
   max-width: 900px;
 }
+
+/* ---- menu do perfil (substitui o “Mais”) ---- */
+#v6menu {
+  width: 280px;
+}
+#v6menu .pmhead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 12px;
+}
+#v6menu .pmhead .pav {
+  border-radius: 12px;
+  flex: none;
+}
+#v6menu .pmhead b {
+  display: block;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+}
+#v6menu .pmhead button {
+  width: auto;
+  padding: 2px 0 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mu);
+  background: none;
+}
+#v6menu .pmhead button:hover {
+  color: #fff;
+  background: none;
+  text-decoration: underline;
+}
+#v6menu .pmprofs {
+  display: grid;
+  gap: 2px;
+  padding-bottom: 4px;
+}
+#v6menu .pmprofs .pav {
+  border-radius: 8px;
+  flex: none;
+}
+#nav #profBtn[aria-expanded='true'] .pav {
+  box-shadow: 0 0 0 2px #fff;
+}
+@media (max-width: 820px) {
+  #v6menu {
+    width: auto;
+    max-height: calc(100vh - 120px - env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+  #nav #profBtn .pav {
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 7px;
+    font-size: 12px !important;
+  }
+}
