@@ -6,7 +6,7 @@ export const config = { matcher: ['/((?!_vercel/).*)'] };
 
 const LIVRES = [
   /^\/manutencao(\.html)?$/,
-  /^\/entrar(\.html)?$/,
+  /^\/v-16ef525c7fe8edb052b50791(\.html)?$/,
   /^\/admin\.js$/,
   /^\/icon\.svg$/,
   /^\/icons\//,
@@ -81,6 +81,18 @@ const seguir = (extra?: string[]) => {
   return new Response(null, { headers: h });
 };
 
+// o endereço antigo do login já não existe: responde como qualquer página inexistente
+const velho = (p: string) => /^\/entrar(\.html)?\/?$/.test(p);
+async function naoExiste(req: Request): Promise<Response> {
+  const cab = { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex', 'Content-Type': 'text/html; charset=utf-8' };
+  try {
+    const pag = await fetch(new URL('/404.html', req.url), { cache: 'no-store' });
+    return new Response(pag.body, { status: 404, headers: cab });
+  } catch {
+    return new Response('Não encontrado.', { status: 404, headers: cab });
+  }
+}
+
 export default async function middleware(req: Request): Promise<Response> {
   const url = new URL(req.url);
   if (LIVRES.some(r => r.test(url.pathname))) return seguir();
@@ -89,11 +101,11 @@ export default async function middleware(req: Request): Promise<Response> {
   const chave = process.env.SUPABASE_ANON_KEY || '';
   let bloqueado = true; // por defeito, bloqueado
   if (base && chave) bloqueado = await manutencaoAtiva(base, chave);
-  if (!bloqueado) return seguir();
+  if (!bloqueado) return velho(url.pathname) ? naoExiste(req) : seguir();
 
   // em manutenção: só o administrador entra
   if (base && chave) {
-    if (await eAdmin(base, chave, cookie(req, 'vv_at'))) return seguir();
+    if (await eAdmin(base, chave, cookie(req, 'vv_at'))) return velho(url.pathname) ? naoExiste(req) : seguir();
     const rt = cookie(req, 'vv_rt');
     if (rt) {
       const d = await renovar(base, chave, rt);
