@@ -99,6 +99,16 @@ h2{font:700 clamp(28px,3.6vw,42px)/1.08 var(--fd);letter-spacing:-.03em;margin-b
 .novo{margin-top:18px;padding:24px;border-radius:22px;border:1px solid var(--ln);background:rgba(255,255,255,.03)}
 .novo b{font:600 17px var(--fd)}
 .novo ul{margin:12px 0 0 18px;color:var(--mu);font-size:14.5px;display:grid;gap:5px}
+.com{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:7vh;padding:20px 24px;border-radius:22px;border:1px solid var(--ln);background:linear-gradient(110deg,rgba(139,92,255,.16),rgba(255,77,148,.09) 70%,rgba(255,255,255,.02))}
+.com .cm-i{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;flex:none;background:var(--marca);box-shadow:0 10px 26px -10px rgba(255,77,148,.7)}
+.com .cm-i svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.com .cm-t{flex:1;min-width:220px}
+.com .cm-t b{display:block;font:600 17px var(--fd);letter-spacing:-.01em;margin-bottom:3px}
+.com .cm-t span{color:var(--mu);font-size:14px;line-height:1.45}
+.com .cm-b{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--ln);font-weight:600;font-size:13.5px;color:var(--tx)}
+.com .cm-b i{width:8px;height:8px;border-radius:50%;background:var(--ro);animation:cmp 2.2s infinite}
+@keyframes cmp{0%{box-shadow:0 0 0 0 rgba(255,77,148,.55)}70%{box-shadow:0 0 0 9px rgba(255,77,148,0)}100%{box-shadow:0 0 0 0 rgba(255,77,148,0)}}
+@media(prefers-reduced-motion:reduce){.com .cm-b i{animation:none}}
 footer{padding:40px 0 60px;color:var(--mu2);font-size:13px;display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;justify-content:space-between;border-top:1px solid var(--ln);margin-top:6vh}
 footer a{color:var(--mu);text-decoration:none}footer a:hover{color:#fff}
 .eco{display:flex;gap:18px}
@@ -197,6 +207,11 @@ footer a{color:var(--mu);text-decoration:none}footer a:hover{color:#fff}
     </div>
   </section>
 
+  <aside class="com ent" aria-label="Comunidade">
+    <div class="cm-i" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M19 9h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2v2l-3-2h-5"/></svg></div>
+    <div class="cm-t"><b>A comunidade do Vinovim está a chegar</b><span>O servidor de Discord abre em breve: novidades, ajuda e sugestões num só sítio.</span></div>
+    <div class="cm-b"><i></i>Em breve</div>
+  </aside>
   <footer>
     <span>O Vinovim não aloja nem distribui conteúdo. Tudo o que aparece vem dos addons que instalas.</span>
     <span class="eco"><a href="https://vinovimgtavi.vercel.app" rel="noopener">Mapa GTA VI</a><a href="/termos">Termos</a><a href="/privacidade">Privacidade</a></span>
