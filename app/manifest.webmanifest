@@ -1,7 +1,7 @@
 {
   "name": "Vinovim",
   "short_name": "Vinovim",
-  "description": "Os teus filmes e séries, num só sítio. Compatível com addons Stremio.",
+  "description": "Os teus filmes e séries, num só sítio. Com os addons que quiseres.",
   "start_url": "/index.html#home",
   "scope": "/",
   "display": "standalone",
