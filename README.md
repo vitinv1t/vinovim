@@ -7,10 +7,10 @@
 [![Compilação](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml/badge.svg)](https://github.com/vitinv1t/vinovim/actions/workflows/build.yml)
 ![Versão](https://img.shields.io/badge/versão-1.0.2-ff4d94?style=flat-square)
 ![Plataformas](https://img.shields.io/badge/plataformas-Windows%20·%20Android%20·%20TV%20·%20Web-7c5cff?style=flat-square)
-![Addons](https://img.shields.io/badge/addons-protocolo%20Stremio-f5c26b?style=flat-square)
+![Addons](https://img.shields.io/badge/addons-abertos-f5c26b?style=flat-square)
 ![Idiomas](https://img.shields.io/badge/idiomas-PT%20·%20EN%20·%20ES-2ea043?style=flat-square)
 
-**Um hub de filmes e séries bonito, rápido e pessoal — ao estilo Netflix — que funciona com addons do Stremio.**
+**O teu hub de filmes e séries: bonito, rápido e pessoal, com os addons que quiseres.**
 
 [🌐 Abrir no browser](https://vinovim.vercel.app/?web) ·
 [📥 Descarregar](https://vinovim.vercel.app/download) ·
@@ -118,7 +118,7 @@
 
 ## 🧩 Como funcionam os addons
 
-O Vinovim fala o **protocolo de addons do Stremio**. Um addon é só um endereço que responde com JSON:
+O Vinovim usa um **protocolo aberto de addons**. Um addon é só um endereço que responde com JSON:
 
 ```text
 https://exemplo-de-addon.com/manifest.json          → quem é o addon e o que oferece
@@ -163,7 +163,7 @@ vinovim/
 │           ├── temas-e-extras.js → temas, transferências, comando no telemóvel, conquistas, gestor de addons
 │           ├── listas-e-descoberta.js → listas partilhadas, próximo episódio, “Não sei o que ver”, atalhos
 │           ├── windows-e-resumo-anual.js → menu Iniciar, barra de tarefas e o teu ano no Vinovim
-│           ├── estilo-netflix.js → abertura, trailers, Top 10, Novidades, “% para ti”
+│           ├── experiencia.js → abertura, trailers, Top 10, Novidades, “% para ti”
 │           ├── navegacao.js    → menu no topo, menu “Mais”, definições por separadores
 │           ├── entrada.js      → ecrã de entrada (Google, email ou sem conta)
 │           └── cinema-em-casa.js → pausa, “Da última vez…”, continuar noutro dispositivo, época, protetor de ecrã
