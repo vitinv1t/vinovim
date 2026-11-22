@@ -359,7 +359,14 @@
     const tomb = Object.assign({}, remote.tomb || {}, S.tomb || {});
     const byId = new Map(S.profiles.map(p => [p.id, p]));
     (remote.profiles || []).forEach(p => {
-      if (!byId.has(p.id) && !tomb['profile:' + p.id]) byId.set(p.id, p);
+      if (tomb['profile:' + p.id]) return;
+      const l = byId.get(p.id);
+      if (!l) return byId.set(p.id, p);
+      // o perfil mais recente ganha (inclui o PIN); sem datas, adota o PIN que só existe do outro lado
+      if ((p.upd || 0) > (l.upd || 0) || (!(p.upd || l.upd) && p.pin && !l.pin)) {
+        for (const k of ['photo', 'emoji', 'pin']) if (!(k in p)) delete l[k];
+        Object.assign(l, p);
+      }
     });
     S.profiles = [...byId.values()].filter(p => !tomb['profile:' + p.id]);
     S.addons = [...new Set([...(S.addons || []), ...(remote.addons || [])])].filter(u => !tomb['addon:' + u]);

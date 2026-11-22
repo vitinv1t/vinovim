@@ -108,7 +108,7 @@
     nextT = setInterval(tick, 1000);
   }
   V.addEventListener('timeupdate', () => {
-    if (S.prefs.autoNext === false || !PC || !PC.video || !P.classList.contains('open')) return;
+    if (window.__vvManut || S.prefs.autoNext === false || !PC || !PC.video || !P.classList.contains('open')) return;
     const d = V.duration,
       t = V.currentTime;
     if (nextT && nextFor !== PC.videoId) stopNext(false);

@@ -33,17 +33,21 @@
   function run() {
     if (document.getElementById('vvDica') || location.hash.replace('#', '') !== 'home') return;
     let i = 0;
+    try {
+      localStorage.setItem(KEY, '1');
+    } catch (e) {}
     const prevOv = document.documentElement.style.overflow;
     document.documentElement.style.overflow = 'hidden';
     const root = document.createElement('div');
     root.id = 'vvDica';
     root.setAttribute('role', 'dialog');
     root.setAttribute('aria-label', 'Dica de boas-vindas');
-    root.innerHTML = '<div class="vd-ring"></div><div class="vd-box"><h3></h3><p></p><div class="vd-foot"><small></small><button type="button"></button></div></div>';
+    root.innerHTML = '<div class="vd-ring"></div><div class="vd-box"><h3></h3><p></p><div class="vd-foot"><small></small><span><button type="button" class="vd-skip">Saltar</button><button type="button" class="vd-next"></button></span></div></div>';
     document.body.appendChild(root);
     const ring = root.querySelector('.vd-ring'),
       box = root.querySelector('.vd-box'),
-      btn = root.querySelector('button');
+      btn = root.querySelector('.vd-next');
+    root.querySelector('.vd-skip').onclick = () => close();
     const close = () => {
       try {
         localStorage.setItem(KEY, '1');
