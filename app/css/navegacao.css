@@ -1,4 +1,4 @@
-/* ---- PC: barra de navegação no topo, como a Netflix ---- */
+/* ---- PC: barra de navegação no topo, estilo moderno ---- */
 @media (min-width: 821px) {
   html:not(.tv) {
     --side: 0px;
