@@ -2,6 +2,14 @@
 <html lang="pt">
 <head>
 <meta charset="utf-8">
+<script>
+// Manutenção: enquanto MANUT for true, o site e as apps mostram /manutencao.html (o dono entra com ?dev)
+(function () { var MANUT = true; try {
+  if (/[?&]dev\b/.test(location.search)) localStorage.setItem('vinovim.dev', '1');
+  if (MANUT && !localStorage.getItem('vinovim.dev') && /^https?:$/.test(location.protocol))
+    location.replace('/manutencao.html' + (/[?&]web\b/.test(location.search) ? '?web' : ''));
+} catch (e) {} })();
+</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Vinovim</title>
 <meta name="theme-color" content="#0c0a12">
