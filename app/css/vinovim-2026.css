@@ -273,6 +273,11 @@ html:not(.tv) .hcon {
   color: #7d768c;
   font-size: 12.5px;
 }
+#vvDica .vd-foot .vd-skip {
+  background: transparent;
+  color: #4a4457;
+  margin-right: 6px;
+}
 #vvDica .vd-foot button {
   height: 38px;
   padding: 0 18px;
