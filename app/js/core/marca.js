@@ -1,4 +1,4 @@
-/* Vinovim — a marca: cores, o “V” em fita e o nome “vinovim”.
+/* Vinovim: a marca: cores, o “V” em fita e o nome “vinovim”.
    O nome é a Poppins Bold (licença SIL OFL) convertida em traçados, com o espaçamento acertado à mão:
    fica igual e nítido em qualquer ecrã e tamanho, sem esperar que uma fonte carregue. */
 const MARCA = {

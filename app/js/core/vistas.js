@@ -113,7 +113,7 @@ const VIEWS = {
   addons() {
     app.className = '';
     app.innerHTML = `<div class="view">${topbar('Addons')}<div class="pad" style="max-width:980px">
-      <div class="panel"><h3>Instalar addon</h3><p class="m">O Vinovim usa o protocolo de addons do Stremio. Cola o link do <b>manifest.json</b> de um addon (catálogos, metadados, fontes ou legendas). Links <code>stremio://</code> também funcionam.</p>
+      <div class="panel"><h3>Instalar addon</h3><p class="m">O Vinovim usa um protocolo aberto de addons. Cola o link do <b>manifest.json</b> de um addon (catálogos, metadados, fontes ou legendas).</p>
       <form class="inrow" id="addF"><input class="inp" id="addU" placeholder="https://exemplo.com/manifest.json" required><button class="btn acc">${I.plus}Instalar</button></form></div>
       <h3 class="sec">Instalados</h3><div id="alist">${ADDONS.map(addonRow).join('')}</div>
       <p class="legal" style="margin-top:20px">O Vinovim não aloja, guarda nem distribui conteúdo. Tudo o que aparece vem dos addons que instalas, e és responsável por usar apenas fontes a que tenhas direito de aceder.</p>

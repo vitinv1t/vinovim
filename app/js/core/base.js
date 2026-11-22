@@ -1,5 +1,5 @@
 /* =========================================================
-   Vinovim — hub de filmes e séries compatível com addons Stremio
+   Vinovim: o teu hub de filmes e séries
    Núcleo: constantes, ícones, estado, addons e ajudantes de interface.
    ========================================================= */
 
@@ -253,8 +253,8 @@ function applyAccent() {
   hooks.emit('theme');
 }
 
-/* ---------- addons (protocolo Stremio) ---------- */
-const normUrl = u => u.trim().replace(/^stremio:\/\//i, 'https://');
+/* ---------- addons ---------- */
+const normUrl = u => u.trim().replace(/^(?!https?:)[a-z][a-z0-9+.-]*:\/\//i, 'https://');
 const baseOf = u => normUrl(u).replace(/\/manifest\.json(\?.*)?$/i, '');
 const cache = new Map();
 function getJSON(u) {
@@ -361,7 +361,7 @@ const timeLeft = s => {
   const m = Math.max(1, Math.round(s / 60));
   return m >= 60 ? `${Math.floor(m / 60)} h ${m % 60} min` : `${m} min`;
 };
-/* cartão de “Continuar a ver”: a imagem pode ser a última cena vista (ver estilo-netflix.js) */
+/* cartão de “Continuar a ver”: a imagem pode ser a última cena vista (ver experiencia.js) */
 function wideCard(p) {
   const pct = p.d > 1 ? Math.min(100, (p.t / p.d) * 100) : 0;
   const img = hooks.pipe('progress:image', p.thumb || p.background || IMG.bg(p.id), p);
