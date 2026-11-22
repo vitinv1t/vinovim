@@ -42,30 +42,49 @@
   const menu = document.createElement('div');
   menu.id = 'v6menu';
   document.body.appendChild(menu);
+  const GEAR = sv(
+    '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>'
+  );
+  const USER = sv('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>');
+  const SWAP = sv('<path d="M7 7h11l-3-3M17 17H6l3 3"/>');
+  // menu do perfil: tudo o que antes estava em “Mais”, mais trocar e editar perfis
   function menuHTML() {
-    return `<a class="mo" href="#movies">${XI.film}Filmes</a><a class="mo" href="#series">${XI.tv}Séries</a><hr class="mo">
-    <a href="#calendar">${XI.cal}Calendário de estreias</a><a href="#stats">${XI.stats}Estatísticas e o teu ano</a><a href="#downloads">${XI.dl}Transferências (offline)</a>
-    <hr><button data-v3mood>${XI.target}Não sei o que ver</button><button data-surprise>${I.dice}Surpreende-me</button><button data-xjoin>${XI.people}Ver em conjunto</button>
-    <hr><a href="#addons">${I.puzzle}Addons</a><a href="#settings">${sv('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>')}Definições</a>`;
+    const cur = curProfile(),
+      others = realProfiles().filter(p => p.id !== cur.id);
+    return `<div class="pmhead">${avatar(cur, 46)}<div><b>${esc(cur.name)}</b><button type="button" data-pm-edit>Editar perfil</button></div></div>
+    ${others.length ? `<div class="pmprofs">${others.map(p => `<button type="button" data-prof="${p.id}">${avatar(p, 28)}<span>${esc(p.name)}</span></button>`).join('')}</div>` : ''}
+    <button type="button" data-pm-switch>${SWAP}Trocar de perfil</button><button type="button" data-prof-manage>${USER}Gerir perfis</button>
+    <hr><a class="mo" href="#movies">${XI.film}Filmes</a><a class="mo" href="#series">${XI.tv}Séries</a>
+    <a href="#calendar">${XI.cal}Calendário de estreias</a><button type="button" data-v3mood>${XI.target}Não sei o que ver</button><button type="button" data-surprise>${I.dice}Surpreende-me</button><button type="button" data-xjoin>${XI.people}Ver em conjunto</button>
+    <hr><a href="#stats">${XI.stats}A tua atividade</a><a href="#downloads">${XI.dl}Transferências</a>
+    <hr><a href="#settings" data-pm-tab="Geral">${GEAR}Definições</a><a href="#settings" data-pm-tab="Conta">${USER}Conta</a><a href="#addons">${I.puzzle}Addons</a>`;
   }
+  window.vvMenu = btn => openMenu(btn);
   function openMenu(btn) {
     if (menu.classList.contains('open')) return closeMenu();
     menu.innerHTML = menuHTML();
     const r = btn.getBoundingClientRect();
-    menu.style.top = r.bottom + 8 + 'px';
-    menu.style.left = Math.max(10, Math.min(innerWidth - 270, r.right - 250)) + 'px';
+    menu.style.top = r.bottom + 10 + 'px';
+    menu.style.left = Math.max(10, Math.min(innerWidth - 290, r.right - 280)) + 'px';
+    btn.setAttribute('aria-expanded', 'true');
     menu.classList.add('open');
     setTimeout(() => menu.querySelector('a,button')?.focus({ preventScroll: true }), 30);
   }
   function closeMenu() {
     menu.classList.remove('open');
+    $('#profBtn')?.setAttribute('aria-expanded', 'false');
   }
   menu.addEventListener('click', e => {
+    const tab = e.target.closest('[data-pm-tab]');
+    if (tab) sessionStorage.setItem('v6set', tab.dataset.pmTab);
+    if (tab && location.hash === '#settings') route();
+    if (e.target.closest('[data-pm-edit]')) editProfile(curProfile().id);
+    if (e.target.closest('[data-pm-switch]')) showProfiles(false);
     if (e.target.closest('a,button')) setTimeout(closeMenu, 0);
   });
   document.addEventListener('click', e => {
     if (!menu.classList.contains('open')) return;
-    if (!e.target.closest('#v6menu') && !e.target.closest('.v6more')) closeMenu();
+    if (!e.target.closest('#v6menu') && !e.target.closest('#profBtn')) closeMenu();
   });
   document.addEventListener(
     'keydown',
@@ -81,18 +100,10 @@
     const nav = $('#nav');
     if (!nav) return;
     setLabel(nav.querySelector('.nv[data-v="library"]'), 'A minha lista');
-    if (!nav.querySelector('.v6more')) {
-      const b = document.createElement('button');
-      b.className = 'nv v6more';
-      b.type = 'button';
-      b.title = 'Mais';
-      b.innerHTML = `${XI.grid}<span>Mais</span>`;
-      b.onclick = e => {
-        e.stopPropagation();
-        openMenu(b);
-      };
-      const sp = nav.querySelector('.nvsp');
-      nav.insertBefore(b, nav.querySelector('#profBtn') || null);
+    const pb = nav.querySelector('#profBtn');
+    if (pb) {
+      pb.title = 'O teu perfil';
+      pb.setAttribute('aria-haspopup', 'menu');
     }
     // menu à esquerda: botão para o encolher (só ícones) e voltar a abrir
     if (!nav.querySelector('.vvfold')) {
@@ -112,12 +123,9 @@
     nav.querySelector('.vvfold').title = mini ? 'Abrir o menu' : 'Encolher o menu';
     // com o menu encolhido, o nome de cada página aparece ao passar o rato
     nav.querySelectorAll('.nv[data-v]').forEach(a => (a.title = a.textContent.trim()));
-    // ordem no telemóvel: Início, Pesquisar, Novidades, A minha lista, Mais
+    // ordem no telemóvel: Início, Pesquisar, Novidades, A minha lista, o teu perfil
     const mob = matchMedia('(max-width:820px)').matches,
-      side = document.documentElement.classList.contains('vvside'),
-      b = nav.querySelector('.v6more');
-    if (b) b.innerHTML = mob || side ? `${XI.grid}<span>Mais</span>` : `<span>Mais</span>${XI.down}`;
-    const lib = nav.querySelector('.nv[data-v="library"]'),
+      lib = nav.querySelector('.nv[data-v="library"]'),
       nov = nav.querySelector('.nv[data-v="novidades"]');
     if (mob && lib && nov && nov.nextElementSibling !== lib) nov.after(lib);
   }

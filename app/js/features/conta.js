@@ -552,34 +552,101 @@
   });
 
   /* =================== saltar introdução / resumo =================== */
+  // Os tempos vêm de uma base de dados comunitária (por episódio). Se não houver, usa as marcações
+  // da pessoa ou o que a app aprendeu quando ela saltou a abertura à mão. O botão só aparece
+  // mesmo durante a abertura ou o resumo; nunca fica fixo no início de todos os episódios.
   const skip = document.createElement('button');
   skip.className = 'skipbtn';
   P.appendChild(skip);
   let skipTo = 0,
     autoSkipped = {};
+  const SEG = {};
   function introFor() {
     if (!PC || !PC.meta || PC.meta.type !== 'series') return null;
     return pdk('intros', {})[PC.meta.id] || null;
   }
-  V.addEventListener('timeupdate', () => {
-    const it = introFor(),
-      t = V.currentTime;
-    let show = null;
-    if (it) {
-      if (it.recapEnd && t < it.recapEnd - 1 && t >= 0) show = ['Saltar resumo', it.recapEnd];
-      else if (it.start != null && it.end && t >= it.start - 0.5 && t < it.end - 1)
-        show = ['Saltar introdução', it.end];
-      if (show && S.prefs.autoSkip && !autoSkipped[PC.videoId + show[0]]) {
-        autoSkipped[PC.videoId + show[0]] = 1;
-        V.currentTime = show[1];
-        toast(tr(show[0]));
-        return;
+  function segKey() {
+    if (!PC || !PC.meta || !/^tt\d+$/.test(PC.meta.id)) return null;
+    const v = PC.video;
+    return PC.meta.type === 'series' && v && v.season != null ? `${PC.meta.id}:${v.season}:${v.episode}` : PC.meta.id;
+  }
+  async function loadSegments() {
+    const k = segKey();
+    if (!k || k in SEG) return;
+    SEG[k] = null;
+    try {
+      const c = JSON.parse(sessionStorage.getItem('vvseg:' + k) || 'null');
+      if (c) return (SEG[k] = c);
+      const [id, s, e] = k.split(':');
+      const q = new URLSearchParams({ imdb_id: id });
+      if (s != null) {
+        q.set('season', s);
+        q.set('episode', e);
       }
-    } else if (PC && PC.meta && PC.meta.type === 'series' && !PC.stream.ytId && t > 5 && t < 240)
-      show = ['Saltar introdução', t + 85, '+1:25'];
+      const r = await fetch(
+        'https://api.theintrodb.org/v2/media?' + q,
+        AbortSignal.timeout ? { signal: AbortSignal.timeout(6000) } : {}
+      );
+      const j = r.ok ? await r.json() : {};
+      const one = arr => {
+        const x = (arr || []).find(x => x && x.start_ms != null);
+        return x ? { start: x.start_ms / 1000, end: x.end_ms != null ? x.end_ms / 1000 : null } : null;
+      };
+      SEG[k] = { intro: one(j.intro), recap: one(j.recap), credits: one(j.credits) };
+      sessionStorage.setItem('vvseg:' + k, JSON.stringify(SEG[k]));
+    } catch (e) {}
+  }
+  hooks.on('play:started', () => {
+    lastT = 0;
+    loadSegments();
+  });
+  V.addEventListener('loadedmetadata', loadSegments);
+  function segments() {
+    const k = segKey(),
+      s = (k && SEG[k]) || {},
+      it = introFor() || {};
+    const intro =
+      it.start != null && it.end ? { start: it.start, end: it.end } : s.intro && s.intro.end ? s.intro : null;
+    const recap = it.recapEnd ? { start: 0, end: it.recapEnd } : s.recap && s.recap.end ? s.recap : null;
+    return { intro, recap, credits: s.credits };
+  }
+  // aprende: se a pessoa salta à mão 30 s a 3 min logo no início, é a abertura desta série
+  let lastT = 0;
+  V.addEventListener('timeupdate', () => {
+    if (!V.seeking) lastT = V.currentTime;
+  });
+  V.addEventListener('seeked', () => {
+    if (!PC || !PC.meta || PC.meta.type !== 'series' || PC.stream.ytId) return;
+    const from = lastT,
+      to = V.currentTime,
+      jump = to - from;
+    if (from > 420 || jump < 30 || jump > 180) return;
+    const sg = segments();
+    if (sg.intro) return;
+    const all = pdk('intros', {}),
+      it = all[PC.meta.id] || (all[PC.meta.id] = {});
+    it.start = Math.max(0, Math.round(from));
+    it.end = Math.round(to);
+    it.learned = true;
+    save();
+  });
+  V.addEventListener('timeupdate', () => {
+    if (!PC || !PC.meta || PC.stream.ytId) return skip.classList.remove('show');
+    const t = V.currentTime,
+      sg = segments();
+    PC.creditsAt = sg.credits && sg.credits.start > 60 ? sg.credits.start : null;
+    let show = null;
+    if (sg.recap && t >= sg.recap.start && t < sg.recap.end - 1) show = ['Saltar resumo', sg.recap.end];
+    else if (sg.intro && t >= sg.intro.start - 0.5 && t < sg.intro.end - 1) show = ['Saltar introdução', sg.intro.end];
+    if (show && S.prefs.autoSkip && !autoSkipped[PC.videoId + show[0]]) {
+      autoSkipped[PC.videoId + show[0]] = 1;
+      V.currentTime = show[1];
+      toast(tr(show[0]));
+      return;
+    }
     if (show) {
       skipTo = show[1];
-      skip.innerHTML = `${XI.skip}${tr(show[0])}${show[2] ? ` <small style="opacity:.6;font-weight:600">${show[2]}</small>` : ''}`;
+      skip.innerHTML = `${XI.skip}${tr(show[0])}`;
       skip.classList.add('show');
     } else skip.classList.remove('show');
   });

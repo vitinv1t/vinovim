@@ -113,8 +113,10 @@
       t = V.currentTime;
     if (nextT && nextFor !== PC.videoId) stopNext(false);
     if (!d || !isFinite(d) || d < 300 || nextCancelled === PC.videoId) return;
-    if (d - t <= 30 && !nextT) startNext();
-    else if (d - t > 40 && nextT) stopNext(false);
+    // com os tempos dos créditos, propõe o próximo episódio logo quando começam
+    const ct = PC.creditsAt && PC.creditsAt < d - 5 ? PC.creditsAt : null;
+    if ((ct ? t >= ct : d - t <= 30) && !nextT) startNext();
+    else if ((ct ? t < ct - 5 : d - t > 40) && nextT) stopNext(false);
   });
   V.addEventListener('ended', () => {
     if (S.prefs.autoNext !== false && PC && PC.video && nextCancelled !== PC.videoId && !nextT) startNext();
