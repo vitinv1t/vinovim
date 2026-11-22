@@ -43,7 +43,7 @@
     if (!m) return '';
     const v = PC.video,
       isS = m.type === 'series' && v;
-    const meta = [yearOf(m), m.runtime, m.imdbRating ? '★ ' + m.imdbRating : ''].filter(Boolean);
+    const meta = [yearOf(m), m.runtime].filter(Boolean);
     const desc = isS ? v.overview || v.description || m.description : m.description;
     const cast = castOf(m);
     return `<div class="pw"><small>Estás a ver</small><h1>${esc(m.name)}</h1>
@@ -482,7 +482,6 @@
     const imgs = saverImages(m, v);
     if (!imgs.length) return;
     const meta = [
-      m.imdbRating ? `<span class="r">★ ${esc(m.imdbRating)}</span>` : '',
       yearOf(m) ? `<span>${esc(yearOf(m))}</span>` : '',
       v
         ? `<span>T${v.season}:E${v.episode}${epName(v) ? ' · ' + esc(epName(v)) : ''}</span>`

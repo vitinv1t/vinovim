@@ -869,7 +869,7 @@
     ['days30', '🗓️', 'Fiel', 'Vê algo em 30 dias diferentes', s => s.days >= 30],
     ['night', '🦉', 'Coruja', 'Vê algo entre as 2h e as 5h', s => s.night],
     ['genres', '🧭', 'Explorador', 'Vê 6 géneros diferentes', s => s.genres >= 6],
-    ['critic', '⭐', 'Crítico', 'Avalia 10 títulos', s => s.ratings >= 10],
+    ['critic', '10', 'Crítico', 'Avalia 10 títulos', s => s.ratings >= 10],
     ['coll', '📚', 'Colecionador', 'Guarda 25 títulos na lista', s => s.lib >= 25],
     ['curator', '🗂️', 'Curador', 'Cria 3 listas', s => s.lists >= 3],
     ['eps', '✅', 'Episódio a episódio', 'Marca 100 episódios como vistos', s => s.watched >= 100],

@@ -216,7 +216,7 @@
     S2.push(
       `<div class="wk win">A tua personalidade</div><div class="wemo">${w.pers[0]}</div><div class="wh win" style="animation-delay:.3s">${esc(w.pers[1])}</div><p class="wp win" style="animation-delay:.5s">${esc(w.pers[2])}</p>${w.badges ? `<p class="wp win" style="animation-delay:.7s;margin-top:14px">E ainda desbloqueaste <b>${w.badges} conquistas</b>.</p>` : ''}`
     );
-    S2.push(`<div class="wk win">${w.year} em resumo</div><div class="wh win" style="animation-delay:.1s">${esc(w.name)}, foste ${esc(w.pers[1].toLowerCase())} ${w.pers[0]}</div><div class="wgrid win" style="animation-delay:.25s"><div><b>${w.hours.toFixed(0)}</b><small>horas</small></div><div><b>${w.movies + w.series}</b><small>títulos</small></div><div><b>${esc((GPT[(w.genres[0] || [])[0]] || '—').slice(0, 12))}</b><small>género</small></div><div><b>${MES[w.bestM].slice(0, 3)}</b><small>melhor mês</small></div></div>
+    S2.push(`<div class="wk win">${w.year} em resumo</div><div class="wh win" style="animation-delay:.1s">${esc(w.name)}, foste ${esc(w.pers[1].toLowerCase())} ${w.pers[0]}</div><div class="wgrid win" style="animation-delay:.25s"><div><b>${w.hours.toFixed(0)}</b><small>horas</small></div><div><b>${w.movies + w.series}</b><small>títulos</small></div><div><b>${esc((GPT[(w.genres[0] || [])[0]] || 'n/d').slice(0, 12))}</b><small>género</small></div><div><b>${MES[w.bestM].slice(0, 3)}</b><small>melhor mês</small></div></div>
     <div class="wbtns win" style="animation-delay:.45s"><button class="w1" data-wshare>${I.share || ''}Partilhar imagem</button><button class="w2" data-wsave>Guardar imagem</button><button class="w2" data-wagain>Ver outra vez</button></div>`);
     return S2;
   }
@@ -401,7 +401,7 @@
     const stats = [
       [w.hours.toFixed(0), 'horas a ver'],
       [String(w.movies + w.series), 'títulos'],
-      [GPT[(w.genres[0] || [])[0]] || '—', 'género favorito'],
+      [GPT[(w.genres[0] || [])[0]] || 'n/d', 'género favorito'],
       [MES[w.bestM], 'melhor mês']
     ];
     stats.forEach(([v, l], i) => {

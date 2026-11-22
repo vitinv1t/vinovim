@@ -275,7 +275,7 @@
         gs = (m.genres || m.genre || []).slice(0, 3).map(g => GPT[g] || g);
       prev.innerHTML = `<div class="pv" data-open="${esc(type)}|${esc(id)}" style="background-image:url('${esc(m.background || IMG.bg(id))}')"><b>${esc(m.name || '')}</b></div>
       <div class="pb2"><div class="row1"><button class="pp" data-quickplay="${esc(type)}|${esc(id)}" title="Ver agora">${I.play}</button><button data-lib="${esc(id)}" class="${inLib(id) ? 'on' : ''}" title="A minha lista">${inLib(id) ? I.check : I.plus}</button><button data-v5like class="${liked(id) ? 'on' : ''}" title="Gosto">${XI.like}</button><span class="sp"></span><button data-open="${esc(type)}|${esc(id)}" title="Mais informações">${XI.more}</button></div>
-      <div class="meta2">${matchHTML(m)}${yr ? `<span>${esc(yr)}</span>` : ''}${m.runtime ? `<span>${esc(m.runtime)}</span>` : ''}${type === 'series' && m.videos ? `<span>${new Set(m.videos.filter(v => v.season > 0).map(v => v.season)).size} temporadas</span>` : ''}${m.imdbRating ? `<span>★ ${esc(m.imdbRating)}</span>` : ''}</div>
+      <div class="meta2">${matchHTML(m)}${yr ? `<span>${esc(yr)}</span>` : ''}${m.runtime ? `<span>${esc(m.runtime)}</span>` : ''}${type === 'series' && m.videos ? `<span>${new Set(m.videos.filter(v => v.season > 0).map(v => v.season)).size} temporadas</span>` : ''}</div>
       ${gs.length ? `<div class="gen">${gs.map(esc).join('<i>•</i>')}</div>` : ''}</div>`;
     };
     render(base);

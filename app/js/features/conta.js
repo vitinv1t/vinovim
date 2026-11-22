@@ -1203,7 +1203,7 @@
   }
   defineView('calendar', async function () {
     app.className = '';
-    app.innerHTML = `<div class="view">${topbar(tr('Calendário'))}<div class="pad" style="max-width:980px"><p class="m" style="color:var(--mu);margin-bottom:22px">Os episódios das séries que estão na tua biblioteca ou que estás a ver — das últimas duas semanas aos próximos três meses.</p><div id="calBody"><span class="spin"></span></div></div></div>`;
+    app.innerHTML = `<div class="view">${topbar(tr('Calendário'))}<div class="pad" style="max-width:980px"><p class="m" style="color:var(--mu);margin-bottom:22px">Os episódios das séries que estão na tua biblioteca ou que estás a ver, das últimas duas semanas aos próximos três meses.</p><div id="calBody"><span class="spin"></span></div></div></div>`;
     const seenBefore = PD().calSeen || 0;
     const items = await upcoming();
     if (!$('#calBody')) return;
