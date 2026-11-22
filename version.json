@@ -17,5 +17,6 @@
       "Instala por cima da versão que tens: não perdes nada"
     ],
     "download": "https://vinovim.vercel.app/download"
-  }
+  },
+  "manutencao": true
 }
