@@ -1,22 +1,55 @@
 {
   "name": "Vinovim",
   "short_name": "Vinovim",
-  "description": "O teu hub de filmes e séries, compatível com addons Stremio.",
-  "start_url": "./index.html#home",
-  "scope": "./",
+  "description": "Os teus filmes e séries, num só sítio. Compatível com addons Stremio.",
+  "start_url": "/index.html#home",
+  "scope": "/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#0c0a12",
   "theme_color": "#0c0a12",
   "lang": "pt",
   "icons": [
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
-    { "name": "Pesquisar", "url": "./index.html#search" },
-    { "name": "Biblioteca", "url": "./index.html#library" }
+    {
+      "name": "Pesquisar",
+      "url": "./index.html#search"
+    },
+    {
+      "name": "Biblioteca",
+      "url": "./index.html#library"
+    }
+  ],
+  "id": "/",
+  "categories": [
+    "entertainment",
+    "video"
+  ],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
   ]
 }

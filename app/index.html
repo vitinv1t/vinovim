@@ -2,14 +2,7 @@
 <html lang="pt">
 <head>
 <meta charset="utf-8">
-<script>
-// Manutenção: enquanto MANUT for true, o site e as apps mostram /manutencao.html (o dono entra com ?dev)
-(function () { var MANUT = true; try {
-  if (/[?&]dev\b/.test(location.search)) localStorage.setItem('vinovim.obras', '1');
-  if (MANUT && !localStorage.getItem('vinovim.obras') && /^https?:$/.test(location.protocol))
-    location.replace('/manutencao.html' + (/[?&]web\b/.test(location.search) ? '?web' : ''));
-} catch (e) {} })();
-</script>
+
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Vinovim</title>
 <meta name="theme-color" content="#0c0a12">
@@ -66,7 +59,7 @@ if(!deep&&!sessionStorage.getItem('vv_intro')&&!(st.prefs&&st.prefs.intro===fals
   <div class="nvsp"></div>
   <a class="nv" data-v="addons" href="#addons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M10 3h4v3a2 2 0 1 0 4 0V3h3v7h-3a2 2 0 1 0 0 4h3v7h-7v-3a2 2 0 1 0-4 0v3H3v-7h3a2 2 0 1 0 0-4H3V3z"/></svg>Addons</a>
   <a class="nv" data-v="settings" href="#settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Definições</a>
-  <button class="nv dk prof" id="profBtn" title="Mudar de perfil"></button>
+  <button class="nv prof" id="profBtn" type="button" title="O teu perfil" aria-haspopup="menu" aria-expanded="false"></button>
 </nav>
 
 <main id="app"></main>
@@ -127,5 +120,8 @@ if(!deep&&!sessionStorage.getItem('vv_intro')&&!(st.prefs&&st.prefs.intro===fals
 <script src="js/features/navegacao.js"></script>
 <script src="js/features/entrada.js"></script>
 <script src="js/features/cinema-em-casa.js"></script>
+<script src="/admin.js" defer></script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
