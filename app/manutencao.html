@@ -34,8 +34,9 @@
   /* o ecrã */
   .ecra {
     --w: min(1060px, 74vw, 50vh * 2.3);
+    max-width: calc(100vw - 48px);
     position: absolute; left: 50%; top: max(72px, 10vh);
-    width: var(--w); aspect-ratio: 2.3;
+    width: var(--w); min-height: calc(var(--w) / 2.3);
     transform: translateX(-50%);
     border-radius: 12px;
     background: #17121f;
@@ -52,8 +53,8 @@
     opacity: 0;
     animation: projetor 1.4s 1.25s steps(1) forwards, respira 7s 3s ease-in-out infinite;
   }
-  .projecao { position: relative; display: grid; justify-items: center; gap: 16px; padding: 24px; opacity: 0; animation: aparece 1s 1.9s ease-out forwards; }
-  .nome { width: min(520px, 56vw); height: auto; filter: drop-shadow(0 0 22px rgba(255, 179, 212, .55)); }
+  .projecao { position: relative; display: grid; justify-items: center; gap: 16px; padding: 32px 28px; opacity: 0; animation: aparece 1s 1.9s ease-out forwards; }
+  .nome { width: min(520px, 56vw, 60vh); height: auto; filter: drop-shadow(0 0 22px rgba(255, 179, 212, .55)); }
   h1 { font: 700 clamp(22px, 2.4vw, 34px)/1.15 'Bricolage Grotesque', sans-serif; letter-spacing: -.01em; margin-top: 6px; }
   .projecao p { max-width: 34em; color: rgba(241, 230, 247, .8); font-size: clamp(15px, 1.35vw, 19px); }
   .projecao .peq { font-size: clamp(13px, 1vw, 15px); color: rgba(241, 230, 247, .55); margin-top: 4px; }
@@ -100,8 +101,9 @@
   @keyframes aparece { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   @keyframes pulso { 0% { box-shadow: 0 0 0 0 rgba(255,77,148,.6); } 100% { box-shadow: 0 0 0 10px rgba(255,77,148,0); } }
 
+  @media (max-width: 1000px) { .ecra { --w: 86vw; } }
   @media (max-width: 700px) {
-    .ecra { --w: calc(100vw - 60px); aspect-ratio: auto; height: min(46vh, 400px); top: 96px; box-shadow: 0 20px 70px rgba(255, 77, 148, .25); border-radius: 10px; }
+    .ecra { --w: calc(100vw - 60px); min-height: min(46vh, 400px); top: 96px; box-shadow: 0 20px 70px rgba(255, 77, 148, .25); border-radius: 10px; }
     .nome { width: 72%; }
     .projecao p { max-width: 19em; }
     .topo { inset: 34px 20px auto; }
@@ -149,7 +151,9 @@
   document.querySelectorAll('.cortina').forEach(function (c) { fold(c, innerWidth < 700 ? 6 : 9); });
 
   function cadeiras() {
-    var box = document.getElementById('cadeiras'), W = innerWidth, H = box.clientHeight, s = W < 700 ? 0.72 : 1;
+    var box = document.getElementById('cadeiras'), W = innerWidth, fundo = document.getElementById('ecra').getBoundingClientRect().bottom;
+    box.style.height = Math.max(110, Math.min(innerHeight * 0.34, innerHeight - fundo - 6)) + 'px';
+    var H = box.clientHeight, s = Math.min(W < 700 ? 0.72 : 1, H / (innerHeight * 0.34) * (W < 700 ? 0.72 : 1) + 0.25);
     box.innerHTML = ''; semente = 7;
     [{ y: .02, w: 46, h: 54, g: 10, c: '#141019', r: .25 }, { y: .24, w: 62, h: 74, g: 12, c: '#100c15', r: .2 }, { y: .55, w: 92, h: 120, g: 16, c: '#0b0810', r: .14 }]
       .forEach(function (r, k) {
