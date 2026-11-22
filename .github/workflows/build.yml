@@ -59,6 +59,8 @@ jobs:
     runs-on: windows-latest
     permissions:
       contents: write
+    env:
+      AZ_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -78,6 +80,22 @@ jobs:
           python scripts/make_icons.py
       - run: npm install
       - run: npx electron-builder --win --publish never
+      # Assinatura de código (tira o aviso "Editor desconhecido"). Só corre se os segredos do Azure Trusted Signing existirem.
+      - name: Assinar o instalador (Azure Trusted Signing)
+        if: ${{ env.AZ_CLIENT_ID != '' }}
+        uses: azure/trusted-signing-action@v0.5.0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ secrets.AZURE_SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ secrets.AZURE_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ secrets.AZURE_SIGNING_PROFILE }}
+          files-folder: dist
+          files-folder-filter: exe
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
       - name: Guardar o instalador na versão "apps"
         shell: bash
         env:
@@ -189,7 +207,17 @@ jobs:
           cp -r www/icons site/public/icons
           cp "$(ls artifacts/vinovim-windows/*.exe | head -n 1)" site/public/downloads/vinovim-setup.exe
           cp artifacts/vinovim-android/vinovim.apk site/public/downloads/vinovim.apk
-          python -c "import json,os;d='site/public/downloads';json.dump({f:os.path.getsize(os.path.join(d,f)) for f in os.listdir(d)},open('site/public/downloads.json','w'))"
+          python - <<'PY'
+          import hashlib, json, os, datetime
+          d = 'site/public/downloads'
+          files, sums = {}, []
+          for f in sorted(os.listdir(d)):
+              h = hashlib.sha256(open(os.path.join(d, f), 'rb').read()).hexdigest()
+              files[f] = {'size': os.path.getsize(os.path.join(d, f)), 'sha256': h}
+              sums.append(h + '  ' + f)
+          open(os.path.join(d, 'SHA256SUMS.txt'), 'w').write('\n'.join(sums) + '\n')
+          json.dump({'updated': datetime.datetime.utcnow().isoformat() + 'Z', 'files': files}, open('site/public/downloads.json', 'w'))
+          PY
           ls -la site/public site/public/downloads
       - name: Enviar para o ramo "site" (o Vercel publica a partir daqui)
         run: |
@@ -200,3 +228,29 @@ jobs:
           git add -A
           git commit -q -m "Site e downloads $(date -u +%Y-%m-%dT%H:%MZ)"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" site
+
+  discord:
+    name: Avisar no Discord
+    needs: [changes, publish]
+    if: ${{ !cancelled() && needs.publish.result == 'success' && needs.changes.outputs.native == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mensagem de nova versão
+        if: ${{ env.WEBHOOK != '' }}
+        run: |
+          python3 - <<'PY' > payload.json
+          import json
+          v = json.load(open('version.json'))
+          notas = (v.get('native') or {}).get('notes') or v.get('notes') or []
+          ver = (v.get('native') or {}).get('min') or v['version']
+          print(json.dumps({'username': 'Vinovim', 'embeds': [{
+              'title': 'Vinovim ' + ver + ' já está disponível',
+              'url': 'https://vinovim.vercel.app/download',
+              'color': 0xFF4D94,
+              'description': '\n'.join('• ' + n for n in notas[:6]) or 'Nova versão publicada.',
+              'footer': {'text': 'Instala em vinovim.vercel.app/download'}}]}))
+          PY
+          curl -fsS -H 'Content-Type: application/json' -d @payload.json "$WEBHOOK"
