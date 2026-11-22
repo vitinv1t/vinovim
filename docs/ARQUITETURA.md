@@ -12,11 +12,11 @@ flowchart TB
         B[🌐 Browser<br>PWA]
     end
     subgraph Site["▲ Vinovim.vercel.app"]
-        UI[app/ — interface]
-        API[server/api — contas e listas]
+        UI[app/: interface]
+        API[server/api: contas e listas]
         BLOB[(Vercel Blob<br>privado)]
     end
-    ADD[🧩 Addons Stremio<br>de terceiros]
+    ADD[🧩 Addons<br>de terceiros]
 
     W --> UI
     A --> UI
@@ -33,8 +33,8 @@ flowchart TB
 
 A interface divide-se em duas partes:
 
-- **`js/core/`** — o núcleo: estado, addons, vistas, página do título, leitor, perfis e navegação. Não sabe nada das funcionalidades extra.
-- **`js/features/`** — cada ficheiro junta funcionalidades do mesmo tema e liga-se ao núcleo através de **pontos de extensão** (*hooks*). Cada um corre dentro da sua própria função, por isso não deixa variáveis soltas no espaço global.
+- **`js/core/`**: o núcleo: estado, addons, vistas, página do título, leitor, perfis e navegação. Não sabe nada das funcionalidades extra.
+- **`js/features/`**: cada ficheiro junta funcionalidades do mesmo tema e liga-se ao núcleo através de **pontos de extensão** (*hooks*). Cada um corre dentro da sua própria função, por isso não deixa variáveis soltas no espaço global.
 
 Os estilos seguem a mesma divisão: `css/base.css` para o núcleo e um ficheiro por funcionalidade.
 
@@ -87,7 +87,7 @@ As vistas novas registam-se com `defineView('calendar', fn)`, o que lhes dá aut
 | `temas-e-extras.js` | Capas que faltavam, catálogo do perfil infantil, transferências, comando no telemóvel, voz, temas, mini-player, conquistas, importar Trakt e Letterboxd, gestor de addons |
 | `listas-e-descoberta.js` | Próximo episódio automático, listas partilhadas, “Avisa-me”, início por perfil, “Não sei o que ver”, atalhos e comandos de jogos, cópia de segurança, página de ator, notas |
 | `windows-e-resumo-anual.js` | Integração com o Windows (menu Iniciar, barra de tarefas) e o teu ano no Vinovim |
-| `estilo-netflix.js` | Abertura animada, trailer no destaque, pré-visualizações, “% para ti”, Top 10, “Porque viste…”, Novidades |
+| `experiencia.js` | Abertura animada, trailer no destaque, pré-visualizações, “% para ti”, Top 10, “Porque viste…”, Novidades |
 | `navegacao.js` | Menu no topo, menu “Mais”, menu inferior no telemóvel, definições e biblioteca por separadores |
 | `entrada.js` | Ecrã de entrada: Google, email ou continuar sem conta |
 | `cinema-em-casa.js` | Ecrã de pausa, “Da última vez…”, continuar noutro dispositivo, início da época, contagem para estreias, protetor de ecrã |

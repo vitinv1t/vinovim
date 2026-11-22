@@ -1,6 +1,6 @@
 # 🧩 Addons
 
-O Vinovim usa o **protocolo de addons do Stremio**. Qualquer addon que funcione no Stremio pode funcionar no Vinovim.
+O Vinovim usa um **protocolo aberto de addons**. Qualquer addon que cumpra o protocolo funciona no Vinovim.
 
 > [!WARNING]
 > Os addons são feitos por terceiros e não têm qualquer ligação ao Vinovim. Instala apenas addons em que confias e que respeitam a lei do teu país.
@@ -8,7 +8,7 @@ O Vinovim usa o **protocolo de addons do Stremio**. Qualquer addon que funcione 
 ## ➕ Instalar um addon
 
 1. Abre **Mais → Addons**.
-2. Cola o endereço do `manifest.json` do addon (também aceita links `stremio://`).
+2. Cola o endereço do `manifest.json` do addon.
 3. Carrega em **Instalar**.
 
 No gestor de addons podes também **ligar ou desligar** cada addon, ver se está a responder e removê-lo.
@@ -40,7 +40,7 @@ Exemplo mínimo de `manifest.json`:
 
 ## 🛠️ Criar o teu addon
 
-A forma mais simples é usar o SDK oficial: **[stremio-addon-sdk](https://github.com/Stremio/stremio-addon-sdk)**. Um addon feito com ele funciona logo no Vinovim.
+Um addon é um servidor simples que devolve JSON: basta publicar um `manifest.json` e responder aos recursos que declaras.
 
 ## ⭐ Addon incluído
 
