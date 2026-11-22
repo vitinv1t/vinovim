@@ -1420,7 +1420,7 @@
     pad.insertAdjacentHTML(
       'afterbegin',
       accountPanel() +
-        `<div class="panel"><h3>${tr('Idioma da app')}</h3><p class="m">Os títulos e as sinopses vêm do catálogo e podem continuar em inglês.</p><select class="sel" id="xLang">${Object.entries(
+        `<div class="panel"><h3>${tr('Idioma da app')}</h3><p class="m">Os títulos e as sinopses aparecem no idioma que escolheres.</p><select class="sel" id="xLang">${Object.entries(
           LANGS
         )
           .map(([k, n]) => `<option value="${k}" ${(S.prefs.lang || 'pt-PT') === k ? 'selected' : ''}>${n}</option>`)
