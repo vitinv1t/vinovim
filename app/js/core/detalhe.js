@@ -80,7 +80,7 @@ function detailShell(m, loading) {
     <div class="dtop"><button class="btn gho ico" data-close-detail title="Voltar">${I.back}</button></div>
     <div class="dmain"><div>
       <img class="dlogo" src="${esc(m.logo || IMG.logo(m.id))}" alt="${esc(m.name || '')}" onerror="this.outerHTML='<h1 class=dtitle>${esc(m.name || '').replace(/'/g, '&#39;')}</h1>'">
-      <div class="dmeta">${m.imdbRating ? `<span class="pill g">${I.star}${esc(m.imdbRating)}</span>` : ''}${m.releaseInfo ? `<span class="pill">${esc(m.releaseInfo)}</span>` : ''}${m.runtime ? `<span class="pill">${esc(m.runtime)}</span>` : ''}${isS ? '<span class="pill">Série</span>' : ''}${(m.genres || []).map(g => `<span class="pill">${esc(GPT[g] || g)}</span>`).join('')}</div>
+      <div class="dmeta">${m.releaseInfo ? `<span class="pill">${esc(m.releaseInfo)}</span>` : ''}${m.runtime ? `<span class="pill">${esc(m.runtime)}</span>` : ''}${isS ? '<span class="pill">Série</span>' : ''}${(m.genres || []).map(g => `<span class="pill">${esc(GPT[g] || g)}</span>`).join('')}</div>
       ${
         loading
           ? '<div class="sk" style="height:80px;border-radius:12px;max-width:640px;margin-bottom:24px"></div>'
@@ -141,9 +141,8 @@ function ratingsHTML(m) {
     ],
     ['Prémios', m.awards]
   ].filter(x => x[1]);
-  if (isNaN(r) && !facts.length) return '';
-  return `<div class="dsec"><div class="rowh" style="padding:0"><h2>Avaliações e informação</h2></div>
-    <div class="rinfo">${!isNaN(r) ? `<div class="rate-card"><div class="ring" style="--p:${r * 10}"><span>${r.toFixed(1)}</span></div><div><b>Nota</b><small>${r >= 8 ? 'Excelente' : r >= 7 ? 'Muito bom' : r >= 6 ? 'Bom' : r >= 5 ? 'Razoável' : 'Fraco'} · de 10</small></div></div>` : ''}</div>
+  if (!facts.length) return '';
+  return `<div class="dsec"><div class="rowh" style="padding:0"><h2>Informação</h2></div>
     <div class="facts">${facts.map(([k, v]) => `<div><small>${k}</small><b>${esc(v)}</b></div>`).join('')}</div></div>`;
 }
 function episodesHTML(m) {
@@ -245,7 +244,7 @@ function streamBtn(s, k, override) {
   const desc =
     s.description ||
     s.title ||
-    (s.infoHash ? 'Torrent — não suportado no browser' : s.externalUrl ? 'Abre fora do Vinovim' : '');
+    (s.infoHash ? 'Torrent, não suportado no browser' : s.externalUrl ? 'Abre fora do Vinovim' : '');
   return `<button class="st" data-stream="${k}" ${playable ? '' : 'disabled'}><span class="si">${ic}</span><div style="min-width:0"><b>${esc(title)}</b><span>${esc(desc)}</span></div></button>`;
 }
 function closeDrawer() {

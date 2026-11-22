@@ -379,7 +379,7 @@ function hero(list) {
     el.innerHTML = `<div class="hbg" style="background-image:url('${esc(m.background || IMG.bg(m.id))}')"></div>
       <div class="hcon"><div class="hkick"><i></i>${m.type === 'series' ? 'Série em destaque' : 'Filme em destaque'}</div>
       <img class="hlogo" src="${esc(m.logo || IMG.logo(m.id))}" alt="${esc(m.name)}" onerror="this.outerHTML='<h2 class=htitle>${esc(m.name).replace(/'/g, '&#39;')}</h2>'">
-      <div class="hmeta">${m.imdbRating ? `<span class="rate">${I.star}${esc(m.imdbRating)}</span>` : ''}<span>${esc(m.releaseInfo || '')}</span>${(
+      <div class="hmeta"><span>${esc(m.releaseInfo || '')}</span>${(
         m.genres || []
       )
         .slice(0, 3)
@@ -426,7 +426,7 @@ async function browse(type, title) {
     <div class="filters">
       <div class="seg2" id="fsort"><button data-sort="top">Populares</button><button data-sort="imdbRating">Mais bem avaliados</button></div>
       <select class="sel" id="fyear"><option value="">Todos os anos</option>${years.map(y => `<option>${y}</option>`).join('')}</select>
-      <select class="sel" id="fmin"><option value="0">Qualquer avaliação</option><option value="6">★ 6 ou mais</option><option value="7">★ 7 ou mais</option><option value="8">★ 8 ou mais</option></select>
+      <select class="sel" id="fmin"><option value="0">Qualquer nota</option><option value="6">Nota 6 ou mais</option><option value="7">Nota 7 ou mais</option><option value="8">Nota 8 ou mais</option></select>
       <button class="btn sm gho" id="freset">Limpar filtros</button>
     </div>
     <div class="chips" id="gch"><button class="chip" data-g="">Todos os géneros</button>${GENRES.map(([g, p]) => `<button class="chip" data-g="${g}">${p}</button>`).join('')}</div>

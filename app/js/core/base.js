@@ -354,7 +354,7 @@ function card(it) {
   remember(it);
   const year = (it.releaseInfo || '').toString().slice(0, 9);
   return `<button class="card" data-open="${esc(it.type)}|${esc(it.id)}" title="${esc(it.name)}">
-    <div class="pimg"><img loading="lazy" src="${esc(it.poster || IMG.poster(it.id))}" alt="" onerror="window.vvPoster?vvPoster(this):this.parentNode.classList.add('noimg')"><span class="ptitle">${esc(it.name)}</span>${it.imdbRating ? `<span class="badge">★ ${esc(it.imdbRating)}</span>` : ''}</div>
+    <div class="pimg"><img loading="lazy" src="${esc(it.poster || IMG.poster(it.id))}" alt="" onerror="window.vvPoster?vvPoster(this):this.parentNode.classList.add('noimg')"><span class="ptitle">${esc(it.name)}</span></div>
     <div class="cinfo"><span>${esc(it.name)}</span><small>${esc(year)}${it.type === 'series' ? ' · Série' : ''}</small></div></button>`;
 }
 const timeLeft = s => {

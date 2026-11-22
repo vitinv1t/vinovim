@@ -33,7 +33,7 @@ function presence(p) {
   NATIVE.rpc(p);
 }
 const presYear = m => (m && m.releaseInfo ? String(m.releaseInfo).slice(0, 4) : '');
-const presRating = m => (m && parseFloat(m.imdbRating) ? '⭐ ' + parseFloat(m.imdbRating).toFixed(1) : '');
+const presRating = m => '';
 function presenceView(name) {
   presence({
     details: VIEW_TXT[name] || VIEW_TXT.home,
@@ -75,7 +75,7 @@ function presencePlay() {
     imageText: priv
       ? 'Vinovim'
       : v
-        ? `${m.name} — T${v.season} E${v.episode}`
+        ? `${m.name}, T${v.season} E${v.episode}`
         : m.name + (presYear(m) ? ` (${presYear(m)})` : ''),
     small: paused ? 'pause' : 'play',
     smallText: paused ? 'Em pausa' : 'A ver',
