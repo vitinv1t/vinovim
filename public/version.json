@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "date": "2026-11-09",
+  "notes": [
+    "Bem-vindo ao Vinovim 1.0 🎉",
+    "Ecrã de pausa e “Da última vez…” ao voltar a uma série",
+    "Continua noutro dispositivo o que estavas a ver",
+    "Início que muda com a época e contagem para as estreias",
+    "Protetor de ecrã com imagens do título que estás a ver"
+  ],
+  "native": {
+    "min": "1.0.2",
+    "notes": [
+      "Nova identidade: cores mais alegres e ícone novo",
+      "Abertura nova, nítida no PC e no telemóvel, com um “ta-dum” novo",
+      "Discord: mostra o que estás a ver com a capa, a barra de progresso e botões",
+      "Instala por cima da versão que tens: não perdes nada"
+    ],
+    "download": "https://vinovim.vercel.app/download"
+  },
+  "manutencao": true
+}

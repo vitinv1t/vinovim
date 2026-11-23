@@ -1,0 +1,452 @@
+.pimg img[data-tried]:not(.vvok) {
+  visibility: hidden;
+}
+.pimg.vvart {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.pimg.vvart .ptitle {
+  font-size: 16px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  inset: auto 12px 30px;
+}
+.pimg.vvart .vvico {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 30px;
+  height: 30px;
+  opacity: 0.55;
+}
+.pimg.vvart .vvyr {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.7;
+}
+.pimg.vvart::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 60% at 100% 0, rgba(255, 255, 255, 0.14), transparent 60%);
+  pointer-events: none;
+}
+html.kids .nv[data-v='addons'] {
+  display: none;
+}
+.kidtag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 99px;
+  background: #16c78433;
+  color: #7ff0bf;
+  margin-top: 4px;
+}
+.vvpin {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 18px 0;
+}
+.vvpin input {
+  width: 54px;
+  height: 62px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--tx);
+}
+.vvpin input:focus {
+  outline: 2px solid var(--ac);
+  border-color: transparent;
+}
+.vvdl {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  margin-bottom: 10px;
+}
+.vvdl img {
+  width: 54px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: var(--card2);
+}
+.vvdl .tx {
+  flex: 1;
+  min-width: 0;
+}
+.vvdl b {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vvdl small {
+  color: var(--mu);
+}
+.vvbar {
+  height: 6px;
+  border-radius: 9px;
+  background: var(--line);
+  overflow: hidden;
+  margin-top: 8px;
+}
+.vvbar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--ac), var(--ac2));
+  transition: width 0.3s;
+}
+#vvRemote {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: radial-gradient(120% 80% at 50% 0, #1d1424, #09080d 70%);
+  color: var(--tx);
+  overflow: auto;
+  padding: 22px 18px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+#vvRemote .rbox {
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#vvRemote .now {
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+#vvRemote .now b {
+  display: block;
+  font-family: var(--fd);
+  font-size: 20px;
+}
+#vvRemote .now small {
+  color: var(--mu);
+}
+#vvRemote .rrow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+#vvRemote button {
+  height: 62px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+#vvRemote button:active {
+  transform: scale(0.96);
+  background: var(--acs);
+}
+#vvRemote button svg {
+  width: 24px;
+  height: 24px;
+}
+#vvRemote button.big {
+  background: linear-gradient(135deg, var(--ac), var(--ac2));
+  border: 0;
+}
+#vvRemote .pad3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+#vvRemote .pad3 button {
+  height: 70px;
+}
+#vvRemote .inp {
+  height: 64px;
+  border-radius: 18px;
+}
+#vvRemote .st {
+  font-size: 13px;
+  color: var(--mu);
+  text-align: center;
+}
+.vvqr {
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  background: #fff;
+  border-radius: 18px;
+  width: max-content;
+  margin: 12px auto;
+}
+.vvcode {
+  font-family: var(--fd);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  text-align: center;
+  margin: 6px 0;
+}
+.sbox .vvmic {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  color: var(--mu);
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.sbox .vvmic:hover {
+  background: var(--card2);
+  color: var(--tx);
+}
+.sbox .sclr.show ~ .vvmic {
+  right: 54px;
+}
+.sbox.vvhasmic input {
+  padding-right: 104px;
+}
+.sbox .vvmic svg {
+  position: static;
+  transform: none;
+  width: 20px;
+  height: 20px;
+  color: currentColor;
+}
+.sbox .vvmic.on {
+  color: #fff;
+  background: var(--ac);
+  animation: vvpulse 1.2s infinite;
+}
+@keyframes vvpulse {
+  50% {
+    box-shadow: 0 0 0 10px var(--acs);
+  }
+}
+html.th-midnight {
+  --bg: #070b16;
+  --bg2: #0c1222;
+  --card: #121a2e;
+  --card2: #18223a;
+  --line: #22304d;
+}
+html.th-forest {
+  --bg: #07100c;
+  --bg2: #0b1712;
+  --card: #12201a;
+  --card2: #182b22;
+  --line: #21392d;
+}
+html.th-wine {
+  --bg: #10070b;
+  --bg2: #170b11;
+  --card: #22121a;
+  --card2: #2c1822;
+  --line: #3a2130;
+}
+html.th-slate {
+  --bg: #0d0f12;
+  --bg2: #13161a;
+  --card: #1b1f25;
+  --card2: #232830;
+  --line: #2e343d;
+}
+html.ui-l body {
+  zoom: 1.12;
+}
+html.ui-s body {
+  zoom: 0.92;
+}
+.vvcolor {
+  width: 46px;
+  height: 34px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+#player.mini {
+  display: block;
+  inset: auto 18px 18px auto;
+  width: min(420px, calc(100vw - 36px));
+  height: auto;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 24px 70px rgba(0, 0, 0, 0.65);
+  z-index: 96;
+}
+#player.mini .pui,
+#player.mini #pErr,
+#player.mini #pMenu,
+#player.mini #party,
+#player.mini #nextUp,
+#player.mini .skipbtn {
+  display: none !important;
+}
+#player.mini video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+#vvMiniBar {
+  display: none;
+}
+#player.mini #vvMiniBar {
+  display: flex;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#player.mini:hover #vvMiniBar,
+#player.mini:focus-within #vvMiniBar {
+  opacity: 1;
+}
+#vvMiniBar button {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  display: grid;
+  place-items: center;
+}
+#vvMiniBar button svg {
+  width: 22px;
+  height: 22px;
+}
+#vvMiniBar .mt {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  right: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vvbadges {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+.vvbadge {
+  padding: 16px 12px;
+  border-radius: 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  text-align: center;
+}
+.vvbadge .e {
+  font-size: 34px;
+  line-height: 1;
+  display: block;
+  margin-bottom: 8px;
+}
+.vvbadge b {
+  display: block;
+  font-size: 14px;
+}
+.vvbadge small {
+  color: var(--mu);
+  font-size: 12px;
+}
+.vvbadge.lock {
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+.vvbadge.got {
+  border-color: var(--ac);
+  box-shadow:
+    0 0 0 1px var(--ac) inset,
+    0 10px 30px var(--acs);
+}
+.vvadw {
+  margin-bottom: 12px;
+}
+.vvadw .adn {
+  margin-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.vvadw.off .adn {
+  opacity: 0.45;
+}
+.vvctl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 16px 16px;
+}
+.vvctl .sp {
+  flex: 1;
+}
+.vvst {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--card2);
+  color: var(--mu);
+}
+.vvst.ok {
+  background: #16c78426;
+  color: #6ff0b8;
+}
+.vvst.slow {
+  background: #ffc93c26;
+  color: #ffc93c;
+}
+.vvst.bad {
+  background: #ff4d6d26;
+  color: #ff8fa8;
+}
+.vvctl .btn.ico {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}

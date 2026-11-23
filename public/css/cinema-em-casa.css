@@ -1,0 +1,445 @@
+/* ecrã de pausa */
+#vvPause {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  padding: 0 6%;
+  background: linear-gradient(90deg, rgba(5, 4, 8, 0.92) 0%, rgba(5, 4, 8, 0.75) 45%, rgba(5, 4, 8, 0.2) 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s;
+}
+#vvPause.show {
+  opacity: 1;
+}
+#vvPause .pw {
+  max-width: min(620px, 60vw);
+}
+#vvPause small {
+  display: block;
+  color: #b9b4c7;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+#vvPause h1 {
+  font-family: var(--fd);
+  font-weight: 800;
+  font-size: clamp(30px, 4.4vw, 58px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+#vvPause .c8ep {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+#vvPause .c8mt {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #cfc9da;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+#vvPause .c8mt span + span:before {
+  content: '·';
+  margin-right: 12px;
+  color: #7d7790;
+}
+#vvPause p {
+  color: #ddd6e5;
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0 0 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+#vvPause .cs {
+  color: #9f99ad;
+  font-size: 14px;
+}
+#vvPause .cs b {
+  color: #ddd6e5;
+  font-weight: 600;
+}
+#vvPause .pz {
+  position: absolute;
+  right: 6%;
+  bottom: 12%;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: #9f99ad;
+  text-transform: uppercase;
+}
+@media (max-width: 820px) {
+  #vvPause .pw {
+    max-width: 88vw;
+  }
+  #vvPause p {
+    -webkit-line-clamp: 3;
+    font-size: 14px;
+  }
+}
+/* da última vez / continuar noutro dispositivo */
+#vvRecap {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: none;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(800px 500px at 30% 70%, rgba(255, 77, 148, 0.18), transparent 60%), rgba(5, 4, 8, 0.94);
+}
+#vvRecap.show {
+  display: grid;
+  animation: fade 0.3s;
+}
+#vvRecap .rc {
+  width: min(560px, 100%);
+}
+#vvRecap small {
+  color: #b9b4c7;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+#vvRecap h2 {
+  font-family: var(--fd);
+  font-size: clamp(26px, 3.6vw, 40px);
+  font-weight: 800;
+  margin: 6px 0 18px;
+  letter-spacing: -0.02em;
+}
+#vvRecap .box {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 12px;
+}
+#vvRecap .box img {
+  width: 150px;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 10px;
+  flex: none;
+  background: #1b1824;
+}
+#vvRecap .box b {
+  display: block;
+  margin-bottom: 6px;
+}
+#vvRecap .box p {
+  margin: 0;
+  color: #c9c3d4;
+  font-size: 14px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+#vvRecap .bt {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+@media (max-width: 620px) {
+  #vvRecap .box img {
+    width: 100px;
+  }
+}
+#vvHand {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 96;
+  transform: translate(-50%, 40px);
+  opacity: 0;
+  transition: 0.35s;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px 12px 12px;
+  border-radius: 18px;
+  background: rgba(20, 17, 27, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  width: min(560px, calc(100vw - 24px));
+}
+#vvHand.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+#vvHand img {
+  width: 96px;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #1b1824;
+  flex: none;
+}
+#vvHand .c8tx {
+  flex: 1;
+  min-width: 0;
+}
+#vvHand .c8tx small {
+  color: #9f99ad;
+  font-size: 12px;
+}
+#vvHand .c8tx b {
+  display: block;
+  font-size: 14.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#vvHand .c8bar {
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  margin-top: 6px;
+  overflow: hidden;
+}
+#vvHand .c8bar i {
+  display: block;
+  height: 100%;
+  background: var(--ac);
+}
+#vvHand .btn {
+  flex: none;
+}
+@media (max-width: 820px) {
+  #vvHand {
+    bottom: 84px;
+  }
+}
+/* época */
+.vvSeason {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: min(100vh, 760px);
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+.vvSeason i {
+  position: absolute;
+  top: -8%;
+  font-style: normal;
+  animation: vvfall linear infinite;
+  opacity: 0.85;
+  will-change: transform;
+}
+@keyframes vvfall {
+  to {
+    transform: translate3d(var(--dx, 30px), 115vh, 0) rotate(var(--rot, 180deg));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vvSeason i {
+    animation: none;
+    display: none;
+  }
+}
+.vvSeasonGlow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: min(100vh, 760px);
+  pointer-events: none;
+  z-index: 0;
+  background: var(--sg);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+}
+.vvSeasonTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  backdrop-filter: blur(6px);
+}
+/* contagem para estreias */
+.vvCount .track {
+  gap: 14px;
+}
+.vvCd {
+  flex: 0 0 auto;
+  width: 300px;
+  aspect-ratio: 16/9;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background: #1b1824;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  color: #fff;
+  text-align: left;
+  scroll-snap-align: start;
+}
+.vvCd img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.vvCd:after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.1) 65%);
+}
+.vvCd .in {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  z-index: 1;
+}
+.vvCd .in b {
+  display: block;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vvCd .cd {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--ac);
+  font-size: 12.5px;
+  font-weight: 800;
+}
+.vvCd .cd.ok {
+  background: #16c784;
+}
+.vvCd:hover,
+.vvCd:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ac);
+}
+@media (max-width: 820px) {
+  .vvCd {
+    width: 240px;
+  }
+}
+/* protetor de ecrã */
+#vvSaver {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  background:
+    radial-gradient(900px 600px at 70% 20%, rgba(255, 77, 148, 0.25), transparent 60%),
+    radial-gradient(800px 600px at 10% 90%, rgba(124, 92, 255, 0.2), transparent 60%), #07060a;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.2s;
+  cursor: none;
+}
+#vvSaver.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+#vvSaver .c8im {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 2s;
+  transform: scale(1.04);
+}
+#vvSaver .c8im.on {
+  opacity: 1;
+  animation: vvkb 14s ease-in-out forwards;
+}
+@keyframes vvkb {
+  from {
+    transform: scale(1.04) translate(0, 0);
+  }
+  to {
+    transform: scale(1.14) translate(-2%, -1.5%);
+  }
+}
+#vvSaver:after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.8), transparent 45%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.45), transparent 50%);
+}
+#vvSaver .cap {
+  position: absolute;
+  left: 6%;
+  bottom: 9%;
+  z-index: 1;
+  max-width: 70vw;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+}
+#vvSaver .cap small {
+  display: block;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #cfc9da;
+  margin-bottom: 10px;
+}
+#vvSaver .cap h1 {
+  font-family: var(--fd);
+  font-size: clamp(34px, 5vw, 70px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  line-height: 1;
+}
+#vvSaver .cap .c8mt {
+  display: flex;
+  gap: 14px;
+  font-size: 16px;
+  color: #e7e2ee;
+}
+#vvSaver .cap .c8mt .r {
+  color: #ffc93c;
+  font-weight: 700;
+}
+#vvSaver .clk {
+  position: absolute;
+  right: 5%;
+  top: 6%;
+  z-index: 1;
+  font-family: var(--fd);
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+#vvSaver .c8lg {
+  position: absolute;
+  right: 5%;
+  bottom: 9%;
+  z-index: 1;
+  width: 46px;
+  opacity: 0.75;
+}

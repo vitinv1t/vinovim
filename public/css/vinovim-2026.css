@@ -1,0 +1,307 @@
+/* Vinovim 2026: acabamento final sobre as camadas anteriores.
+   Estrutura de ecrã inicial inspirada em apps de streaming (destaque grande, filas de cartazes,
+   separador ativo em cápsula, dica de boas-vindas), sem copiar a marca de ninguém. */
+
+/* ---------- destaque ---------- */
+html:not(.tv) .hero {
+  height: min(86vh, 840px);
+  min-height: 540px;
+}
+html:not(.tv) .hero::after {
+  background:
+    linear-gradient(90deg, rgba(8, 7, 12, 0.92) 0%, rgba(8, 7, 12, 0.55) 34%, rgba(8, 7, 12, 0) 62%),
+    linear-gradient(0deg, var(--bg) 0%, rgba(8, 7, 12, 0) 36%),
+    linear-gradient(180deg, rgba(8, 7, 12, 0.72) 0%, rgba(8, 7, 12, 0) 24%);
+}
+.hero .hkick {
+  display: none;
+}
+html:not(.tv) .hcon {
+  bottom: 112px;
+  max-width: 560px;
+}
+.htitle {
+  font-size: clamp(40px, 5.6vw, 78px);
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+}
+.hlogo {
+  max-width: 460px;
+  max-height: 170px;
+}
+.hmeta {
+  gap: 8px;
+}
+.hmeta > span:not(.rate) {
+  padding: 3px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: #e6e2ec;
+  background: rgba(10, 9, 14, 0.35);
+}
+.hmeta .rate {
+  color: #fff;
+  font-weight: 700;
+  margin-right: 4px;
+}
+.hmeta .rate svg {
+  color: var(--ac);
+}
+.hdesc {
+  max-width: 480px;
+  color: #e3dfe9;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+.hbtns .btn {
+  border-radius: 10px;
+  height: 50px;
+  padding: 0 26px;
+}
+.hbtns .btn.ico {
+  width: 50px;
+  padding: 0;
+}
+.hbtns .btn.gho {
+  background: rgba(125, 120, 138, 0.5);
+  border-color: transparent;
+}
+.hbtns .btn.gho:hover {
+  background: rgba(125, 120, 138, 0.7);
+}
+.hbtns .btn.pri:hover {
+  transform: none;
+}
+.hbtns .btn:active {
+  transform: scale(0.97);
+}
+.hdots {
+  gap: 6px;
+  bottom: 118px;
+}
+.hdots button {
+  width: 22px;
+  height: 3px;
+  border-radius: 3px;
+}
+.hdots button.on {
+  width: 36px;
+}
+
+/* ---------- filas e cartazes ---------- */
+.rows {
+  margin-top: -64px;
+}
+.rowh h2 {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.rowh .arr {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: transparent;
+}
+.pimg {
+  border-radius: 10px;
+  box-shadow: none;
+}
+.card {
+  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (hover: hover) {
+  .card:not(.wide):hover {
+    transform: translateY(-4px) scale(1.04);
+    z-index: 4;
+  }
+}
+.card:hover .pimg {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+}
+.card:hover .pimg img {
+  transform: none;
+}
+.card:focus-visible .pimg {
+  box-shadow: 0 0 0 3px #fff;
+}
+.card .badge {
+  top: 8px;
+  left: 8px;
+  right: auto;
+  border-radius: 6px;
+  background: rgba(8, 7, 12, 0.72);
+  backdrop-filter: blur(6px);
+}
+.card.wide .pimg {
+  border-radius: 10px;
+}
+
+/* ---------- barra do topo (PC): separador ativo em cápsula ---------- */
+@media (min-width: 821px) {
+  html:not(.tv) #nav .nv {
+    padding: 0 16px;
+    border-radius: 999px;
+    transition:
+      background 0.18s,
+      color 0.18s;
+  }
+  html:not(.tv) #nav .nv:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  html:not(.tv) #nav .nv.on {
+    background: rgba(255, 255, 255, 0.15);
+    font-weight: 700;
+  }
+  html:not(.tv) #nav .nv.on::before {
+    display: none;
+  }
+}
+
+/* ---------- telemóvel: destaque em cartão com cantos redondos ---------- */
+@media (max-width: 820px) {
+  html:not(.tv) .home .hero {
+    margin: 76px 14px 0;
+    height: min(66vh, 580px);
+    min-height: 430px;
+    border-radius: 22px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  }
+  html:not(.tv) .home .hero::after {
+    background:
+      linear-gradient(0deg, rgba(8, 7, 12, 0.96) 0%, rgba(8, 7, 12, 0.55) 38%, rgba(8, 7, 12, 0) 66%);
+  }
+  html:not(.tv) .home .hcon {
+    left: 18px;
+    right: 18px;
+    bottom: 22px;
+    max-width: none;
+    text-align: center;
+  }
+  html:not(.tv) .home .hlogo {
+    margin-inline: auto;
+    object-position: center bottom;
+    max-width: 78%;
+    max-height: 120px;
+  }
+  html:not(.tv) .home .hmeta {
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  html:not(.tv) .home .hdesc {
+    display: none;
+  }
+  html:not(.tv) .home .hbtns {
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+  html:not(.tv) .home .hbtns .btn.pri {
+    flex: 1;
+    max-width: 200px;
+    justify-content: center;
+  }
+  html:not(.tv) .home .hdots {
+    display: none;
+  }
+  html:not(.tv) .home .rows {
+    margin-top: 22px;
+  }
+}
+
+/* ---------- dica de boas-vindas ---------- */
+#vvDica {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  pointer-events: auto;
+}
+#vvDica .vd-ring {
+  position: fixed;
+  border-radius: 14px;
+  box-shadow: 0 0 0 9999px rgba(5, 4, 8, 0.72);
+  pointer-events: none;
+  transition:
+    left 0.3s,
+    top 0.3s,
+    width 0.3s,
+    height 0.3s;
+}
+#vvDica .vd-box {
+  position: fixed;
+  width: min(320px, calc(100vw - 28px));
+  padding: 18px 18px 16px;
+  border-radius: 14px;
+  background: #fff;
+  color: #14111b;
+  pointer-events: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: vdIn 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#vvDica .vd-box::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  transform: rotate(45deg);
+  left: var(--ax, 28px);
+  top: -7px;
+}
+#vvDica .vd-box.up::before {
+  top: auto;
+  bottom: -7px;
+}
+#vvDica h3 {
+  font-family: var(--fd);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+#vvDica p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #4a4457;
+}
+#vvDica .vd-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+#vvDica .vd-foot small {
+  color: #7d768c;
+  font-size: 12.5px;
+}
+#vvDica .vd-foot .vd-skip {
+  background: transparent;
+  color: #4a4457;
+  margin-right: 6px;
+}
+#vvDica .vd-foot button {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 9px;
+  background: #14111b;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13.5px;
+}
+#vvDica .vd-foot button:focus-visible {
+  outline: 3px solid var(--ac3);
+  outline-offset: 2px;
+}
+@keyframes vdIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #vvDica .vd-box {
+    animation: none;
+  }
+  .card {
+    transition: none;
+  }
+}

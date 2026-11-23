@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vinovim</title>
+<meta name="theme-color" content="#0c0a12">
+<meta name="description" content="vinovim: o teu hub de filmes e séries">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vinovim">
+<meta property="og:title" content="Vinovim">
+<meta property="og:description" content="Os teus filmes e séries, num só sítio. Instala no PC ou no telemóvel.">
+<meta property="og:url" content="https://vinovim.vercel.app/">
+<meta property="og:image" content="https://vinovim.vercel.app/icons/icon-512.png">
+<meta name="twitter:card" content="summary">
+<script>
+// No browser normal, o site abre a página de downloads; as apps instaladas abrem o Vinovim
+(function () { try {
+  if (/[?&]web\b/.test(location.search)) localStorage.setItem('vinovim.web', '1');
+  var ua = navigator.userAgent;
+  var isApp = window.vinovimNative || window.Capacitor || /Electron|; wv\)/.test(ua) || navigator.standalone ||
+    (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || localStorage.getItem('vinovim.web');
+  if (!isApp && /^https?:$/.test(location.protocol)) location.replace('/download');
+} catch (e) {} })();
+</script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="vinovim">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<style id="vvgate">html.vvgate,html.vvgate body{background:#0c0a12}html.vvgate body>*:not(#vvIntro):not(#profiles):not(#vvLogin):not(.xmodal):not(#toast){visibility:hidden!important}</style>
+<style>html.vvpre,html.vvpre body{background:#07060b!important}html.vvpre body>*:not(#vvIntro){visibility:hidden!important}</style>
+<script>(function(){try{var R=document.documentElement,h=location.hash.slice(1),deep=/^(comando|colab|lista)=/.test(h);if(!deep&&!sessionStorage.getItem('vv_prof'))R.classList.add('vvgate');
+var st={};try{st=JSON.parse(localStorage.getItem('vinovim.v1'))||{}}catch(e){}
+if(!deep&&!sessionStorage.getItem('vv_intro')&&!(st.prefs&&st.prefs.intro===false)){R.classList.add('vvpre');var t0=Date.now(),t=setInterval(function(){var i=document.getElementById('vvIntro');if((document.readyState!=='loading'&&(!i||i.classList.contains('out')))||Date.now()-t0>6000){R.classList.remove('vvpre');clearInterval(t)}},40)}}catch(e){}})();</script>
+<link rel="stylesheet" href="css/conta.css">
+<link rel="stylesheet" href="css/temas-e-extras.css">
+<link rel="stylesheet" href="css/listas-e-descoberta.css">
+<link rel="stylesheet" href="css/windows-e-resumo-anual.css">
+<link rel="stylesheet" href="css/experiencia.css">
+<link rel="stylesheet" href="css/navegacao.css">
+<link rel="stylesheet" href="css/entrada.css">
+<link rel="stylesheet" href="css/cinema-em-casa.css">
+<link rel="stylesheet" href="css/acabamento.css">
+<link rel="stylesheet" href="css/vinovim-2026.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--ac)"/><stop offset="1" stop-color="var(--ac2)"/></linearGradient><linearGradient id="lgB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--ac3, #8b5cff)"/><stop offset="1" stop-color="var(--ac)"/></linearGradient><linearGradient id="lgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--ac)"/><stop offset="1" stop-color="var(--ac)"/></linearGradient></defs></svg>
+
+<nav id="nav">
+  <a class="brand" href="#home" title="vinovim">
+    <svg viewBox="0 0 48 48"><path d="M34.5 9.5 24 38.5" fill="none" stroke="url(#lgB)" stroke-width="8" stroke-linecap="round"/><path d="M13.5 9.5 24 38.5" fill="none" stroke="url(#lgA)" stroke-width="8" stroke-linecap="round"/></svg>
+    <span class="vvbrand">vinovim</span>
+  </a>
+  <a class="nv" data-v="home" href="#home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Início</a>
+  <a class="nv" data-v="search" href="#search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Pesquisar</a>
+  <a class="nv dk" data-v="movies" href="#movies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>Filmes</a>
+  <a class="nv dk" data-v="series" href="#series"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="m8 3 4 4 4-4"/></svg>Séries</a>
+  <a class="nv" data-v="library" href="#library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Biblioteca</a>
+  <div class="nvsp"></div>
+  <a class="nv" data-v="addons" href="#addons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M10 3h4v3a2 2 0 1 0 4 0V3h3v7h-3a2 2 0 1 0 0 4h3v7h-7v-3a2 2 0 1 0-4 0v3H3v-7h3a2 2 0 1 0 0-4H3V3z"/></svg>Addons</a>
+  <a class="nv" data-v="settings" href="#settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Definições</a>
+  <button class="nv prof" id="profBtn" type="button" title="O teu perfil" aria-haspopup="menu" aria-expanded="false"></button>
+</nav>
+
+<main id="app"></main>
+
+<div id="detail"></div>
+
+<div id="drawer"><div class="scrim" data-close-drawer></div><div class="dpanel"><div class="dph"><div style="flex:1"><h3 id="drTitle"></h3><small id="drSub"></small></div><button class="pb" data-close-drawer aria-label="Fechar"></button></div><div class="dpb" id="drBody"></div></div></div>
+
+<div id="player">
+  <video id="vid" playsinline crossorigin="anonymous"></video>
+  <div id="yt"></div>
+  <div class="perr" id="pErr"><div><h3>Não foi possível reproduzir</h3><p id="pErrMsg"></p><div class="hbtns" style="justify-content:center"><button class="btn gho" id="pErrOpen">Abrir noutra app</button><button class="btn pri" id="pErrBack">Escolher outra fonte</button></div></div></div>
+  <div class="pui" id="pUi">
+    <div class="ptop"><button class="pb" id="pBack" aria-label="Voltar"></button><div style="min-width:0"><b id="pTitle"></b><small id="pSub"></small></div></div>
+    <div class="pmid" id="pMid"></div>
+    <div class="pbot" id="pBot">
+      <div class="seek" id="pSeek"><div class="tr"><div class="bf" id="pBuf"></div><div class="pg" id="pProg"></div></div><div class="kn" id="pKnob"></div><div class="tip" id="pTip">0:00</div></div>
+      <div class="pctl">
+        <button class="pb" id="pPlay" aria-label="Reproduzir"></button>
+        <button class="pb" id="pRew" aria-label="Recuar 10s"></button>
+        <button class="pb" id="pFwd" aria-label="Avançar 10s"></button>
+        <button class="pb" id="pMute" aria-label="Som"></button>
+        <input type="range" class="vol" id="pVol" min="0" max="1" step="0.02" value="1">
+        <span class="ptime" id="pTime">0:00 / 0:00</span>
+        <div class="tsp"></div>
+        <button class="pb" id="pNext" aria-label="Próximo episódio"></button>
+        <button class="pb" id="pCC" aria-label="Legendas e velocidade"></button>
+        <button class="pb" id="pFs" aria-label="Ecrã inteiro"></button>
+      </div>
+    </div>
+    <div class="pmenu" id="pMenu"></div>
+    <div class="nextup" id="nextUp"><div><small>A seguir</small><b id="nextName"></b></div><button class="btn sm pri" id="nextGo">Ver agora</button></div>
+  </div>
+</div>
+
+<input type="file" id="fileVideo" accept="video/*,.mkv" hidden>
+<input type="file" id="fileSub" accept=".srt,.vtt" hidden>
+<input type="file" id="fileImport" accept=".json" hidden>
+<div id="toast"></div>
+<div id="upd"></div>
+<div id="profiles"></div>
+
+<script src="js/core/base.js"></script>
+<script src="js/core/marca.js"></script>
+<script src="js/core/vistas.js"></script>
+<script src="js/core/detalhe.js"></script>
+<script src="js/core/leitor.js"></script>
+<script src="js/core/eventos.js"></script>
+<script src="js/core/sistema.js"></script>
+<script src="js/core/perfis.js"></script>
+<script src="js/core/tv.js"></script>
+<script src="js/core/arranque.js"></script>
+<script src="js/features/conta.js"></script>
+<script src="js/features/temas-e-extras.js"></script>
+<script src="js/features/listas-e-descoberta.js"></script>
+<script src="js/features/windows-e-resumo-anual.js"></script>
+<script src="js/features/experiencia.js"></script>
+<script src="js/features/navegacao.js"></script>
+<script src="js/features/dicas.js"></script>
+<script src="js/features/vigia.js"></script>
+<script src="js/features/traducao.js"></script>
+<script src="js/features/entrada.js"></script>
+<script src="js/features/cinema-em-casa.js"></script>
+<script src="/admin.js" defer></script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</body>
+</html>

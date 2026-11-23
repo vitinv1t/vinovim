@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Vinovim · A sessão começa já a seguir</title>
+<meta name="theme-color" content="#050409">
+<meta name="description" content="A sessão começa já a seguir. Estamos a montar a versão 1.0.0.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vinovim">
+<meta property="og:title" content="Vinovim">
+<meta property="og:description" content="A sessão começa já a seguir. Estamos a montar a versão 1.0.0.">
+<meta property="og:url" content="https://vinovim.vercel.app/">
+<meta property="og:image" content="https://vinovim.vercel.app/icons/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--r:139;--g:92;--b:255;--glow:rgb(var(--r),var(--g),var(--b));--fd:'Poppins',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#050409;color:#f6f3fb;font-family:var(--fb);overflow:hidden;-webkit-font-smoothing:antialiased}
+.sala{position:fixed;inset:0;overflow:hidden;background:#050409}
+/* paredes laterais com painéis acústicos, só visíveis pela luz do ecrã */
+.parede{position:absolute;top:0;bottom:0;width:26%;opacity:.9;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 2px,transparent 2px 22px),linear-gradient(180deg,#0a0810,#050409)}
+.parede.e{left:0;-webkit-mask-image:linear-gradient(90deg,#000,transparent);mask-image:linear-gradient(90deg,#000,transparent)}
+.parede.d{right:0;-webkit-mask-image:linear-gradient(270deg,#000,transparent);mask-image:linear-gradient(270deg,#000,transparent)}
+.brilho{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;
+  background:
+   radial-gradient(60% 55% at 50% 34%,rgba(var(--r),var(--g),var(--b),.34),transparent 70%),
+   radial-gradient(28% 70% at 4% 40%,rgba(var(--r),var(--g),var(--b),.22),transparent 70%),
+   radial-gradient(28% 70% at 96% 40%,rgba(var(--r),var(--g),var(--b),.22),transparent 70%)}
+.teto{position:absolute;left:0;right:0;top:0;height:24%;background:linear-gradient(180deg,#000,transparent)}
+/* topo */
+header{position:absolute;z-index:6;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:22px clamp(18px,3vw,40px)}
+.marca{display:flex;align-items:center;gap:10px;font:700 21px var(--fd);letter-spacing:-.02em}
+.marca svg{width:30px;height:30px}
+.estado{display:flex;align-items:center;gap:9px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:13px;color:#d9d3e4}
+.estado i{width:7px;height:7px;border-radius:50%;background:#ff4d94;box-shadow:0 0 0 0 rgba(255,77,148,.6);animation:pulsa 2.2s infinite}
+@keyframes pulsa{70%{box-shadow:0 0 0 9px rgba(255,77,148,0)}100%{box-shadow:0 0 0 0 rgba(255,77,148,0)}}
+/* ecrã */
+.ecra{position:absolute;z-index:3;left:50%;top:clamp(70px,11vh,120px);transform:translateX(-50%);width:min(78vw,1180px);aspect-ratio:2.25/1;min-height:250px;
+  border-radius:6px;background:#0b0813;padding:2px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.08),0 0 90px 10px rgba(var(--r),var(--g),var(--b),.35),0 0 260px 40px rgba(var(--r),var(--g),var(--b),.18)}
+.tela{position:relative;height:100%;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4% 7%;
+  background:radial-gradient(90% 120% at 50% 0%,rgba(var(--r),var(--g),var(--b),.55),transparent 65%),linear-gradient(135deg,#2a1560,#5a1f78 48%,#8e2468)}
+.tela:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.07) 50%,transparent 60%);transform:translateX(-120%);animation:varre 9s 2s infinite}
+@keyframes varre{40%,100%{transform:translateX(120%)}}
+.nome{width:min(46%,520px);height:auto;filter:drop-shadow(0 0 28px rgba(255,255,255,.35));margin-bottom:clamp(8px,2vh,22px)}
+h1{font:700 clamp(20px,3.2vw,40px)/1.1 var(--fd);letter-spacing:-.025em;margin-bottom:.5em;text-wrap:balance}
+.tela p{font-size:clamp(12.5px,1.35vw,17px);line-height:1.55;color:rgba(255,255,255,.82);max-width:46ch;text-wrap:balance}
+.tela p.pe{margin-top:.9em;font-size:clamp(11.5px,1.1vw,14px);color:rgba(255,255,255,.58)}
+/* reflexo do ecrã no chão */
+.reflexo{position:absolute;z-index:1;left:50%;transform:translateX(-50%);width:min(70vw,1050px);height:46vh;bottom:0;
+  background:radial-gradient(70% 100% at 50% 100%,rgba(var(--r),var(--g),var(--b),.42),transparent 72%);filter:blur(10px)}
+/* plateia (3 camadas com profundidade de campo) */
+canvas.fila{position:absolute;left:0;bottom:0;width:100%;height:100%;z-index:4;pointer-events:none}
+#f1{filter:blur(.5px)}#f2{filter:blur(1.4px)}#f3{filter:blur(3.2px)}
+#poeira{position:absolute;inset:0;z-index:5;pointer-events:none;mix-blend-mode:screen}
+.grao{position:absolute;inset:-50%;z-index:7;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:gr .6s steps(3) infinite}
+@keyframes gr{0%{transform:translate(0,0)}33%{transform:translate(-3%,2%)}66%{transform:translate(2%,-3%)}100%{transform:translate(0,0)}}
+.vinheta{position:absolute;inset:0;z-index:6;pointer-events:none;background:radial-gradient(120% 100% at 50% 40%,transparent 55%,rgba(0,0,0,.65))}
+footer{position:absolute;z-index:8;left:0;right:0;top:30px;text-align:center;font-size:12px;color:rgba(255,255,255,.35)}
+footer a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.18)}
+footer a:hover{color:#fff}
+@media(max-width:700px){.ecra{width:94vw;aspect-ratio:1.5/1}.nome{width:62%}.estado{font-size:12px}}
+@media(max-height:560px){.ecra{top:62px;min-height:0;aspect-ratio:2.6/1}.tela p.pe{display:none}}
+@media(prefers-reduced-motion:reduce){.grao,.tela:after,.estado i{animation:none}}
+</style>
+</head>
+<body>
+<div class="sala" aria-hidden="false">
+  <div class="parede e"></div><div class="parede d"></div>
+  <div class="brilho" id="brilho"></div>
+  <div class="teto"></div>
+  <header>
+    <div class="marca">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="ga" x1="0" x2="1"><stop offset="0" stop-color="#ff4d94"/><stop offset="1" stop-color="#ff6a6a"/></linearGradient><linearGradient id="gb" x1="0" x2="1"><stop offset="0" stop-color="#8b5cff"/><stop offset="1" stop-color="#ff4d94"/></linearGradient></defs><path d="M32.6 13.6 24 34.4" stroke="url(#ga)" stroke-width="6.1" stroke-linecap="round" fill="none" opacity=".75"/><path d="M15.4 13.6 24 34.4" stroke="url(#gb)" stroke-width="6.1" stroke-linecap="round" fill="none"/></svg>
+      vinovim
+    </div>
+    <div class="estado" role="status"><i></i>Em manutenção</div>
+  </header>
+  <main class="ecra">
+    <div class="tela">
+      <svg class="nome" viewBox="8 -802 4018 812" role="img" aria-label="vinovim"><g fill="#fff"><path d="M313 -160 434 -558H616L418 0H207L9 -558H192Z"/><path d="M827 -558V0H656V-558Z"/><path d="M640 -708Q640 -748 668.5 -774.5Q697 -801 742 -801Q786 -801 814.5 -774.5Q843 -748 843 -708Q843 -669 814.5 -642.5Q786 -616 742 -616Q697 -616 668.5 -642.5Q640 -669 640 -708Z"/><path d="M1498 -326V0H1328V-303Q1328 -359 1299 -390Q1270 -421 1221 -421Q1172 -421 1143 -390Q1114 -359 1114 -303V0H943V-558H1114V-484Q1140 -521 1184 -542.5Q1228 -564 1283 -564Q1381 -564 1439.5 -500.5Q1498 -437 1498 -326Z"/><path d="M1569 -279Q1569 -365 1607 -430.5Q1645 -496 1711 -531Q1777 -566 1859 -566Q1941 -566 2007 -531Q2073 -496 2111 -430.5Q2149 -365 2149 -279Q2149 -193 2110.5 -127.5Q2072 -62 2005.5 -27Q1939 8 1857 8Q1775 8 1709.5 -27Q1644 -62 1606.5 -127Q1569 -192 1569 -279ZM1975 -279Q1975 -346 1941.5 -382Q1908 -418 1859 -418Q1809 -418 1776 -382.5Q1743 -347 1743 -279Q1743 -212 1775.5 -176Q1808 -140 1857 -140Q1906 -140 1940.5 -176Q1975 -212 1975 -279Z"/><path d="M2455 -160 2576 -558H2758L2560 0H2349L2151 -558H2334Z"/><path d="M2969 -558V0H2798V-558Z"/><path d="M2782 -708Q2782 -748 2810.5 -774.5Q2839 -801 2884 -801Q2928 -801 2956.5 -774.5Q2985 -748 2985 -708Q2985 -669 2956.5 -642.5Q2928 -616 2884 -616Q2839 -616 2810.5 -642.5Q2782 -669 2782 -708Z"/><path d="M4024 -326V0H3854V-303Q3854 -357 3825.5 -386.5Q3797 -416 3747 -416Q3697 -416 3668.5 -386.5Q3640 -357 3640 -303V0H3470V-303Q3470 -357 3441.5 -386.5Q3413 -416 3363 -416Q3313 -416 3284.5 -386.5Q3256 -357 3256 -303V0H3085V-558H3256V-488Q3282 -523 3324 -543.5Q3366 -564 3419 -564Q3482 -564 3531.5 -537Q3581 -510 3609 -460Q3638 -506 3688 -535Q3738 -564 3797 -564Q3901 -564 3962.5 -501Q4024 -438 4024 -326Z"/></g></svg>
+      <h1>A sessão começa já a seguir.</h1>
+      <p>Estamos a montar a versão 1.0.0. A tua conta, a tua lista e o que estavas a ver ficam guardados.</p>
+      <p class="pe">Tens a app instalada? Não precisas de fazer nada: ela abre sozinha quando a sessão começar.</p>
+    </div>
+  </main>
+  <div class="reflexo"></div>
+  <canvas class="fila" id="f3"></canvas>
+  <canvas class="fila" id="f2"></canvas>
+  <canvas class="fila" id="f1"></canvas>
+  <canvas id="poeira"></canvas>
+  <div class="vinheta"></div>
+  <div class="grao"></div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var raiz = document.documentElement.style;
+  // cor ambiente: percorre o violeta, o magenta e o rosa da marca, devagar
+  var PAL = [[139, 92, 255], [190, 70, 200], [255, 77, 148], [160, 80, 240]];
+  var cor = PAL[0].slice();
+  function mistura(t) {
+    var n = PAL.length, i = Math.floor(t) % n, f = t - Math.floor(t), a = PAL[i], b = PAL[(i + 1) % n];
+    f = f * f * (3 - 2 * f);
+    return [0, 1, 2].map(function (k) { return a[k] + (b[k] - a[k]) * f; });
+  }
+
+  // ---------- plateia ----------
+  var cv = [document.getElementById('f3'), document.getElementById('f2'), document.getElementById('f1')];
+  var LINHAS = [
+    { c: 0, y: 0.84, esc: 0.78, n: 16, luz: 0.16 },
+    { c: 1, y: 0.95, esc: 1.12, n: 11, luz: 0.26 },
+    { c: 2, y: 1.10, esc: 1.7, n: 6, luz: 0.38 }
+  ];
+  var pessoas = [];
+  function sem(s) { var x = Math.sin(s * 127.1) * 43758.5453; return x - Math.floor(x); }
+  var W = 0, H = 0, dpr = 1;
+
+  function preparar() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.forEach(function (c) { c.width = W * dpr; c.height = H * dpr; });
+    pessoas = [];
+    LINHAS.forEach(function (L, li) {
+      var n = Math.max(4, Math.round(L.n * Math.min(1, W / 1100))); L = Object.assign({}, L, { n: n }); var passo = W / (n - 0.2);
+      for (var i = 0; i < n; i++) {
+        var s = li * 100 + i + 3;
+        if (sem(s * 1.7) < 0.14) continue; // lugares vazios
+        pessoas.push({
+          li: li, x: (i + 0.1 + sem(s) * 0.5) * passo - passo * 0.1,
+          alt: 0.9 + sem(s * 3) * 0.28, larg: 0.9 + sem(s * 5) * 0.25,
+          pelo: Math.floor(sem(s * 7) * 6), pipoca: sem(s * 19) < 0.42 ? (sem(s * 23) < 0.5 ? 1 : 2) : 0, tom: sem(s * 11), fase: sem(s * 13) * 6.28, vel: 0.2 + sem(s * 17) * 0.3
+        });
+      }
+    });
+  }
+
+  function cabelo(g, p, u, hx, hy, rx, ry) {
+    // ctx já com a cor base; desenha o penteado por cima da cabeça
+    var t = p.pelo;
+    g.beginPath();
+    if (t === 0) { g.ellipse(hx, hy - ry * 0.12, rx * 1.04, ry * 1.02, 0, Math.PI, 0); g.fill(); g.beginPath(); g.ellipse(hx, hy, rx * 1.02, ry, 0, 0, Math.PI * 2); g.fill(); }
+    else if (t === 1) { g.ellipse(hx, hy, rx * 1.02, ry, 0, 0, Math.PI * 2); g.fill(); g.beginPath(); g.arc(hx, hy - ry * 1.12, rx * 0.5, 0, Math.PI * 2); g.fill(); }
+    else if (t === 2) { g.ellipse(hx, hy, rx * 1.1, ry * 1.05, 0, 0, Math.PI * 2); g.fill(); g.beginPath(); g.moveTo(hx - rx * 1.1, hy); g.quadraticCurveTo(hx - rx * 1.25, hy + ry * 2.2, hx - rx * 0.55, hy + ry * 2.4); g.lineTo(hx + rx * 0.55, hy + ry * 2.4); g.quadraticCurveTo(hx + rx * 1.25, hy + ry * 2.2, hx + rx * 1.1, hy); g.fill(); }
+    else if (t === 3) { for (var k = 0; k < 11; k++) { var a = (k / 11) * Math.PI * 2; g.beginPath(); g.arc(hx + Math.cos(a) * rx * 0.78, hy + Math.sin(a) * ry * 0.78, rx * 0.42, 0, Math.PI * 2); g.fill(); } g.beginPath(); g.ellipse(hx, hy, rx * 0.95, ry * 0.95, 0, 0, Math.PI * 2); g.fill(); }
+    else if (t === 4) { g.ellipse(hx, hy, rx, ry, 0, 0, Math.PI * 2); g.fill(); g.beginPath(); g.moveTo(hx - rx * 1.05, hy - ry * 0.15); g.quadraticCurveTo(hx, hy - ry * 1.5, hx + rx * 1.05, hy - ry * 0.15); g.lineTo(hx + rx * 1.4, hy - ry * 0.05); g.lineTo(hx + rx * 0.9, hy + ry * 0.05); g.fill(); }
+    else { g.ellipse(hx, hy, rx, ry, 0, 0, Math.PI * 2); g.fill(); }
+  }
+
+  function pessoa(g, p, t, L) {
+    var u = L.esc * Math.max(Math.min(W, H * 1.6), 760) / 1000 * 34 * p.larg; // largura base da cabeça
+    var base = H * (L.y - (H / W > 1.3 ? 0.16 : 0));
+    var rgb = Math.round(cor[0]) + ',' + Math.round(cor[1]) + ',' + Math.round(cor[2]);
+    var riso = !reduz && Math.sin(t * 0.37 + p.fase * 2.1) > 0.93 ? Math.sin(t * 19 + p.fase) * u * 0.035 : 0;
+    var bal = (reduz ? 0 : Math.sin(t * p.vel + p.fase) * u * 0.05) + riso;
+    var incl = reduz ? 0 : Math.sin(t * p.vel * 0.7 + p.fase) * 0.03;
+    var hx = p.x + bal, ry = u * 0.6 * (0.94 + (p.alt - 0.9) * 0.4), rx = u * 0.5, hy = base - u * 1.74 * p.alt;
+    g.save();
+    g.translate(hx, hy); g.rotate(incl); g.translate(-hx, -hy);
+    // volume: do violeta-claro (luz do ecrã) ao quase preto (sombra)
+    var k = Math.floor(p.tom * 14);
+    var corpo = g.createLinearGradient(0, hy - ry, 0, base + u);
+    corpo.addColorStop(0, 'rgb(' + (74 + k) + ',' + (56 + k) + ',' + (104 + k) + ')');
+    corpo.addColorStop(0.45, 'rgb(' + (34 + k) + ',' + (25 + k) + ',' + (52 + k) + ')');
+    corpo.addColorStop(1, 'rgb(8,6,14)');
+    g.fillStyle = corpo;
+    g.beginPath();
+    g.moveTo(hx - u * 1.55, base + u);
+    g.quadraticCurveTo(hx - u * 1.5, base - u * 0.85, hx - u * 0.52, base - u * 1.0);
+    g.lineTo(hx + u * 0.52, base - u * 1.0);
+    g.quadraticCurveTo(hx + u * 1.5, base - u * 0.85, hx + u * 1.55, base + u);
+    g.closePath(); g.fill();
+    g.fillRect(hx - u * 0.3, hy + ry * 0.5, u * 0.6, u * 1.0);
+    // sombra de contacto da cabeça nos ombros
+    var sb = g.createRadialGradient(hx, hy + ry * 0.95, 1, hx, hy + ry * 0.95, rx * 1.3);
+    sb.addColorStop(0, 'rgba(3,2,8,.75)'); sb.addColorStop(1, 'rgba(3,2,8,0)');
+    g.fillStyle = sb; g.fillRect(hx - rx * 1.5, hy + ry * 0.4, rx * 3, ry * 1.2); g.fillStyle = corpo;
+    // orelhas
+    g.beginPath(); g.ellipse(hx - rx * 0.98, hy + ry * 0.1, rx * 0.16, ry * 0.26, 0, 0, 6.283); g.ellipse(hx + rx * 0.98, hy + ry * 0.1, rx * 0.16, ry * 0.26, 0, 0, 6.283); g.fill();
+    g.beginPath(); g.ellipse(hx, hy, rx, ry, 0, 0, 6.283); g.fill();
+    // cabelo mais escuro por cima da cabeça
+    g.fillStyle = 'rgb(' + (12 + k) + ',' + (9 + k) + ',' + (20 + k) + ')';
+    cabelo(g, p, u, hx, hy, rx, ry);
+    // luz do ecrã: brilho suave no cimo (volume) e linha fina de contraluz
+    g.globalCompositeOperation = 'source-atop';
+    var rg = g.createRadialGradient(hx, hy - ry * 0.9, ry * 0.1, hx, hy - ry * 0.2, ry * 1.5);
+    rg.addColorStop(0, 'rgba(' + rgb + ',' + (L.luz + 0.5) + ')');
+    rg.addColorStop(0.5, 'rgba(' + rgb + ',' + L.luz * 0.4 + ')');
+    rg.addColorStop(1, 'rgba(' + rgb + ',0)');
+    g.fillStyle = rg; g.fillRect(hx - u * 2, hy - ry * 2, u * 4, ry * 3.4);
+    var lg = g.createLinearGradient(0, base - u * 1.1, 0, base + u);
+    lg.addColorStop(0, 'rgba(' + rgb + ',' + L.luz * 0.9 + ')');
+    lg.addColorStop(0.4, 'rgba(' + rgb + ',0.03)');
+    lg.addColorStop(1, 'rgba(' + rgb + ',0)');
+    g.fillStyle = lg; g.fillRect(hx - u * 2, base - u * 1.1, u * 4, u * 2.2);
+    g.globalCompositeOperation = 'lighter';
+    g.save(); g.shadowBlur = u * 0.5; g.shadowColor = 'rgba(' + rgb + ',.9)'; g.strokeStyle = 'rgba(' + rgb + ',' + Math.min(.95, L.luz * 2.2) + ')'; g.lineWidth = Math.max(1, u * 0.07);
+    g.beginPath(); g.ellipse(hx, hy, rx * 1.03, ry * 1.03, 0, Math.PI * 1.08, Math.PI * 1.92); g.stroke(); g.restore();
+    g.strokeStyle = 'rgba(' + rgb + ',' + L.luz * 0.9 + ')';
+    g.lineWidth = Math.max(1, u * 0.05);
+    g.beginPath(); g.moveTo(hx - u * 1.45, base - u * 0.55); g.quadraticCurveTo(hx - u * 1.0, base - u * 0.98, hx - u * 0.52, base - u * 1.0);
+    g.moveTo(hx + u * 0.52, base - u * 1.0); g.quadraticCurveTo(hx + u * 1.0, base - u * 0.98, hx + u * 1.45, base - u * 0.55); g.stroke();
+    g.globalCompositeOperation = 'source-over';
+    // pipocas: balde nas mãos, a subir e a descer, e uma pipoca atirada à boca
+    if (p.pipoca) {
+      var sobe = reduz ? 0 : (Math.sin(t * 1.3 + p.fase) * 0.5 + 0.5);
+      var bx = hx + u * (p.pipoca > 1 ? 1.0 : -1.0), by = base - u * (0.55 + sobe * 0.28);
+      var bw = u * 0.7, bh = u * 0.95;
+      g.save(); g.translate(bx, by); g.rotate(p.pipoca > 1 ? -0.08 : 0.08);
+      for (var i = 0; i < 5; i++) { // pipocas a transbordar
+        var ang = i * 1.3 + p.fase;
+        g.fillStyle = 'rgb(' + (235 - i * 6) + ',' + (215 - i * 7) + ',' + (170 - i * 5) + ')';
+        g.beginPath(); g.arc(-bw * 0.32 + i * bw * 0.16, -bh * 0.42 + Math.sin(ang) * bh * 0.07, bw * 0.17, 0, 6.283); g.fill();
+      }
+      var bg = g.createLinearGradient(-bw / 2, 0, bw / 2, 0);
+      bg.addColorStop(0, '#9c1f3a'); bg.addColorStop(0.5, '#ff5a7a'); bg.addColorStop(1, '#7a1530');
+      g.fillStyle = bg;
+      g.beginPath(); g.moveTo(-bw * 0.55, -bh * 0.35); g.lineTo(bw * 0.55, -bh * 0.35); g.lineTo(bw * 0.4, bh * 0.55); g.lineTo(-bw * 0.4, bh * 0.55); g.closePath(); g.fill();
+      g.fillStyle = 'rgba(255,255,255,.55)';
+      for (var j = -1; j <= 1; j += 2) { g.beginPath(); g.moveTo(j * bw * 0.16 - bw * 0.07, -bh * 0.35); g.lineTo(j * bw * 0.16 + bw * 0.07, -bh * 0.35); g.lineTo(j * bw * 0.12 + bw * 0.05, bh * 0.55); g.lineTo(j * bw * 0.12 - bw * 0.05, bh * 0.55); g.fill(); }
+      g.fillStyle = 'rgba(' + rgb + ',' + L.luz * 0.55 + ')'; g.fillRect(-bw * 0.55, -bh * 0.35, bw * 1.1, bh * 0.9);
+      g.restore();
+      if (!reduz) { // pipoca atirada ao ar em ciclos
+        var ciclo = (t * 0.22 + p.fase) % 1;
+        if (ciclo < 0.18) {
+          var f = ciclo / 0.18, kx = bx + (hx - bx) * f, ky = by - bh * 0.4 - Math.sin(f * 3.14159) * u * 1.6 + (hy + ry * 0.6 - by + bh * 0.4) * f * f * 0.5;
+          g.fillStyle = 'rgb(246,228,180)'; g.beginPath(); g.arc(kx, ky, u * 0.1, 0, 6.283); g.fill();
+        }
+      }
+    }
+    g.restore();
+  }
+
+  function desenhar(t) {
+    cv.forEach(function (c, i) {
+      var g = c.getContext('2d');
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      g.clearRect(0, 0, W, H);
+      var L = LINHAS[i];
+      pessoas.forEach(function (p) { if (p.li === i) pessoa(g, p, t, L); });
+      // costas dos bancos à frente de cada fila
+      var gr = g.createLinearGradient(0, H * L.y, 0, H);
+      gr.addColorStop(0, 'rgba(4,3,8,0)'); gr.addColorStop(0.18, 'rgba(4,3,8,.96)'); gr.addColorStop(1, '#030207');
+      g.fillStyle = gr; g.fillRect(0, H * (L.y + 0.015), W, H);
+    });
+  }
+
+  // ---------- poeira na luz ----------
+  var pc = document.getElementById('poeira'), px = pc.getContext('2d'), gr = [];
+  function poeiraInit() { pc.width = innerWidth; pc.height = innerHeight; gr = []; for (var i = 0; i < 46; i++) gr.push({ x: Math.random(), y: Math.random(), r: 0.4 + Math.random() * 1.3, v: 0.00003 + Math.random() * 0.00007, a: 0.15 + Math.random() * 0.4 }); }
+  function poeira() {
+    px.clearRect(0, 0, pc.width, pc.height);
+    gr.forEach(function (d) { d.y -= d.v * 16; d.x += Math.sin(d.y * 12 + d.r) * 0.0002; if (d.y < 0) { d.y = 1; d.x = Math.random(); }
+      var f = Math.max(0, 1 - Math.abs(d.x - 0.5) * 1.6) * (1 - d.y * 0.4);
+      px.fillStyle = 'rgba(255,230,250,' + (d.a * f).toFixed(3) + ')'; px.beginPath(); px.arc(d.x * pc.width, d.y * pc.height, d.r, 0, 6.283); px.fill(); });
+  }
+
+  var t0 = performance.now();
+  function quadro(agora) {
+    var t = (agora - t0) / 1000;
+    cor = mistura(Math.max(0, t) / 7);
+    raiz.setProperty('--r', cor[0].toFixed(0)); raiz.setProperty('--g', cor[1].toFixed(0)); raiz.setProperty('--b', cor[2].toFixed(0));
+    desenhar(t); poeira();
+    if (!reduz) requestAnimationFrame(quadro);
+  }
+  function tudo() { preparar(); poeiraInit(); t0 = performance.now(); if (reduz) quadro(t0); }
+  addEventListener('resize', function () { clearTimeout(tudo.t); tudo.t = setTimeout(tudo, 150); });
+  tudo(); if (!reduz) requestAnimationFrame(quadro);
+
+  // ---------- quando a sessão começar, abre a app ----------
+  function ver() {
+    fetch('/api/estado', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) { if (d && d.manutencao === false) location.replace('/'); }).catch(function () {});
+  }
+  setInterval(ver, 30000);
+})();
+
+</script>
+<script src="/admin.js" defer></script>
+</body>
+</html>

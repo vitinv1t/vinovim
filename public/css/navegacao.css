@@ -1,0 +1,463 @@
+/* ---- PC: barra de navegação no topo, estilo moderno ---- */
+@media (min-width: 821px) {
+  html:not(.tv) {
+    --side: 0px;
+  }
+  html:not(.tv) #nav {
+    inset: 0 0 auto 0;
+    width: auto;
+    height: 68px;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 4%;
+    gap: 2px;
+    border: 0;
+    overflow: visible;
+    background: linear-gradient(180deg, rgba(6, 5, 9, 0.95) 0%, rgba(6, 5, 9, 0.6) 55%, rgba(6, 5, 9, 0));
+    transition:
+      background 0.35s,
+      box-shadow 0.35s;
+  }
+  html.scrolled:not(.tv) #nav,
+  html.v6solid:not(.tv) #nav {
+    background: rgba(9, 8, 13, 0.97);
+    box-shadow:
+      0 1px 0 var(--line),
+      0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+  html:not(.tv) #nav .brand {
+    flex-direction: row;
+    margin: 0 28px 0 0;
+    gap: 9px;
+    order: 0;
+  }
+  html:not(.tv) #nav .brand svg {
+    width: 30px;
+    height: 30px;
+  }
+  html:not(.tv) #nav .brand span {
+    display: block;
+    font-size: 21px;
+    color: transparent;
+    letter-spacing: -0.02em;
+  }
+  html:not(.tv) #nav .nv {
+    width: auto;
+    height: 40px;
+    flex-direction: row;
+    padding: 0 11px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #cbc6d3;
+    background: none;
+    border-radius: 8px;
+    gap: 0;
+    flex: none;
+  }
+  html:not(.tv) #nav .nv svg {
+    display: none;
+  }
+  html:not(.tv) #nav .nv:hover {
+    color: #fff;
+    background: none;
+  }
+  html:not(.tv) #nav .nv.on {
+    color: #fff;
+    font-weight: 800;
+    background: none;
+  }
+  html:not(.tv) #nav .nv.on::before {
+    display: block;
+    left: 11px;
+    right: 11px;
+    top: auto;
+    bottom: 2px;
+    width: auto;
+    height: 2px;
+  }
+  html:not(.tv) #nav .nv[data-v='home'] {
+    order: 1;
+  }
+  html:not(.tv) #nav .nv[data-v='series'] {
+    order: 2;
+  }
+  html:not(.tv) #nav .nv[data-v='movies'] {
+    order: 3;
+  }
+  html:not(.tv) #nav .nv[data-v='novidades'] {
+    order: 4;
+  }
+  html:not(.tv) #nav .nv[data-v='library'] {
+    order: 5;
+  }
+  html:not(.tv) #nav .nvsp {
+    order: 6;
+    flex: 1;
+  }
+  html:not(.tv) #nav .nv[data-v='search'] {
+    order: 7;
+    width: 42px;
+    padding: 0;
+    justify-content: center;
+    font-size: 0;
+  }
+  html:not(.tv) #nav .nv[data-v='search'] svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+    color: #fff;
+  }
+  html:not(.tv) #nav .nv[data-v='search'].on::before {
+    display: none;
+  }
+  html:not(.tv) #nav .v6more {
+    order: 8;
+  }
+  html:not(.tv) #nav .v6more svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+    margin-left: 4px;
+  }
+  html:not(.tv) #nav #profBtn {
+    order: 9;
+    padding: 0 0 0 8px;
+    height: 40px;
+  }
+  html:not(.tv) #nav #profBtn span:last-child {
+    display: none;
+  }
+  html:not(.tv) #nav #profBtn .pav {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  html:not(.tv) #nav .nv[data-v='calendar'],
+  html:not(.tv) #nav .nv[data-v='stats'],
+  html:not(.tv) #nav .nv[data-v='downloads'],
+  html:not(.tv) #nav .nv[data-v='addons'],
+  html:not(.tv) #nav .nv[data-v='settings'] {
+    display: none;
+  }
+  html:not(.tv) main {
+    margin-left: 0;
+  }
+  html:not(.tv) .topbar {
+    position: relative;
+    padding: 92px 4% 6px;
+    background: none;
+    border: 0;
+    backdrop-filter: none;
+  }
+  html:not(.tv) .topbar h1 {
+    font-size: 34px;
+  }
+  html:not(.tv) .topbar .qbtn,
+  html:not(.tv) .topbar .seg {
+    display: none !important;
+  }
+  html:not(.tv) .home .topbar {
+    display: none;
+  }
+  html:not(.tv) .pad {
+    padding: 18px 4% 40px;
+  }
+  html:not(.tv) .rowh,
+  html:not(.tv) .track {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+  html:not(.tv) .track {
+    scroll-padding-inline: 4%;
+  }
+  html:not(.tv) .hcon {
+    left: 4%;
+  }
+  html:not(.tv) .hdots {
+    right: 4%;
+  }
+  html:not(.tv) .hmute {
+    right: 4%;
+  }
+  html:not(.tv) .hero {
+    height: min(88vh, 860px);
+  }
+  html:not(.tv) .vvwrapbanner {
+    margin-left: 4%;
+    margin-right: 4%;
+    width: 92%;
+  }
+}
+/* nomes de fonte (“Cinemeta”) e explicações nas filas: fora, para ficar limpo */
+.rowh small {
+  display: none;
+}
+.rowh h2 {
+  font-size: 20px;
+}
+/* ---- telemóvel: barra de baixo com 5 separadores ---- */
+@media (max-width: 820px) {
+  #nav .nv[data-v='addons'],
+  #nav .nv[data-v='settings'] {
+    display: none;
+  }
+  #nav .v6more {
+    display: flex !important;
+  }
+  .topbar .qbtn {
+    display: none !important;
+  }
+  #nav .nv {
+    font-size: 10px;
+  }
+  .hmute {
+    right: 18px !important;
+    bottom: auto !important;
+    top: calc(70px + env(safe-area-inset-top));
+  }
+}
+#nav .v6more {
+  cursor: pointer;
+}
+/* ---- menu “Mais” ---- */
+#v6menu {
+  position: fixed;
+  z-index: 95;
+  min-width: 250px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(20, 18, 26, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  display: none;
+  backdrop-filter: blur(14px);
+}
+#v6menu.open {
+  display: block;
+  animation: fade 0.18s;
+}
+#v6menu a,
+#v6menu button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ddd8e4;
+  text-decoration: none;
+  text-align: left;
+}
+#v6menu a:hover,
+#v6menu button:hover,
+#v6menu a:focus-visible,
+#v6menu button:focus-visible {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  outline: none;
+}
+#v6menu svg {
+  width: 19px;
+  height: 19px;
+  color: var(--mu);
+}
+#v6menu hr {
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 6px 4px;
+}
+#v6menu .mo {
+  display: none;
+}
+@media (max-width: 820px) {
+  #v6menu {
+    left: 10px !important;
+    right: 10px;
+    top: auto !important;
+    bottom: calc(76px + env(safe-area-inset-bottom));
+    min-width: 0;
+  }
+  #v6menu .mo {
+    display: flex;
+  }
+}
+/* ---- página do título ---- */
+#detail .hbtns {
+  align-items: center;
+}
+#detail .hbtns .btn.ico,
+#detail .v6dots {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}
+#detail .v6dots {
+  display: inline-grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
+}
+#detail .v6dots svg {
+  width: 20px;
+  height: 20px;
+}
+#detail .v6dm {
+  position: absolute;
+  z-index: 20;
+  top: 54px;
+  left: 0;
+  min-width: 230px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(20, 18, 26, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  display: none;
+  text-align: left;
+}
+#detail .v6dm.open {
+  display: block;
+  animation: fade 0.15s;
+}
+#detail .v6dm .btn {
+  display: flex;
+  width: 100%;
+  height: 42px;
+  justify-content: flex-start;
+  border-radius: 9px;
+  background: none;
+  border: 0;
+  padding: 0 12px;
+  font-size: 14px;
+  backdrop-filter: none;
+  color: #ddd8e4;
+}
+#detail .v6dm .btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+#detail .v6dm .btn.ico {
+  width: 100%;
+  border-radius: 9px;
+}
+#detail .v6dm .btn.on {
+  color: #ff9fb6;
+}
+#detail .v6dm .btn .v6l {
+  margin-left: 2px;
+}
+#detail .dmeta {
+  flex-wrap: wrap;
+}
+/* ---- separadores (definições e biblioteca) ---- */
+.v6tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px 0 16px;
+  margin-bottom: 6px;
+  position: sticky;
+  top: 68px;
+  z-index: 20;
+  background: linear-gradient(180deg, var(--bg) 75%, rgba(9, 8, 13, 0));
+}
+.v6tabs::-webkit-scrollbar {
+  display: none;
+}
+.v6tabs button {
+  flex: none;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--mu);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.v6tabs button.on {
+  background: var(--tx);
+  color: #0b0a10;
+  border-color: var(--tx);
+}
+@media (max-width: 820px) {
+  .v6tabs {
+    top: 0;
+  }
+}
+html.tv .v6tabs {
+  top: 0;
+}
+.v6grp {
+  display: none;
+}
+.v6grp.on {
+  display: block;
+  animation: fade 0.25s;
+}
+.v6grp .panel {
+  max-width: 900px;
+}
+
+/* ---- menu do perfil (substitui o “Mais”) ---- */
+#v6menu {
+  width: 280px;
+}
+#v6menu .pmhead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 12px;
+}
+#v6menu .pmhead .pav {
+  border-radius: 12px;
+  flex: none;
+}
+#v6menu .pmhead b {
+  display: block;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+}
+#v6menu .pmhead button {
+  width: auto;
+  padding: 2px 0 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mu);
+  background: none;
+}
+#v6menu .pmhead button:hover {
+  color: #fff;
+  background: none;
+  text-decoration: underline;
+}
+#v6menu .pmprofs {
+  display: grid;
+  gap: 2px;
+  padding-bottom: 4px;
+}
+#v6menu .pmprofs .pav {
+  border-radius: 8px;
+  flex: none;
+}
+#nav #profBtn[aria-expanded='true'] .pav {
+  box-shadow: 0 0 0 2px #fff;
+}
+@media (max-width: 820px) {
+  #v6menu {
+    width: auto;
+    max-height: calc(100vh - 120px - env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+  #nav #profBtn .pav {
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 7px;
+    font-size: 12px !important;
+  }
+}
