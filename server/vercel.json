@@ -3,6 +3,7 @@
   "buildCommand": "echo pronto",
   "outputDirectory": "public",
   "cleanUrls": true,
+  "rewrites": [{ "source": "/api/web", "destination": "/api/sair?acao=web" }],
   "headers": [
     {
       "source": "/(.*)",
