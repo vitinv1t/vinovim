@@ -1,5 +1,5 @@
 // Vinovim: service worker com atualização automática
-const CACHE = 'vinovim-v9';
+const CACHE = 'vinovim-v10';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icon.svg'];
 const NUNCA = /^\/(api\/|_vercel\/|version\.json|downloads|manutencao|entrar|v-[0-9a-f]{24}|admin\.js)/;
 
