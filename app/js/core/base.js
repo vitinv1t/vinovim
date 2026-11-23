@@ -44,7 +44,7 @@ const hooks = {
   }
 };
 
-const CINEMETA = 'https://v3-cinemeta.strem.io/manifest.json';
+const CINEMETA = location.origin + '/api/catalogo/manifest.json';
 const IMG = {
   bg: id => `https://images.metahub.space/background/medium/${id}/img`,
   logo: id => `https://images.metahub.space/logo/medium/${id}/img`,
